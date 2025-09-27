@@ -18,7 +18,7 @@ dot add .config/electron-flags.conf
 # .config/code-flags.conf
 
 # hypr
-dot add .config/hypr/UserConfigs .config/hypr/UserScripts
+dot add .config/hypr/UserConfigs .config/hypr/UserScripts .config/hypr/monitors.conf
 
 dot commit -m "Sync dotfiles"
 dot push origin main
