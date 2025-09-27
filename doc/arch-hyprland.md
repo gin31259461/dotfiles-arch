@@ -1,4 +1,11 @@
-# Arch Linux
+# Arch Linux and Hyprland
+
+## Setup Arch Linux
+
+## System Upgrade Issue
+
+[archlinux-keyring](https://wiki.archlinux.org/title/Pacman/Package_signing#Upgrade_system_regularly)
+[linux-firmware >= 20250613.12fe085f-5 upgrade requires manual intervention](https://archlinux.org/news/linux-firmware-2025061312fe085f-5-upgrade-requires-manual-intervention/)
 
 ## Zsh
 
