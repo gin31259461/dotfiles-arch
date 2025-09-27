@@ -4,7 +4,9 @@
 
 ## System Upgrade Issue
 
+error: libngtcp2: signature from "..." is unknown trust
 [archlinux-keyring](https://wiki.archlinux.org/title/Pacman/Package_signing#Upgrade_system_regularly)
+
 [linux-firmware >= 20250613.12fe085f-5 upgrade requires manual intervention](https://archlinux.org/news/linux-firmware-2025061312fe085f-5-upgrade-requires-manual-intervention/)
 
 ## Zsh
