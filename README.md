@@ -1,6 +1,6 @@
 # Arch Linux + Hyprland dotfiles
 
-This config is use
+This config is using
 [JaKooLit's Arch-Hyprland](https://github.com/JaKooLit/Arch-Hyprland)
 
 <!-- markdownlint-disable -->
