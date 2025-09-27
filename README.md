@@ -1,4 +1,4 @@
-# Arch Linux + Hyprland dotfiles
+# Arch Linux + Hyprland Dotfiles
 
 This config is using
 [JaKooLit's Arch-Hyprland](https://github.com/JaKooLit/Arch-Hyprland)
