@@ -1,13 +1,103 @@
 # Arch Linux and Hyprland
 
-## Setup Arch Linux
+<!-- markdownlint-disable -->
+
+<!-- toc -->
+
+- [Setup Arch Linux + Hyprland](#setup-arch-linux--hyprland)
+    * [0. Prepare ISO](#0-prepare-iso)
+    * [1. Partition](#1-partition)
+    * [2. Booting USB](#2-booting-usb)
+    * [3. BIOS Setting](#3-bios-setting)
+    * [4. Network](#4-network)
+    * [5. Hard Disk](#5-hard-disk)
+    * [6. Install Basic System](#6-install-basic-system)
+    * [7. Generate fstab File](#7-generate-fstab-file)
+    * [8. Setup New System](#8-setup-new-system)
+    * [9. Exit New System and Unmount](#9-exit-new-system-and-unmount)
+    * [10. Enter Arch System and Activate Network](#10-enter-arch-system-and-activate-network)
+    * [11. Create New Account](#11-create-new-account)
+    * [12. Install GPU Driver](#12-install-gpu-driver)
+    * [13. Install Hyprland (Desktop Environment)](#13-install-hyprland-desktop-environment)
+    * [14. Add archlinuxcn Source and System Upgrade](#14-add-archlinuxcn-source-and-system-upgrade)
+- [System Upgrade Issue](#system-upgrade-issue)
+- [System Cleaning](#system-cleaning)
+- [Zsh](#zsh)
+- [Clipboard manager](#clipboard-manager)
+- [Fcitx5 (Chinese Input)](#fcitx5-chinese-input)
+    * [Setup](#setup)
+    * [Enable Fcitx5 for Some Apps](#enable-fcitx5-for-some-apps)
+- [Useful CLI tools](#useful-cli-tools)
+
+<!-- tocstop -->
+
+<!-- markdownlint-enable -->
+
+## Setup Arch Linux + Hyprland
+
+this instruction is refer to <https://zhuanlan.zhihu.com/p/138951848>
+
+### 0. Prepare ISO
+
+<https://archlinux.org/download/>
+
+### 1. Partition
+
+- Arch Linux 使用 Windows 的 EFI 分區
+- 切一個分區給 Arch 目錄使用
+- 用 `swap file` 取代 swap partition
+
+### 2. Booting USB
+
+use [Rufus](https://rufus.ie)
+
+1. 寫入方式選擇 DD 非 ISO
+1. 選項區域選擇 GPT 非 MBR
+
+### 3. BIOS Setting
+
+### 4. Network
+
+### 5. Hard Disk
+
+### 6. Install Basic System
+
+### 7. Generate fstab File
+
+### 8. Setup New System
+
+### 9. Exit New System and Unmount
+
+### 10. Enter Arch System and Activate Network
+
+### 11. Create New Account
+
+### 12. Install GPU Driver
+
+### 13. Install Hyprland (Desktop Environment)
+
+### 14. Add archlinuxcn Source and System Upgrade
 
 ## System Upgrade Issue
 
 error: libngtcp2: signature from "..." is unknown trust
 [archlinux-keyring](https://wiki.archlinux.org/title/Pacman/Package_signing#Upgrade_system_regularly)
 
-[linux-firmware >= 20250613.12fe085f-5 upgrade requires manual intervention](https://archlinux.org/news/linux-firmware-2025061312fe085f-5-upgrade-requires-manual-intervention/)
+linux-firmware >= 20250613.12fe085f-5 upgrade requires manual intervention
+[linux-firmware](https://archlinux.org/news/linux-firmware-2025061312fe085f-5-upgrade-requires-manual-intervention/)
+
+## System Cleaning
+
+```bash
+# pacman pkg
+sudo paccache -r
+
+# pacman + yay pkg
+yay -Sc
+
+# system journal log
+journalctl --vacuum-time=2weeks
+```
 
 ## Zsh
 
