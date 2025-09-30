@@ -28,7 +28,9 @@ from pyquery import PyQuery  # install using `pip install pyquery`
 weather_icons = {
     # clear
     "mostly-clear-day": "",
+    "clear": "",
     "mostly-clear-night": "󰖔",
+    "clear-night": "󰖔",
     # cloudy
     "mostly-cloudy-day": "",
     "mostly-cloudy-night": "",
@@ -37,8 +39,8 @@ weather_icons = {
     "cloudy": "󰖐",
     # rain
     "rain": "",
-    # default
-    "default": "",
+    ##
+    "default": "..",
 }
 
 
