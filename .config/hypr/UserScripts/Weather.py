@@ -3,22 +3,41 @@
 # original code https://gist.github.com/Surendrajat/ff3876fd2166dd86fb71180f4e9342d7
 # weather using python
 
-import requests
 import json
 import os
+
+import requests
 from pyquery import PyQuery  # install using `pip install pyquery`
 
 # weather icons
+# weather_icons = {
+#     "sunnyDay": "󰖙",
+#     "clearNight": "󰖔",
+#     "cloudyFoggyDay": "",
+#     "cloudyFoggyNight": "",
+#     "rainyDay": "",
+#     "rainyNight": "",
+#     "snowyIcyDay": "",
+#     "snowyIcyNight": "",
+#     "severe": "",
+#     "default": "",
+# }
+
+# https://www.nerdfonts.com/cheat-sheet: search weather
+# https://weather.com/zh-TW/weather/today: using svg tag name
 weather_icons = {
-    "sunnyDay": "󰖙",
-    "clearNight": "󰖔",
-    "cloudyFoggyDay": "",
-    "cloudyFoggyNight": "",
-    "rainyDay": "",
-    "rainyNight": "",
-    "snowyIcyDay": "",
-    "snowyIcyNight": "",
-    "severe": "",
+    # clear
+    "mostly-clear-day": "",
+    "mostly-clear-night": "󰖔",
+    # cloudy
+    "mostly-cloudy-day": "",
+    "mostly-cloudy-night": "",
+    "party-cloudy-day": "",
+    "party-cloudy-night": "",
+    "cloudy": "󰖐",
+    # rain
+    "rain": "",
+    # default
     "default": "",
 }
 
@@ -32,10 +51,12 @@ def get_location():
 
 
 # Get latitude and longitude
-latitude, longitude = get_location()
+# latitude, longitude = get_location()
+region_id = "fc8d371c4ff70375e2c92d62070f7f549cb82e1fc787a4694e81f9c320d8dfcf"
 
 # Open-Meteo API endpoint
-url = f"https://weather.com/en-PH/weather/today/l/{latitude},{longitude}"
+# url = f"https://weather.com/en-PH/weather/today/l/{latitude},{longitude}"
+url = f"https://weather.com/zh-TW/weather/today/l/{region_id}"
 
 # manual location_id
 # NOTE: if you want to add manually, make sure you disable def get_location above
@@ -59,7 +80,15 @@ status = html_data("div[data-testid='wxPhrase']").text()
 status = f"{status[:16]}.." if len(status) > 17 else status
 
 # status code
-status_code = html_data("#regionHeader").attr("class").split(" ")[2].split("-")[2]
+# status_code = html_data("#regionHeader").attr("class").split(" ")[2].split("-")[2]
+
+status_code = (
+    html_data("span[data-testid='TemperatureValue']")
+    .siblings("span")
+    .eq(2)("svg")
+    .attr("name")
+)
+
 
 # status icon
 icon = (

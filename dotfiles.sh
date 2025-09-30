@@ -15,10 +15,9 @@ dot add .icons .config/gtk-3.0
 dot add .config/nvim
 dot add .config/kitty
 dot add .config/electron-flags.conf
+dot add .config/hypr
+dot add .config/waybar
 # .config/code-flags.conf
 
-# hypr
-dot add .config/hypr/UserConfigs .config/hypr/UserScripts .config/hypr/monitors.conf
-
-dot commit -m "Sync dotfiles"
+dot commit -m "sync dotfiles"
 dot push origin main
