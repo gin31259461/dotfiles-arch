@@ -22,6 +22,7 @@
     * [14. Add archlinuxcn Source and System Upgrade](#14-add-archlinuxcn-source-and-system-upgrade)
 - [System Upgrade Issue](#system-upgrade-issue)
 - [System Cleaning](#system-cleaning)
+- [Note](#note)
 - [Zsh](#zsh)
 - [Clipboard manager](#clipboard-manager)
 - [Fcitx5 (Chinese Input)](#fcitx5-chinese-input)
@@ -99,6 +100,10 @@ yay -Sc
 # system journal log
 journalctl --vacuum-time=2weeks
 ```
+
+## Note
+
+1. Electron based apps have screen share issue
 
 ## Zsh
 
