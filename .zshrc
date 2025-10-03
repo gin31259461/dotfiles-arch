@@ -40,7 +40,11 @@ alias la='ls -a'
 alias lla='ls -la'
 alias lt='ls --tree'
 alias v='nvim'
-alias discord='discord --enable-features=UseOzonePlatform -ozone-platform-hint=auto --enable-wayland-ime'
+
+discordd() {
+  nohup discord --enable-features=UseOzonePlatform -ozone-platform-hint=wayland --enable-wayland-ime > /dev/null 2>&1 &
+  disown
+}
 
 # Sync dotfiles to github
 alias dot='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
