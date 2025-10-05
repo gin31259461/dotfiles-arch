@@ -34,8 +34,8 @@ weather_icons = {
     # cloudy
     "mostly-cloudy-day": "",
     "mostly-cloudy-night": "",
-    "party-cloudy-day": "",
-    "party-cloudy-night": "",
+    "partly-cloudy-day": "",
+    "partly-cloudy-night": "",
     "cloudy": "󰖐",
     # rain
     "rain": "",
