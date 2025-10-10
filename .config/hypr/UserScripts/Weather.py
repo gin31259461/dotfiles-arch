@@ -39,6 +39,7 @@ weather_icons = {
     "cloudy": "󰖐",
     # rain
     "rain": "",
+    "showers": "",
     ##
     "default": "..",
 }
