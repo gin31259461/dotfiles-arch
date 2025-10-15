@@ -31,6 +31,7 @@ dot add .config/swappy
 dot add .config/swaync
 dot add .config/wallust
 dot add .config/wlogout
+dot add .config/discord/settings.json
 
 # .config/code-flags.conf
 
