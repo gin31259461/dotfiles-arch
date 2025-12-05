@@ -32,6 +32,7 @@ dot add .config/swaync
 dot add .config/wallust
 dot add .config/wlogout
 dot add .config/discord/settings.json
+dot add .config/noctalia
 
 # .config/code-flags.conf
 
