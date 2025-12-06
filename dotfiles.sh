@@ -19,7 +19,6 @@ dot add .config/nvim
 dot add .config/kitty
 dot add .config/electron-flags.conf
 dot add .config/hypr
-dot add .config/waybar
 dot add .config/Kvantum
 dot add .config/quickshell
 dot add .config/rofi
@@ -30,7 +29,6 @@ dot add .config/qt6ct
 dot add .config/swappy
 dot add .config/swaync
 dot add .config/wallust
-dot add .config/wlogout
 dot add .config/discord/settings.json
 dot add .config/noctalia
 
