@@ -32,6 +32,10 @@ dot add .config/wallust
 dot add .config/discord/settings.json
 dot add .config/noctalia
 
+# OneDrive
+dot add .config/onedrive/config
+dot add .config/onedrive/sync_list
+
 # .config/code-flags.conf
 
 dot commit -m "sync dotfiles"

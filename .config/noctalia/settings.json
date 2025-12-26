@@ -446,7 +446,7 @@
         "enableMultiMonitorDirectories": false,
         "enabled": true,
         "fillColor": "#000000",
-        "fillMode": "crop",
+        "fillMode": "fit",
         "hideWallpaperFilenames": false,
         "monitorDirectories": [
         ],
