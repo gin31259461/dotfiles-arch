@@ -332,9 +332,9 @@
         "backgroundOpacity": 1,
         "enabled": true,
         "enabledTypes": [
-            0,
+            2,
             1,
-            2
+            0
         ],
         "location": "top_right",
         "monitors": [
