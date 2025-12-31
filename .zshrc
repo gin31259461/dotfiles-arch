@@ -33,6 +33,7 @@ source $ZSH/oh-my-zsh.sh
 # fastfetch. Will be disabled if above colorscript was chosen to install
 # fastfetch -c $HOME/.config/fastfetch/config-compact.jsonc
 
+# -------------------- Alias --------------------
 # Set-up icons for files/directories in terminal using lsd
 alias ls='lsd'
 alias l='ls -l'
@@ -40,14 +41,16 @@ alias la='ls -a'
 alias lla='ls -la'
 alias lt='ls --tree'
 alias v='nvim'
+# for dotfile sync
+alias dot='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 discordd() {
   nohup discord --enable-features=UseOzonePlatform -ozone-platform-hint=wayland --enable-wayland-ime > /dev/null 2>&1 &
   disown
 }
 
-# Sync dotfiles to github
-alias dot='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+# -------------------- Keybinds --------------------
+bindkey '^K' autosuggest-accept
 
 # Set-up FZF key bindings (CTRL R for fuzzy history finder)
 source <(fzf --zsh)
