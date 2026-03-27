@@ -11,5 +11,6 @@
     "width": 1908,
     "height": 1031
   },
-  "SKIP_HOST_UPDATE": true
+  "SKIP_HOST_UPDATE": true,
+  "openH264Enabled": true
 }
