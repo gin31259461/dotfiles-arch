@@ -5,31 +5,16 @@
 <!-- toc -->
 
 - [Setup Arch Linux + Hyprland](#setup-arch-linux--hyprland)
-    * [0. Prepare ISO](#0-prepare-iso)
-    * [1. Partition](#1-partition)
-    * [2. Booting USB](#2-booting-usb)
-    * [3. BIOS Setting](#3-bios-setting)
-    * [4. Network](#4-network)
-    * [5. Hard Disk](#5-hard-disk)
-    * [6. Install Basic System](#6-install-basic-system)
-    * [7. Generate fstab File](#7-generate-fstab-file)
-    * [8. Setup New System](#8-setup-new-system)
-    * [9. Exit New System and Unmount](#9-exit-new-system-and-unmount)
-    * [10. Enter Arch System and Activate Network](#10-enter-arch-system-and-activate-network)
-    * [11. Create New Account](#11-create-new-account)
-    * [12. Install GPU Driver](#12-install-gpu-driver)
-    * [13. Install Hyprland (Desktop Environment)](#13-install-hyprland-desktop-environment)
-    * [14. Add archlinuxcn Source and System Upgrade](#14-add-archlinuxcn-source-and-system-upgrade)
 - [System Upgrade Issue](#system-upgrade-issue)
 - [System Cleaning](#system-cleaning)
 - [Note](#note)
 - [Zsh](#zsh)
-- [Clipboard manager](#clipboard-manager)
+- [Clipboard Manager](#clipboard-manager)
 - [Fcitx5 (Chinese Input)](#fcitx5-chinese-input)
     * [Setup](#setup)
     * [Enable Fcitx5 for Some Apps](#enable-fcitx5-for-some-apps)
 - [Remote Desktop using VNC (wayvnc)](#remote-desktop-using-vnc-wayvnc)
-- [Useful CLI tools](#useful-cli-tools)
+- [Useful CLI Tools](#useful-cli-tools)
 
 <!-- tocstop -->
 
@@ -37,48 +22,19 @@
 
 ## Setup Arch Linux + Hyprland
 
-this instruction is refer to <https://zhuanlan.zhihu.com/p/138951848>
+> **Full installation walkthrough:** follow
+> [JaKooLit/Arch-Hyprland](https://github.com/JaKooLit/Arch-Hyprland) for an
+> automated installer, or refer to
+> [this step-by-step guide](https://zhuanlan.zhihu.com/p/138951848) for a manual
+> setup covering partitioning, base system, GPU drivers, and Hyprland.
 
-### 0. Prepare ISO
+Key points for a dual-boot setup alongside Windows:
 
-<https://archlinux.org/download/>
-
-### 1. Partition
-
-- Arch Linux 使用 Windows 的 EFI 分區
-- 切一個分區給 Arch 目錄使用
-- 用 `swap file` 取代 swap partition
-
-### 2. Booting USB
-
-use [Rufus](https://rufus.ie)
-
-1. 寫入方式選擇 DD 非 ISO
-1. 選項區域選擇 GPT 非 MBR
-
-### 3. BIOS Setting
-
-### 4. Network
-
-### 5. Hard Disk
-
-### 6. Install Basic System
-
-### 7. Generate fstab File
-
-### 8. Setup New System
-
-### 9. Exit New System and Unmount
-
-### 10. Enter Arch System and Activate Network
-
-### 11. Create New Account
-
-### 12. Install GPU Driver
-
-### 13. Install Hyprland (Desktop Environment)
-
-### 14. Add archlinuxcn Source and System Upgrade
+- Reuse the existing Windows **EFI partition** for the Arch bootloader.
+- Allocate a dedicated partition for Arch root (`/`).
+- Use a **swap file** instead of a swap partition.
+- When writing the ISO with [Rufus](https://rufus.ie), choose **DD** write mode
+  and **GPT** partition scheme.
 
 ## System Upgrade Issue
 
@@ -132,9 +88,10 @@ After installed JaKooLit's Arch-Hyprland (include oh my zsh setting)
    p10k configure
    ```
 
-## [Clipboard manager](https://wiki.hyprland.org/Useful-Utilities/Clipboard-Managers/)
+## Clipboard Manager
 
-Using `cliphist` as clipboard manager.
+Using [`cliphist`](https://wiki.hyprland.org/Useful-Utilities/Clipboard-Managers/)
+as clipboard manager.
 
 Start by adding the following lines to hyprland config
 
@@ -238,7 +195,7 @@ Adding flags to **~/.config/code-flags.conf**
 
 5. Now we can access hyprland using vnc viewer
 
-## Useful CLI tools
+## Useful CLI Tools
 
 refer to:
 

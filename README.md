@@ -1,62 +1,135 @@
 # Arch Linux + Hyprland Dotfiles
 
-This config is using
-[JaKooLit's Arch-Hyprland](https://github.com/JaKooLit/Arch-Hyprland)
+Personal dotfiles for **Arch Linux + Hyprland**, based on
+[JaKooLit's Arch-Hyprland](https://github.com/JaKooLit/Arch-Hyprland).
+Managed with a **bare git repository** tracked via the `dot` alias — no symlinks
+required.
 
 <!-- markdownlint-disable -->
 
 <!-- toc -->
 
+- [What's Included](#whats-included)
 - [First Time Setup](#first-time-setup)
-- [Setting up a new machine](#setting-up-a-new-machine)
+- [Syncing Dotfiles](#syncing-dotfiles)
+- [Setting Up a New Machine](#setting-up-a-new-machine)
+- [Submodules](#submodules)
+- [Documentation](#documentation)
 - [References](#references)
 
 <!-- tocstop -->
 
 <!-- markdownlint-enable -->
 
+## What's Included
+
+| Group | Files / Directories |
+|---|---|
+| **Shell** | `.zshrc`, `.zprofile`, `.p10k.zsh` |
+| **GTK** | `.icons/`, `.config/gtk-3.0/` |
+| **Neovim** | `.config/nvim/` (NvChad — git submodule) |
+| **Terminal** | `.config/kitty/` |
+| **Compositor** | `.config/hypr/` |
+| **Theming** | `.config/Kvantum/`, `.config/qt5ct/`, `.config/qt6ct/`, `.config/wallust/` |
+| **Shell UI** | `.config/quickshell/`, `.config/rofi/`, `.config/swaync/` |
+| **Utilities** | `.config/btop/`, `.config/fastfetch/`, `.config/swappy/` |
+| **Apps** | `.config/discord/settings.json`, `.config/noctalia/`, `.config/electron-flags.conf` |
+| **OneDrive** | `.config/onedrive/config`, `.config/onedrive/sync_list` |
+| **Meta** | `dotfiles.sh`, `.gitconfig`, `.gitmodules`, `doc/`, `README.md` |
+
 ## First Time Setup
 
-1. create bare repository
+1. Create a bare repository:
 
    ```bash
    mkdir $HOME/.dotfiles
-
    git init --bare $HOME/.dotfiles
    ```
 
-2. make an alias for runing git commands (to .bashrc or .zshrc)
+2. Add the `dot` alias to `.zshrc` or `.bashrc`:
 
    ```bash
    alias dot='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
    ```
 
-3. add a remote, and also set status not to show untracked files
+3. Configure the remote and suppress untracked file noise:
 
    ```bash
-   dot config --local status.showUntrackedFiles no
-
-   dot remote add origin <repo>
-
+   dot remote add origin <repo-url>
    dot branch -m main
+   dot config --local status.showUntrackedFiles no
    ```
 
-4. run `dotfiles.sh` to sync dotfiles automatically
+4. Run `dotfiles.sh` to stage, commit, and push all dotfiles:
 
-## Setting up a new machine
+   ```bash
+   bash ~/dotfiles.sh
+   ```
+
+## Syncing Dotfiles
+
+`dotfiles.sh` automates staging all tracked paths, committing, and pushing:
 
 ```bash
+bash ~/dotfiles.sh
+```
+
+For manual operations use the `dot` alias exactly like `git`:
+
+```bash
+dot status
+dot diff
+dot add ~/.config/hypr/hyprland.conf
+dot commit -m "update hyprland config"
+dot push origin main
+```
+
+## Setting Up a New Machine
+
+```bash
+# Clone into a temporary directory, then scatter files into $HOME
 git clone --separate-git-dir=$HOME/.dotfiles \
   git@github.com:gin31259461/arch-dotfiles.git tmpdotfiles
 
 rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/
-
 rm -rf tmpdotfiles
 
-# after restart terminal
+# Suppress untracked files in the working tree
 dot config --local status.showUntrackedFiles no
 ```
+
+Then initialise submodules:
+
+```bash
+dot submodule update --init --recursive
+```
+
+## Submodules
+
+[NvChad](https://nvchad.com/) (`.config/nvim`) is tracked as a git submodule
+pointing to [gin31259461/nvchad](https://github.com/gin31259461/nvchad).
+
+```bash
+# After a fresh clone, pull submodule code
+dot submodule init
+dot submodule update --recursive
+
+# Sync .gitmodules changes to .git/config
+dot submodule sync --recursive
+
+# Inspect registered submodules
+dot config --get-regexp submodule
+```
+
+## Documentation
+
+| Document | Description |
+|---|---|
+| [`doc/arch-hyprland.md`](doc/arch-hyprland.md) | Arch Linux installation guide, Hyprland setup, Zsh, Fcitx5 (Chinese input), VNC, useful CLI tools |
+| [`doc/vm.md`](doc/vm.md) | Running Hyprland inside VMware — known issues, mouse buttons, audio stuttering fix |
 
 ## References
 
 - [A simpler way to manage your dotfiles](https://www.anand-iyer.com/blog/2018/a-simpler-way-to-manage-your-dotfiles/)
+- [JaKooLit/Arch-Hyprland](https://github.com/JaKooLit/Arch-Hyprland)
+- [JaKooLit/Hyprland-Dots](https://github.com/JaKooLit/Hyprland-Dots)
