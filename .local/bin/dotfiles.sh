@@ -1,11 +1,21 @@
 # this dotfile refer to: https://github.com/JaKooLit/Hyprland-Dots
 
+# Parse optional -m flag for commit message
+COMMIT_MSG="sync dotfiles"
+while getopts ":m:" opt; do
+  case $opt in
+    m) COMMIT_MSG="$OPTARG" ;;
+    \?) echo "Usage: $0 [-m <commit message>]" >&2; exit 1 ;;
+    :) echo "Option -m requires an argument." >&2; exit 1 ;;
+  esac
+done
+
 cd $HOME
 
 alias dot='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 # git files
-dot add README.md doc dotfiles.sh .gitconfig .gitmodules
+dot add README.md doc .local/bin/dotfiles.sh .gitconfig .gitmodules
 
 # zsh
 dot add .zshrc .zprofile .p10k.zsh
@@ -38,5 +48,5 @@ dot add .config/onedrive/sync_list
 
 # .config/code-flags.conf
 
-dot commit -m "sync dotfiles"
+dot commit -m "$COMMIT_MSG"
 dot push origin main
