@@ -125,8 +125,10 @@ dot config --get-regexp submodule
 
 | Document | Description |
 |---|---|
-| [`doc/arch-hyprland.md`](doc/arch-hyprland.md) | Arch Linux installation guide, Hyprland setup, Zsh, Fcitx5 (Chinese input), VNC, useful CLI tools |
-| [`doc/vm.md`](doc/vm.md) | Running Hyprland inside VMware — known issues, mouse buttons, audio stuttering fix |
+| [`doc/arch-install.md`](doc/arch-install.md) | Arch Linux dual-boot installation guide (15 steps: partitioning → GRUB → Hyprland) |
+| [`doc/setup.md`](doc/setup.md) | Post-install configuration: Zsh, clipboard manager, Fcitx5 (Chinese input), VNC, CLI tools |
+| [`doc/maintenance.md`](doc/maintenance.md) | System maintenance: cache cleaning, known upgrade issues, notes |
+| [`doc/vm.md`](doc/vm.md) | Running Hyprland in VMware: known issues, extra mouse buttons, audio stuttering fix |
 
 ## References
 

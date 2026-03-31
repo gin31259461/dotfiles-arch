@@ -1,68 +1,67 @@
 # VMware
 
-## Known issues
+Notes for running Arch Linux + Hyprland as a VMware guest.
 
-1. some `qt` or `gtk3` based app may not be able to run on hyprland, `electron`
-   based app seems to work well so far
-2. the app not using `qt`, `gtk3`, `electron` lib may also not be able to run on
-   hyprland
-3. [`xdg-desktop-portal-hyprland`](https://archlinux.org/packages/extra/x86_64/xdg-desktop-portal-hyprland/)
-   (XDPH) may not working properly, you can try
-   [`xdg-desktop-portal-wlr`](https://archlinux.org/packages/?name=xdg-desktop-portal-wlr)
-   (XDPW)
+<!-- markdownlint-disable -->
+<!-- toc -->
 
-## Note
+- [Known Issues](#known-issues)
+- [Enable Extra Mouse Buttons (mouse4/mouse5)](#enable-extra-mouse-buttons-mouse4mouse5)
+- [Fix Audio Stuttering](#fix-audio-stuttering)
 
-- enable vmware to pass battery information to guest devices.
+<!-- tocstop -->
+<!-- markdownlint-enable -->
 
-## Enable extra mouse actions (mouse5, mouse6)
+## Known Issues
 
-Add the following configuration to vmx file (make sure the vm is power off).
+- **Qt / GTK3 apps** may fail to launch under Hyprland in a VM.
+  Electron-based apps generally work.
+- **`xdg-desktop-portal-hyprland`** (XDPH) may not function correctly in a VM.
+  Try [`xdg-desktop-portal-wlr`](https://archlinux.org/packages/?name=xdg-desktop-portal-wlr)
+  (XDPW) as an alternative.
+- Enable the VMware option to **pass battery information to guest** so the
+  system tray shows correct battery status.
+
+## Enable Extra Mouse Buttons (mouse4/mouse5)
+
+With the VM powered off, add to the `.vmx` file:
 
 ```vmx
 usb.generic.allowHID = "TRUE"
 mouse.vusb.enable = "TRUE"
 ```
 
-## Fix startup stuttering
+## Fix Audio Stuttering
 
-Add the following configuration to vmx file (make sure the vm is power off).
+**1. VMware setting** — add to the `.vmx` file (VM must be powered off):
 
 ```vmx
 sound.highPriority = "TRUE"
 ```
 
-Configure `wireplumber`
+**2. WirePlumber ALSA tuning** — create
+`~/.config/wireplumber/wireplumber.conf.d/50-alsa-config.conf`:
 
 ```bash
-mkdir -p ~/.config/wireplumber/wireplumber.conf.d/
-cd ~/.config/wireplumber/wireplumber.conf.d
+mkdir -p ~/.config/wireplumber/wireplumber.conf.d
 ```
-
-Then make ~/.config/wireplumber/wireplumber.conf.d/50-alsa-config.conf in an
-editor and add:
 
 ```conf
 monitor.alsa.rules = [
   {
-    matches = [
-      # This matches the value of the 'node.name' property of the node.
-      {
-        node.name = "~alsa_output.*"
-      }
-    ]
+    matches = [{ node.name = "~alsa_output.*" }]
     actions = {
-      # Apply all the desired node specific settings here.
       update-props = {
-        api.alsa.period-size   = 1024
-        api.alsa.headroom      = 8192
+        api.alsa.period-size = 1024
+        api.alsa.headroom    = 8192
       }
     }
   }
 ]
 ```
 
-Other stuttering problem refer to following link:
+Further reading:
 
-- [Audio/Videao stuttering/crackling, Firefox + PipeWire in VMs](https://bbs.archlinux.org/viewtopic.php?id=280654)
-- [Pipewire: Stuttering Audio (in Virtual Machine)](https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Troubleshooting#stuttering-audio-in-virtual-machine)
+- [Audio/Video stuttering, Firefox + PipeWire in VMs](https://bbs.archlinux.org/viewtopic.php?id=280654)
+- [PipeWire: Stuttering Audio in Virtual Machine](https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Troubleshooting#stuttering-audio-in-virtual-machine)
+
