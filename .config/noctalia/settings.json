@@ -542,12 +542,13 @@
         "enabledTypes": [
             2,
             1,
-            0
+            0,
+            3
         ],
         "location": "top_right",
         "monitors": [
         ],
-        "overlayLayer": true
+        "overlayLayer": false
     },
     "plugins": {
         "autoUpdate": false,
@@ -654,6 +655,11 @@
         "fillMode": "fit",
         "hideWallpaperFilenames": false,
         "monitorDirectories": [
+            {
+                "directory": "/home/abner/Pictures/Wallpapers",
+                "name": "HDMI-A-1",
+                "wallpaper": ""
+            }
         ],
         "overviewBlur": 0.4,
         "overviewEnabled": false,

@@ -281,6 +281,10 @@ pacman -S nvidia nvidia-utils
 # sudo pacman -S optimus-manager
 ```
 
+> **AMD users:** after booting into the installed system, follow the
+> [AMD GPU Setup](amd-gpu.md) guide to verify drivers, enable Vulkan, configure
+> VA-API hardware acceleration, and set Hyprland environment variables.
+
 ## 14. Add archlinuxcn Repository
 
 ```bash
