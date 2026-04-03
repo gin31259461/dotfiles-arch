@@ -41,7 +41,9 @@ dot add \
 
 # gtk
 dot add \
+  .icons/Flat-Remix-GTK-Blue-Dark \
   .icons/Papirus \
+  .icons/Bibata-Modern-Ice \
   .config/gtk-3.0
 
 # app configs — https://github.com/JaKooLit/Hyprland-Dots/tree/main/config
