@@ -35,7 +35,7 @@ required.
 | **Utilities** | `.config/btop/`, `.config/fastfetch/`, `.config/swappy/` |
 | **Apps** | `.config/discord/settings.json`, `.config/noctalia/`, `.config/electron-flags.conf` |
 | **OneDrive** | `.config/onedrive/config`, `.config/onedrive/sync_list` |
-| **Meta** | `dotfiles.sh`, `.gitconfig`, `.gitmodules`, `doc/`, `README.md` |
+| **Meta** | `.local/bin/dotfiles.sh`, `.gitconfig`, `.gitmodules`, `doc/`, `README.md` |
 
 ## First Time Setup
 
@@ -63,15 +63,18 @@ required.
 4. Run `dotfiles.sh` to stage, commit, and push all dotfiles:
 
    ```bash
-   bash ~/dotfiles.sh
+   dotfiles.sh
    ```
 
 ## Syncing Dotfiles
 
-`dotfiles.sh` automates staging all tracked paths, committing, and pushing:
+`~/.local/bin/dotfiles.sh` automates staging all tracked paths, committing, and
+pushing. Since `~/.local/bin` is in `PATH`, run it from anywhere:
 
 ```bash
-bash ~/dotfiles.sh
+dotfiles.sh
+# or with a custom commit message:
+dotfiles.sh -m "update hypr config"
 ```
 
 For manual operations use the `dot` alias exactly like `git`:
