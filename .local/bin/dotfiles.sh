@@ -48,7 +48,6 @@ dot add \
 
 # gtk
 dot add \
-  .icons/Flat-Remix-GTK-Blue-Dark \
   .icons/Papirus \
   .icons/Bibata-Modern-Ice \
   .local/share/themes/adw-gtk3 \
