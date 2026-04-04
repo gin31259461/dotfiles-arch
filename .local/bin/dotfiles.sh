@@ -15,9 +15,15 @@ dot() { git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" "$@"; }
 COMMIT_MSG="sync dotfiles"
 while getopts ":m:" opt; do
   case $opt in
-    m) COMMIT_MSG="$OPTARG" ;;
-    \?) echo "Usage: $0 [-m <commit message>]" >&2; exit 1 ;;
-    :)  echo "Option -m requires an argument." >&2; exit 1 ;;
+  m) COMMIT_MSG="$OPTARG" ;;
+  \?)
+    echo "Usage: $0 [-m <commit message>]" >&2
+    exit 1
+    ;;
+  :)
+    echo "Option -m requires an argument." >&2
+    exit 1
+    ;;
   esac
 done
 
@@ -45,7 +51,9 @@ dot add \
   .icons/Flat-Remix-GTK-Blue-Dark \
   .icons/Papirus \
   .icons/Bibata-Modern-Ice \
-  .config/gtk-3.0
+  .local/share/themes/adw-gtk3 \
+  .config/gtk-3.0 \
+  .config/gtk-4.0
 
 # app configs — https://github.com/JaKooLit/Hyprland-Dots/tree/main/config
 dot add \
