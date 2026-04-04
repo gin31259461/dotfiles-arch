@@ -64,6 +64,9 @@ dot add \
   .config/swaync \
   .config/wallust \
   .config/discord/settings.json \
+  .config/cava \
+  .config/ghostty \
+  .config/waybar \
   .config/noctalia
 
 # OneDrive
