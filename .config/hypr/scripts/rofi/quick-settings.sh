@@ -141,6 +141,10 @@ Search for Keybinds
 Toggle Game Mode
 Switch Dark-Light Theme
 Rainbow Borders Mode
+--- WAYBAR ---
+Waybar Style
+Waybar Layout
+Toggle Waybar
 EOF
 }
 
@@ -176,6 +180,15 @@ main() {
         "Toggle Game Mode")             "$scriptsDir/session/game-mode.sh" ;;
         "Switch Dark-Light Theme")      "$scriptsDir/display/dark-light.sh" ;;
         "Rainbow Borders Mode")         rainbow_borders_menu ;;
+        "Waybar Style")                 "$scriptsDir/display/waybar-style.sh" ;;
+        "Waybar Layout")                "$scriptsDir/display/waybar-layout.sh" ;;
+        "Toggle Waybar")
+            if pgrep -x waybar >/dev/null; then
+                pgrep -x waybar | xargs -r kill
+            else
+                waybar &
+            fi
+            ;;
         *) return ;;
     esac
 

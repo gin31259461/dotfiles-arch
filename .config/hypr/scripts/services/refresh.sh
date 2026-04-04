@@ -8,6 +8,7 @@ qs &
 sleep 0.3
 swaync >/dev/null 2>&1 &
 swaync-client --reload-config
+pgrep -x waybar >/dev/null && pkill -SIGUSR2 waybar || true
 sleep 1
 [[ -f "$HOME/.config/hypr/scripts/display/RainbowBorders.sh" ]] && "$HOME/.config/hypr/scripts/display/RainbowBorders.sh" &
 
