@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# Provides logout and power management menu
 # wlogout (Power, Screen Lock, Suspend, etc)
 
 # Set variables for parameters. First numbers corresponts to Monitor Resolution

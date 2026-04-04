@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# Controls media playback and player functions
 # Playerctl
 
 music_icon="$HOME/.config/swaync/icons/music.png"

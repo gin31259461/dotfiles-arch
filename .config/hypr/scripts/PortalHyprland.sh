@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# Configures XDG Desktop Portal for Hyprland
 # For manually starting xdg-desktop-portal-hyprland
 
 set -euo pipefail

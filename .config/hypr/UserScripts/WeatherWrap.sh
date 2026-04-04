@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# Wrapper script for weather integration
 # Weather entrypoint: prefer Python (Open‑Meteo), fallback to legacy Bash (wttr.in)
 
 SCRIPT_DIR="$(dirname "$0")"

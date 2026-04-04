@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# Music player interface via Rofi
 # RofiBeats - unified, dynamic UI (add, remove, manage, play)
 
 mDIR="$HOME/Music/"

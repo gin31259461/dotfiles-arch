@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
-# This is for custom version of waybar idle_inhibitor which activates / deactivates hypridle instead
+# Configures idle state management for Hyprland
+# Activates or deactivates hypridle (idle inhibitor toggle)
 
 PROCESS="hypridle"
 

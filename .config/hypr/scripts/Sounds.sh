@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# Manages system sound theme and effects
 # This script is used to play system sounds.
 # Script is used by Volume.Sh and ScreenShots.sh 
 
@@ -37,11 +37,7 @@ else
 fi
 
 # Set the directory defaults for system sounds.
-if [ -d "/run/current-system/sw/share/sounds" ]; then
-    systemDIR="/run/current-system/sw/share/sounds" # NixOS
-else
-    systemDIR="/usr/share/sounds"
-fi
+systemDIR="/usr/share/sounds"
 userDIR="$HOME/.local/share/sounds"
 defaultTheme="freedesktop"
 

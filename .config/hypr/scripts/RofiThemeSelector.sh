@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+# Rofi interface for selecting themes
 # Rofi Themes - Script to preview and apply themes by live-reloading the config.
 
 # --- Configuration ---

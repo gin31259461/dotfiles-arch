@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# Provides emoji picker via Rofi interface
 
 # Variables
 rofi_theme="$HOME/.config/rofi/config-emoji.rasi"

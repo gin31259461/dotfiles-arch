@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# Terminates the currently active window process
 
 # Copied from Discord post. Thanks to @Zorg
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# Manages monitor profile configurations
 # For applying Pre-configured Monitor Profiles
 
 # Check if rofi is already running
@@ -39,4 +39,4 @@ if [[ -n "$chosen_file" ]]; then
 fi
 
 sleep 1
-${SCRIPTSDIR}/RefreshNoWaybar.sh &
+${SCRIPTSDIR}/RefreshTheme.sh &

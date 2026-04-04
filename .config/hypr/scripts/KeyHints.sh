@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# Quick cheat sheet -- displays keybinds in a yad floating window (SUPER H)
 
 # GDK BACKEND. Change to either wayland or x11 if having issues
 BACKEND=wayland
@@ -16,7 +16,7 @@ fi
 # Launch yad with calculated width and height
 GDK_BACKEND=$BACKEND yad \
     --center \
-    --title="KooL Quick Cheat Sheet" \
+    --title="Quick Cheat Sheet" \
     --no-buttons \
     --list \
     --column=Key: \
@@ -25,7 +25,7 @@ GDK_BACKEND=$BACKEND yad \
     --timeout-indicator=bottom \
 "ESC" "close this app" "" " = " "SUPER KEY (Windows Key Button)" "(SUPER KEY)" \
 " SHIFT K" "Searchable Keybinds" "(Search all Keybinds via rofi)" \
-" SHIFT E" "KooL Hyprland Settings Menu" "" \
+" SHIFT E" "Quick Settings Menu" "" \
 "" "" "" \
 " enter" "Terminal" "(kitty)" \
 " SHIFT enter" "DropDown Terminal" " Q to close" \
@@ -39,14 +39,6 @@ GDK_BACKEND=$BACKEND yad \
 " Shift Q " "kills an active window" "(kill)" \
 " ALT mouse scroll up/down   " "Desktop Zoom" "Desktop Magnifier" \
 " Alt V" "Clipboard Manager" "(cliphist)" \
-" W" "Choose wallpaper" "(Wallpaper Menu)" \
-" Shift W" "Choose wallpaper effects" "(imagemagick + swww)" \
-"CTRL ALT W" "Random wallpaper" "(via swww)" \
-" CTRL ALT B" "Hide/UnHide Waybar" "waybar" \
-" CTRL B" "Choose waybar styles" "(waybar styles)" \
-" ALT B" "Choose waybar layout" "(waybar layout)" \
-" ALT R" "Reload Waybar swaync Rofi" "CHECK NOTIFICATION FIRST!!!" \
-" SHIFT N" "Launch Notification Panel" "swaync Notification Center" \
 " Print" "screenshot" "(grim)" \
 " Shift Print" "screenshot region" "(grim + slurp)" \
 " Shift S" "screenshot region" "(swappy)" \
@@ -69,5 +61,4 @@ GDK_BACKEND=$BACKEND yad \
 " SHIFT G" "Gamemode! All animations OFF or ON" "toggle" \
 " ALT E" "Rofi Emoticons" "Emoticon" \
 " H" "Launch this Quick Cheat Sheet" "" \
-"" "" "" \
-"More tips:" "https://github.com/JaKooLit/Hyprland-Dots/wiki" ""\
+"" "" "" 

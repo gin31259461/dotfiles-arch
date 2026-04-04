@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# Provides web search functionality via Rofi interface
 # For Searching via web browsers
 
 # Define the path to the config file
-config_file=$HOME/.config/hypr/UserConfigs/01-UserDefaults.conf
+config_file=$HOME/.config/hypr/conf.d/env.conf
 if ! command -v jq >/dev/null 2>&1; then
     notify-send -u low "Rofi Search" "jq is required for URL encoding. Please install jq."
     exit 1

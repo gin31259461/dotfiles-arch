@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# Controls system volume and audio levels
 # Scripts for volume controls for audio and mic 
 
 iDIR="$HOME/.config/swaync/icons"

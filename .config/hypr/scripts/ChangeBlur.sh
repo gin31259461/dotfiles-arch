@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# Adjusts window blur effect settings
 # Script for changing blurs on the fly
 
 notif="$HOME/.config/swaync/images"

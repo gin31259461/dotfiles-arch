@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
+# Changes Zsh theme dynamically
 # Script for Oh my ZSH theme ( CTRL SHIFT O)
 
 # preview of theme can be view here: https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
@@ -8,11 +8,6 @@
 # Variables
 iDIR="$HOME/.config/swaync/images"
 rofi_theme="$HOME/.config/rofi/config-zsh-theme.rasi"
-
-if [ -n "$(grep -i nixos < /etc/os-release)" ]; then
-  notify-send -i "$iDIR/note.png" "NOT Supported" "Sorry NixOS does not support this KooL feature"
-  exit 1
-fi
 
 themes_dir="$HOME/.oh-my-zsh/themes"
 file_extension=".zsh-theme"
