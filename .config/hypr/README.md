@@ -30,6 +30,11 @@ Personal Hyprland configuration. Themed around [noctalia-shell](https://github.c
 │   │   ├── monitor-profiles.sh     # Monitor profile switcher (rofi)
 │   │   ├── noctalia-theme.sh       # Sync noctalia Material colors to rofi, quickshell, hyprlock
 │   │   ├── theme-changer.sh        # Global wallust theme switcher (rofi)
+│   │   ├── wallpaper-select.sh     # Wallpaper picker — images + videos (rofi + swww/mpvpaper)
+│   │   ├── wallpaper-effects.sh    # ImageMagick wallpaper effects picker (rofi)
+│   │   ├── wallpaper-random.sh     # Apply random wallpaper from wallDIR
+│   │   ├── wallpaper-auto.sh       # Daemon: auto-cycle wallpapers every 30 min
+│   │   ├── wallust-swww.sh         # Sync wallust colors after wallpaper change
 │   │   ├── waybar-layout.sh        # Waybar layout picker (rofi)
 │   │   ├── waybar-style.sh         # Waybar CSS style picker (rofi)
 │   │   └── zsh-change-theme.sh     # oh-my-zsh theme picker (rofi)
@@ -134,6 +139,28 @@ Add `.conf` files to `monitor-profiles/` — one profile per file (e.g. `home.co
 Switch via `SUPER SHIFT E -> Monitor Profiles`. The active profile is written to `monitors.conf`.
 
 Tip: generate a profile with `nwg-displays`, then copy `monitors.conf` into `monitor-profiles/` with a descriptive name.
+
+## Wallpaper (optional)
+
+Wallpaper management is **disabled by default**. noctalia handles wallpaper via its own workflow. Enable swww for full wallpaper management with effects and auto-cycling.
+
+**To enable:**
+1. Uncomment `exec-once = swww-daemon --format xrgb` in `conf.d/autostart.conf`
+2. Uncomment the wallpaper keybinds in `conf.d/keybinds.conf`
+
+**Wallpaper keybinds (when enabled):**
+
+| Key | Action |
+|---|---|
+| `SUPER W` | Wallpaper picker — browse images and videos |
+| `SUPER SHIFT W` | Wallpaper effects — apply ImageMagick filter to current wallpaper |
+| `CTRL ALT W` | Random wallpaper from `~/Pictures/wallpapers` |
+
+**Wallpaper directory:** `~/Pictures/wallpapers` (configurable in each script)
+
+**Video wallpapers:** requires `mpvpaper`. Uncomment the `$livewallpaper` lines in `conf.d/autostart.conf` and set the video path.
+
+**Auto-cycling:** uncomment `wallpaper-auto.sh` in `conf.d/autostart.conf` to cycle wallpapers every 30 minutes.
 
 ## Waybar (optional)
 
