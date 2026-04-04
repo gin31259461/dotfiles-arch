@@ -57,6 +57,7 @@ Personal Hyprland configuration. Themed around [noctalia-shell](https://github.c
 │   │   └── waybar-cava.sh          # Cava bar-glyph streamer for waybar modules
 │   │
 │   ├── rofi/
+│   │   ├── app-launcher.sh         # Rofi app launcher (drun + filebrowser + run + window)
 │   │   ├── clip-manager.sh         # Clipboard manager (cliphist + rofi)
 │   │   ├── quick-settings.sh       # Quick settings menu
 │   │   ├── rofi-calc.sh            # Calculator (qalc + rofi)
@@ -139,6 +140,16 @@ Add `.conf` files to `monitor-profiles/` — one profile per file (e.g. `home.co
 Switch via `SUPER SHIFT E -> Monitor Profiles`. The active profile is written to `monitors.conf`.
 
 Tip: generate a profile with `nwg-displays`, then copy `monitors.conf` into `monitor-profiles/` with a descriptive name.
+
+## Rofi App Launcher (optional)
+
+The default launcher is **noctalia-shell** (`SUPER D`). Rofi `drun` is available as a drop-in alternative — useful if noctalia-shell is not running or you prefer a classic rofi launcher.
+
+**To enable:** in `conf.d/keybinds.conf`, comment out the noctalia-shell launcher line and uncomment the rofi alternative directly below it.
+
+The launcher uses `~/.config/rofi/config.rasi` (inherits the active rofi theme). Change the theme with `SUPER CTRL R` or `SUPER CTRL SHIFT R`.
+
+**Modes available:** `drun` (installed apps) · `filebrowser` · `run` (commands) · `window` (open windows)
 
 ## Wallpaper (optional)
 
