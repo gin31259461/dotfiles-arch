@@ -26,16 +26,16 @@ required.
 | Group | Files / Directories |
 |---|---|
 | **Shell** | `.zshrc`, `.zprofile`, `.p10k.zsh` |
-| **GTK** | `.icons/`, `.config/gtk-3.0/` |
+| **GTK** | `.icons/Papirus`, `.icons/Bibata-Modern-Ice`, `.local/share/themes/adw-gtk3`, `.config/gtk-3.0/`, `.config/gtk-4.0/` |
 | **Neovim** | `.config/nvim/` (NvChad — git submodule) |
-| **Terminal** | `.config/kitty/` |
+| **Terminal** | `.config/kitty/`, `.config/ghostty/` |
 | **Compositor** | `.config/hypr/` |
 | **Theming** | `.config/Kvantum/`, `.config/qt5ct/`, `.config/qt6ct/`, `.config/wallust/` |
-| **Shell UI** | `.config/quickshell/`, `.config/rofi/`, `.config/swaync/` |
-| **Utilities** | `.config/btop/`, `.config/fastfetch/`, `.config/swappy/` |
+| **Shell UI** | `.config/quickshell/`, `.config/rofi/`, `.config/swaync/`, `.config/waybar/` |
+| **Utilities** | `.config/btop/`, `.config/cava/`, `.config/fastfetch/`, `.config/swappy/` |
 | **Apps** | `.config/discord/settings.json`, `.config/noctalia/`, `.config/electron-flags.conf` |
 | **OneDrive** | `.config/onedrive/config`, `.config/onedrive/sync_list` |
-| **Meta** | `.local/bin/dotfiles.sh`, `.gitconfig`, `.gitmodules`, `doc/`, `README.md` |
+| **Meta** | `.local/bin/dotfiles.sh`, `.gitconfig`, `.gitmodules`, `.gitignore`, `doc/`, `README.md` |
 
 ## First Time Setup
 
@@ -132,7 +132,7 @@ dot config --get-regexp submodule
 | [`doc/amd-gpu.md`](doc/amd-gpu.md) | AMD GPU setup: driver verification, Vulkan, VA-API, Hyprland env vars, performance monitoring |
 | [`doc/live-usb.md`](doc/live-usb.md) | Create an Arch Linux Live USB: download, verify ISO, write with Rufus (Windows), dd (Linux), or Ventoy |
 | [`doc/disk-migration.md`](doc/disk-migration.md) | Migrate an existing Arch Linux installation to a new drive using rsync |
-| [`doc/disk-expand.md`](doc/disk-expand.md) | Expand an existing Arch Linux ext4 partition online — no Live USB needed |
+| [`doc/disk-expand.md`](doc/disk-expand.md) | Expand an existing Arch Linux partition online (ext4/Btrfs/XFS) — no Live USB needed |
 | [`doc/setup.md`](doc/setup.md) | Post-install configuration: Zsh, clipboard manager, Fcitx5 (Chinese input), VNC, CLI tools |
 | [`doc/maintenance.md`](doc/maintenance.md) | System maintenance: cache cleaning, known upgrade issues, notes |
 | [`doc/vm.md`](doc/vm.md) | Running Hyprland in VMware: known issues, extra mouse buttons, audio stuttering fix |
