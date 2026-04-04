@@ -1,6 +1,8 @@
 # Hyprland Config
 
-Personal Hyprland configuration. Themed around [noctalia-shell](https://github.com/nickcoutsos/noctalia-shell) with Material Design colors via noctalia.
+Personal Hyprland configuration. Themed around
+[noctalia-shell](https://github.com/noctalia-dev/noctalia-shell) with Material
+Design colors via noctalia.
 
 ## Structure
 
@@ -29,7 +31,7 @@ Personal Hyprland configuration. Themed around [noctalia-shell](https://github.c
 ├── monitor-profiles/        # Monitor config presets (switch via SUPER SHIFT E)
 ├── wallpaper-effects/       # Wallpaper cache for hyprlock (.wallpaper_current / _modified)
 ├── wallust/                 # Wallust color theme integration
-├── monitors.conf            # Active monitor config (symlinked from monitor-profiles/)
+├── monitors.conf            # Active monitor config
 ├── workspaces.conf          # Workspace rules
 ├── hyprlock.conf            # Lock screen config
 ├── hypridle.conf            # Idle / auto-lock config
@@ -40,36 +42,39 @@ Personal Hyprland configuration. Themed around [noctalia-shell](https://github.c
 
 Colors are driven by **noctalia** (Material Design). Two workflows:
 
-| Trigger | What happens |
-|---|---|
-| Change theme in noctalia UI | Run `SUPER SHIFT T` to sync colors to rofi, noctalia-shell, and wallpaper-effects |
-| Change wallpaper in noctalia | Colors auto-update via wallust on next wallpaper change |
+| Trigger                      | What happens                                                                      |
+| ---------------------------- | --------------------------------------------------------------------------------- |
+| Change theme in noctalia UI  | Run `SUPER SHIFT T` to sync colors to rofi, noctalia-shell, and wallpaper-effects |
+| Change wallpaper in noctalia | Colors auto-update via wallust on next wallpaper change                           |
 
-Color targets: `~/.config/rofi/wallust/colors-rofi.rasi`, `~/.config/quickshell/qml_color.json`, `wallpaper-effects/`
+Color targets: `~/.config/rofi/wallust/colors-rofi.rasi`,
+`~/.config/quickshell/qml_color.json`, `wallpaper-effects/`
 
 ## Key Keybinds
 
-| Key | Action |
-|---|---|
-| `SUPER D` | Application launcher |
-| `SUPER Return` | Terminal |
-| `SUPER SHIFT Return` | Dropdown terminal |
-| `SUPER H` | This cheat sheet |
-| `SUPER SHIFT K` | Search all keybinds |
-| `SUPER SHIFT E` | Quick settings menu |
-| `SUPER T` | Global theme switcher |
-| `SUPER SHIFT T` | Apply noctalia Material Design colors |
-| `SUPER S` | Web search |
-| `SUPER ALT V` | Clipboard manager |
-| `SUPER Print` | Screenshot |
-| `CTRL ALT L` | Session menu (lock / logout) |
+| Key                  | Action                                |
+| -------------------- | ------------------------------------- |
+| `SUPER D`            | Application launcher                  |
+| `SUPER Return`       | Terminal                              |
+| `SUPER SHIFT Return` | Dropdown terminal                     |
+| `SUPER H`            | This cheat sheet                      |
+| `SUPER SHIFT K`      | Search all keybinds                   |
+| `SUPER SHIFT E`      | Quick settings menu                   |
+| `SUPER T`            | Global theme switcher                 |
+| `SUPER SHIFT T`      | Apply noctalia Material Design colors |
+| `SUPER S`            | Web search                            |
+| `SUPER ALT V`        | Clipboard manager                     |
+| `SUPER Print`        | Screenshot                            |
+| `CTRL ALT L`         | Session menu (lock / logout)          |
 
 Full list: `SUPER H` or `SUPER SHIFT K`
 
 ## Monitor Profiles
 
-Add `.conf` files to `monitor-profiles/` — one profile per file (e.g. `home.conf`, `office.conf`).
-Switch profiles via `SUPER SHIFT E → Monitor Profiles`. The active profile is written to `monitors.conf`.
+Add `.conf` files to `monitor-profiles/` — one profile per file (e.g.
+`home.conf`, `office.conf`). Switch profiles via
+`SUPER SHIFT E → Monitor Profiles`. The active profile is written to
+`monitors.conf`.
 
-Tip: generate a profile with `nwg-displays`, then copy `monitors.conf` into `monitor-profiles/` with a descriptive name.
-
+Tip: generate a profile with `nwg-displays`, then copy `monitors.conf` into
+`monitor-profiles/` with a descriptive name.
