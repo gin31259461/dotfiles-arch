@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 # Sync dotfiles to the bare git repo.
 # Reference: https://github.com/JaKooLit/Hyprland-Dots
 #
@@ -31,7 +31,8 @@ dot add \
   doc \
   .local/bin/dotfiles.sh \
   .gitconfig \
-  .gitmodules
+  .gitmodules \
+  .gitignore
 
 # zsh
 dot add \

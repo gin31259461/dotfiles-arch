@@ -11,7 +11,7 @@ scriptsDir=$HOME/.config/hypr/scripts
 kvantum_theme="catppuccin-mocha-blue"
 color_scheme="prefer-dark"
 gtk_theme="Flat-Remix-GTK-Blue-Dark"
-icon_theme="Flat-Remix-Blue-Dark"
+icon_theme="Papirus"
 cursor_theme="Bibata-Modern-Ice"
 
 # Check if a marker file exists.
