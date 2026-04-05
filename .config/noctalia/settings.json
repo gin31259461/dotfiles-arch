@@ -706,7 +706,7 @@
     },
     "wallpaper": {
         "automationEnabled": false,
-        "directory": "/home/abner/Pictures/Wallpapers",
+        "directory": "/home/abner/Pictures/wallpapers",
         "enableMultiMonitorDirectories": false,
         "enabled": true,
         "favorites": [
@@ -716,7 +716,7 @@
         "hideWallpaperFilenames": false,
         "monitorDirectories": [
             {
-                "directory": "/home/abner/Pictures/Wallpapers",
+                "directory": "/home/abner/Pictures/wallpapers",
                 "name": "HDMI-A-1",
                 "wallpaper": ""
             }
@@ -744,7 +744,7 @@
         "useOriginalImages": false,
         "useSolidColor": false,
         "useWallhaven": false,
-        "viewMode": "single",
+        "viewMode": "recursive",
         "wallhavenApiKey": "",
         "wallhavenCategories": "111",
         "wallhavenOrder": "desc",
