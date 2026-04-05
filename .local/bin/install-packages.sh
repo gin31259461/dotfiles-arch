@@ -47,17 +47,21 @@ missing_pkgs() {
   done
 }
 
-# color_ratio "2/7" → colored string
+# color_ratio "2/7" → fixed-width (8 visible chars) colored badge
+# Padding is computed from char count (not bytes) — correct in a UTF-8 locale.
 color_ratio() {
   local ratio="$1"
   local ins="${ratio%/*}" tot="${ratio#*/}"
+  local text color
   if   [[ "$ins" -eq "$tot" && "$tot" -gt 0 ]]; then
-    printf '%s%s ✔%s' "$GRN" "$ratio" "$RST"
+    text="${ratio} ✔"; color="$GRN"
   elif [[ "$ins" -gt 0 ]]; then
-    printf '%s%s%s'    "$YLW" "$ratio" "$RST"
+    text="$ratio";     color="$YLW"
   else
-    printf '%s%s%s'    "$RED" "$ratio" "$RST"
+    text="$ratio";     color="$RED"
   fi
+  local pad=$(( 8 > ${#text} ? 8 - ${#text} : 0 ))
+  printf '%s%s%s%*s' "$color" "$text" "$RST" "$pad" ''
 }
 
 # strip_ansi — remove ANSI escape codes from a string
