@@ -160,8 +160,8 @@ _group_field() {
 print_banner() {
   printf '\n'
   printf "  ${BOLD}${BLU}┌─────────────────────────────────────────────────────┐${RST}\n"
-  printf "  ${BOLD}${BLU}│${RST}  ${BOLD}Dotfile Package Installer${RST}                            ${BOLD}${BLU}│${RST}\n"
-  printf "  ${BOLD}${BLU}│${RST}  ${DIM}Arch Linux + Hyprland${RST}                               ${BOLD}${BLU}│${RST}\n"
+  printf "  ${BOLD}${BLU}│${RST}  ${BOLD}Dotfile Package Installer${RST}                          ${BOLD}${BLU}│${RST}\n"
+  printf "  ${BOLD}${BLU}│${RST}  ${DIM}Arch Linux + Hyprland${RST}                              ${BOLD}${BLU}│${RST}\n"
   printf "  ${BOLD}${BLU}└─────────────────────────────────────────────────────┘${RST}\n"
   printf '\n'
 }

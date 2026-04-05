@@ -50,8 +50,7 @@ dot add \
 
 # gtk
 dot add \
-  .icons/Papirus \
-  .icons/Bibata-Modern-Ice \
+  .local/share/icons/Bibata-Modern-Ice \
   .config/gtk-3.0 \
   .config/gtk-4.0
 

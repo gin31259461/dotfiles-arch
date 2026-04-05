@@ -27,7 +27,7 @@ required.
 | Group | Files / Directories |
 |---|---|
 | **Shell** | `.zshrc`, `.zprofile`, `.p10k.zsh` |
-| **GTK** | `.icons/Papirus`, `.icons/Bibata-Modern-Ice`, `.local/share/themes/adw-gtk3`, `.config/gtk-3.0/`, `.config/gtk-4.0/` |
+| **GTK** | `.local/share/icons/Bibata-Modern-Ice`, `.config/gtk-3.0/`, `.config/gtk-4.0/` |
 | **Neovim** | `.config/nvim/` (NvChad — git submodule) |
 | **Terminal** | `.config/kitty/`, `.config/ghostty/` |
 | **Compositor** | `.config/hypr/` |
