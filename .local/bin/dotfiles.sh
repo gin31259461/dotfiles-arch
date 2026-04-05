@@ -36,6 +36,7 @@ dot add \
   README.md \
   doc \
   .local/bin/dotfiles.sh \
+  .local/bin/install-packages.sh \
   .gitconfig \
   .gitmodules \
   .gitignore \

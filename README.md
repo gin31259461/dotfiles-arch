@@ -12,6 +12,7 @@ required.
 - [What's Included](#whats-included)
 - [First Time Setup](#first-time-setup)
 - [Syncing Dotfiles](#syncing-dotfiles)
+- [Installing Packages](#installing-packages)
 - [Setting Up a New Machine](#setting-up-a-new-machine)
 - [Submodules](#submodules)
 - [Documentation](#documentation)
@@ -35,7 +36,7 @@ required.
 | **Utilities** | `.config/btop/`, `.config/cava/`, `.config/fastfetch/`, `.config/swappy/` |
 | **Apps** | `.config/discord/settings.json`, `.config/noctalia/`, `.config/electron-flags.conf` |
 | **OneDrive** | `.config/onedrive/config`, `.config/onedrive/sync_list` |
-| **Meta** | `.local/bin/dotfiles.sh`, `.gitconfig`, `.gitmodules`, `.gitignore`, `doc/`, `README.md` |
+| **Meta** | `.local/bin/dotfiles.sh`, `.local/bin/install-packages.sh`, `.gitconfig`, `.gitmodules`, `.gitignore`, `doc/`, `README.md` |
 
 ## First Time Setup
 
@@ -86,6 +87,48 @@ dot add ~/.config/hypr/hyprland.conf
 dot commit -m "update hyprland config"
 dot push origin main
 ```
+
+## Installing Packages
+
+`~/.local/bin/install-packages.sh` installs all dotfile dependencies on a
+fresh Arch Linux system. It groups packages by purpose, checks what is already
+installed, and presents an interactive selection menu (powered by
+[fzf](https://github.com/junegunn/fzf) when available).
+
+```bash
+install-packages.sh          # interactive — pick groups with TAB, confirm with ENTER
+install-packages.sh --yes    # skip final confirmation prompt
+```
+
+Package groups:
+
+| Group | What's included |
+|---|---|
+| **Core Hyprland** | `hyprland`, `hyprpolkitagent`, `hyprlock`, `hypridle`, `hyprsunset`, portals |
+| **Shell & Prompt** | `zsh`, `zsh-completions`, `fzf`, `lsd`, `fastfetch` |
+| **Terminals** | `kitty`, `ghostty` |
+| **File Manager** | `thunar` + plugins, `tumbler`, `gvfs` |
+| **Bar & Notifications** | `waybar`, `quickshell`, `swaync`, `aylurs-gtk-shell` |
+| **Audio** | `pipewire` stack, `pamixer`, `pavucontrol`, `playerctl`, `mpv` |
+| **Network & Bluetooth** | `networkmanager`, `network-manager-applet`, `bluez`, `blueman` |
+| **Screenshot & Clipboard** | `grim`, `slurp`, `swappy`, `cliphist`, `wl-clipboard` |
+| **Qt Theming** | `kvantum`, `qt5ct`, `qt6ct`, `nwg-look`, `nwg-displays`, `papirus-icon-theme` |
+| **Fonts** | Nerd Fonts, Noto, Source Code Pro + `ttf-victor-mono`, `noto-fonts-tc-vf` (AUR) |
+| **Input Method** | `fcitx5` + `fcitx5-chewing`, GTK/Qt modules |
+| **Utilities** | `btop`, `cava`, `brightnessctl`, `rofi`, `jq`, `imagemagick`, and more |
+| **Wallpaper & Colors** | `swww`, `wallust` (AUR) |
+| **Session & Logout** | `wlogout` (AUR) |
+| **GTK Theme & Cursor** | `adw-gtk3`, `bibata-cursor-theme` (AUR) |
+| **Cloud Sync** | `tailscale`, `onedrive-abraunegg` (AUR) |
+| **Applications** | `obsidian`, `remmina`, `vlc`, `vesktop-bin`, `zen-browser-bin` (AUR) |
+| **Neovim Editor** | `lazygit`, `neovim-nightly-bin` (AUR) |
+| **Noctalia Shell** | `noctalia-shell` (AUR) |
+| **ASUS ROG** | `asusctl`, `rog-control-center`, `supergfxctl` (AUR) |
+| **AMD GPU Drivers** | `vulkan-radeon`, `lib32-vulkan-radeon`, `libva-utils`, `amd-ucode` |
+| **Dev Tools** | `git`, `npm` |
+
+AUR packages are installed via `yay` (the script installs `yay` automatically
+if it is not found).
 
 ## Setting Up a New Machine
 
