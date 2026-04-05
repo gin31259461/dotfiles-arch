@@ -38,7 +38,8 @@ dot add \
   .local/bin/dotfiles.sh \
   .gitconfig \
   .gitmodules \
-  .gitignore
+  .gitignore \
+  .github
 
 # zsh
 dot add \
