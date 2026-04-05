@@ -65,7 +65,7 @@ strip_ansi() { sed 's/\x1b\[[0-9;]*m//g' <<< "$1"; }
 
 # ── Package group definitions ─────────────────────────────────────────────────
 # Each entry: "key|Display Label|official packages (space-sep)|AUR packages"
-declare -a GROUPS=(
+declare -a PKG_GROUPS=(
   "core|Core Hyprland\
 |hyprland hyprpolkitagent hyprlock hypridle hyprsunset \
 xdg-desktop-portal-hyprland xdg-desktop-portal-gtk\
@@ -143,7 +143,7 @@ xdg-user-dirs yad rofi xdotool rsync wget unzip pacman-contrib\
 # ── Group lookups ─────────────────────────────────────────────────────────────
 _group_field() {
   local key="$1" field="$2"   # field: 1=key 2=label 3=official 4=aur
-  for g in "${GROUPS[@]}"; do
+  for g in "${PKG_GROUPS[@]}"; do
     IFS='|' read -r k l off aur <<< "$g"
     if [[ "$k" == "$key" ]]; then
       case "$field" in
@@ -177,15 +177,17 @@ ensure_yay() {
   command -v git &>/dev/null || die "git is required to build yay: sudo pacman -S git base-devel"
   local tmp
   tmp=$(mktemp -d)
-  git clone --depth=1 https://aur.archlinux.org/yay.git "$tmp/yay"
-  (cd "$tmp/yay" && makepkg -si --noconfirm)
+  git clone --depth=1 https://aur.archlinux.org/yay.git "$tmp/yay" \
+    || { rm -rf "$tmp"; die "Failed to clone yay repository"; }
+  (cd "$tmp/yay" && makepkg -si --noconfirm) \
+    || { rm -rf "$tmp"; die "Failed to build yay — check the output above"; }
   rm -rf "$tmp"
   ok "yay installed"
 }
 
 # ── Build fzf lines ───────────────────────────────────────────────────────────
 build_fzf_lines() {
-  for g in "${GROUPS[@]}"; do
+  for g in "${PKG_GROUPS[@]}"; do
     IFS='|' read -r key label official aur <<< "$g"
     local all="${official} ${aur}"
     local ratio cbadge
@@ -238,11 +240,11 @@ _select_fzf() {
 }
 
 _select_numbered() {
-  printf "  ${DIM}Enter numbers (e.g. 1 3 5-7), or ${BOLD}all${RST}\n\n"
+  printf "  ${DIM}Enter numbers (e.g. 1 3 5-7), or ${RST}${BOLD}all${RST}\n\n"
   local i=1
   local -a menu_keys=()
 
-  for g in "${GROUPS[@]}"; do
+  for g in "${PKG_GROUPS[@]}"; do
     IFS='|' read -r key label official aur <<< "$g"
     local ratio cbadge
     ratio=$(count_installed "${official} ${aur}")
@@ -265,7 +267,11 @@ _select_numbered() {
         SELECTED_KEYS+=("${menu_keys[$((n-1))]}")
       done
     elif [[ "$token" =~ ^[0-9]+$ ]]; then
-      SELECTED_KEYS+=("${menu_keys[$((token-1))]}")
+      if (( token >= 1 && token <= ${#menu_keys[@]} )); then
+        SELECTED_KEYS+=("${menu_keys[$((token-1))]}")
+      else
+        warn "Skipping $token: out of range (1-${#menu_keys[@]})"
+      fi
     fi
   done
 }
@@ -359,7 +365,8 @@ do_install() {
 
 # ── Summary ───────────────────────────────────────────────────────────────────
 show_summary() {
-  local total=$(( ${#PLAN_OFFICIAL[@]} + ${#PLAN_AUR[@]} ))
+  local total
+  total=$(( ${#PLAN_OFFICIAL[@]} + ${#PLAN_AUR[@]} ))
   section "Done"
   ok "$total package(s) installed successfully"
   note "Log out and back in for compositor/env changes to take effect."
