@@ -120,7 +120,7 @@ xdg-user-dirs yad rofi xdotool rsync wget unzip pacman-contrib\
 |wlogout"
   "gtk|GTK Theme & Cursor\
 |\
-|adw-gtk3"
+adw-gtk-theme"
   "sync|Cloud Sync\
 |tailscale\
 |onedrive-abraunegg"
