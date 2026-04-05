@@ -80,8 +80,8 @@ xdg-desktop-portal-hyprland xdg-desktop-portal-gtk\
 |thunar thunar-archive-plugin thunar-volman tumbler gvfs gvfs-mtp ffmpegthumbnailer\
 |"
   "bar|Bar & Notifications\
-|waybar quickshell swaync\
-|aylurs-gtk-shell"
+|waybar\
+|"
   "audio|Audio\
 |pipewire pipewire-alsa pipewire-audio pipewire-pulse wireplumber \
 pamixer pavucontrol playerctl mpv mpv-mpris\
@@ -116,7 +116,7 @@ xdg-user-dirs yad rofi xdotool rsync wget unzip pacman-contrib\
 |wlogout"
   "gtk|GTK Theme & Cursor\
 |\
-|adw-gtk3 bibata-cursor-theme"
+|adw-gtk3"
   "sync|Cloud Sync\
 |tailscale\
 |onedrive-abraunegg"
@@ -128,7 +128,7 @@ xdg-user-dirs yad rofi xdotool rsync wget unzip pacman-contrib\
 |neovim-nightly-bin"
   "noctalia|Noctalia Shell\
 |\
-|noctalia-shell"
+|noctalia-shell noctalia-qs"
   "asus|ASUS ROG\
 |\
 |asusctl rog-control-center supergfxctl"
