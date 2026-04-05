@@ -232,6 +232,7 @@ _select_fzf() {
         --border=rounded \
         --prompt='  Groups ❯ ' \
         --header=$'  TAB = toggle  ·  ENTER = confirm  ·  CTRL-A = select all\n' \
+        --bind='ctrl-a:toggle-all' \
         --color='header:dim,prompt:blue,pointer:green,marker:green' \
     ) || true   # fzf exits 130 on ESC; || true prevents set -e from firing
 
