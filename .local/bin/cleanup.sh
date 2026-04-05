@@ -38,15 +38,21 @@ done
 
 # ── Size helpers ──────────────────────────────────────────────────────────────
 # path_size PATH → "3.6G" | "n/a"
+# Uses || true so a non-zero exit from du (e.g. unreadable files) doesn't
+# also trigger the || branch after the caller's && … || expression.
 path_size() {
-  [[ -e "$1" ]] && du -sh "$1" 2>/dev/null | awk '{print $1}' || printf 'n/a'
+  local size
+  size=$(du -sh "$1" 2>/dev/null | awk '{print $1}') || true
+  printf '%s' "${size:-n/a}"
 }
 
 # journal_size → "286.7M" | "n/a"
+# journalctl --disk-usage outputs e.g. "…takes up 286.7M…" (no space, no 'B').
 journal_size() {
-  journalctl --disk-usage 2>/dev/null \
-    | grep -oE '[0-9]+(\.[0-9]+)? [KMGT]?B' | tail -1 | tr -d ' ' \
-    || printf 'n/a'
+  local raw
+  raw=$(journalctl --disk-usage 2>/dev/null \
+    | grep -oE '[0-9]+(\.[0-9]+)?[KMGT]') || true
+  printf '%s' "${raw:-n/a}"
 }
 
 # orphan_count → integer
