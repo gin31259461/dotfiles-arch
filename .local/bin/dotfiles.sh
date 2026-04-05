@@ -37,6 +37,7 @@ dot add \
   doc \
   .local/bin/dotfiles.sh \
   .local/bin/install-packages.sh \
+  .local/bin/cleanup.sh \
   .gitconfig \
   .gitmodules \
   .gitignore \

@@ -12,15 +12,41 @@
 
 ## System Cleaning
 
+Use the interactive cleanup script for a guided experience:
+
+```bash
+~/.local/bin/cleanup.sh
+```
+
+It presents a fzf multi-select menu (falls back to numbered list) with current
+disk usage per task, then confirms before making any changes.
+
+| Task | What it cleans |
+|------|----------------|
+| `pacman-cache` | `/var/cache/pacman/pkg` — keeps last 3 versions (`paccache -r`) |
+| `yay-cache` | `~/.cache/yay` — AUR build dirs and downloaded tarballs |
+| `orphans` | Packages no longer required by any dependency (`pacman -Rns`) |
+| `journal` | Systemd journal logs older than 2 weeks |
+| `npm-cache` | `~/.npm` — global npm package cache |
+| `thumbnails` | `~/.cache/thumbnails` — safe, rebuilds on demand |
+
+Run non-interactively (skips confirmations) with `--yes`:
+
+```bash
+~/.local/bin/cleanup.sh --yes
+```
+
+### Manual commands
+
 ```bash
 # Remove old cached pacman packages (keep last 3 versions)
 sudo paccache -r
 
-# Clean pacman + AUR (yay) cache
-yay -Sc
+# Remove orphaned packages
+sudo pacman -Rns $(pacman -Qdtq)
 
 # Truncate system journal logs older than 2 weeks
-journalctl --vacuum-time=2weeks
+sudo journalctl --vacuum-time=2weeks
 ```
 
 ## Known Upgrade Issues
