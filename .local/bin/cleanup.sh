@@ -46,13 +46,39 @@ path_size() {
   printf '%s' "${size:-n/a}"
 }
 
-# journal_size → "286.7M" | "n/a"
-# journalctl --disk-usage outputs e.g. "…takes up 286.7M…" (no space, no 'B').
-journal_size() {
-  local raw
-  raw=$(journalctl --disk-usage 2>/dev/null \
-    | grep -oE '[0-9]+(\.[0-9]+)?[KMGT]') || true
-  printf '%s' "${raw:-n/a}"
+# paccache_reclaimable → "1.2G" | "0B" | "n/a"
+# Uses paccache --dryrun to report what -r would actually free.
+paccache_reclaimable() {
+  command -v paccache &>/dev/null || { printf 'n/a'; return; }
+  local output freed
+  output=$(paccache -d --nocolor 2>/dev/null) || true
+  freed=$(printf '%s' "$output" | grep -oE '[0-9]+(\.[0-9]+)? [KMGT]iB' \
+    | tail -1 | tr -d ' ') || true
+  printf '%s' "${freed:-0B}"
+}
+
+# journal_reclaimable → "42.3M" | "0B" | "n/a"
+# Sums the sizes of journal files whose mtime is older than 2 weeks.
+journal_reclaimable() {
+  local cutoff total_bytes
+  cutoff=$(date -d '2 weeks ago' +%s 2>/dev/null) || { printf 'n/a'; return; }
+  total_bytes=$(
+    find /var/log/journal -type f \( -name '*.journal' -o -name '*.journal~' \) \
+      2>/dev/null \
+    | while IFS= read -r f; do
+        local ft; ft=$(stat -c '%Y' "$f" 2>/dev/null) || continue
+        (( ft < cutoff )) && stat -c '%s' "$f" 2>/dev/null || true
+      done \
+    | awk '{s+=$1} END {print (s+0)}'
+  ) || true
+  local b="${total_bytes:-0}"
+  if   (( b == 0 ));               then printf '0B'
+  elif (( b < 1024*1024 ));        then printf '%dK' $(( b / 1024 ))
+  elif (( b < 1024*1024*1024 ));   then printf '%.1fM' \
+    "$(awk "BEGIN{printf \"%.1f\", $b/1048576}")"
+  else                                  printf '%.1fG' \
+    "$(awk "BEGIN{printf \"%.1f\", $b/1073741824}")"
+  fi
 }
 
 # orphan_count → integer
@@ -77,8 +103,10 @@ task_badge() {
   local text hint
   case "$key" in
     pacman-cache)
-      text=$(path_size /var/cache/pacman/pkg/)
-      [[ "$text" == *G ]] && hint=red || hint=yel ;;
+      text=$(paccache_reclaimable)
+      if   [[ "$text" == "0B" || "$text" == "n/a" ]]; then hint=grn
+      elif [[ "$text" == *G ]];                        then hint=red
+      else                                                  hint=yel; fi ;;
     yay-cache)
       text=$(path_size ~/.cache/yay/)
       if   [[ "$text" == "n/a" ]]; then hint=grn
@@ -91,8 +119,10 @@ task_badge() {
       elif [[ "$n" -gt 20 ]]; then hint=red
       else                         hint=yel; fi ;;
     journal)
-      text=$(journal_size)
-      [[ "$text" == "n/a" ]] && hint=dim || hint=yel ;;
+      text=$(journal_reclaimable)
+      if   [[ "$text" == "0B" || "$text" == "n/a" ]]; then hint=grn
+      elif [[ "$text" == *G ]];                        then hint=red
+      else                                                  hint=yel; fi ;;
     npm-cache)
       text=$(path_size ~/.npm/)
       [[ "$text" == "n/a" ]] && hint=grn || hint=yel ;;
