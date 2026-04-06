@@ -4,8 +4,8 @@ background-opacity = 1.00
 bold-is-bright = false
 confirm-close-surface = false
 cursor-style = bar
-font-family = FantasqueSansM Nerd Font Mono
-font-size = 12
+font-family = Fira Code Nerd Font
+font-size = 14
 gtk-single-instance = true
 mouse-hide-while-typing = true
 quick-terminal-position = center
@@ -23,10 +23,10 @@ window-theme = dark
 window-width = 110
 
 # Theme switching (optional): managed by your theme changer (symlink or generated file).
--- config-file = ?~/.config/ghostty/theme.conf
+# config-file = ?~/.config/ghostty/theme.conf
 
 # Wallust (optional): wallust template should write Ghostty colors here; it will override theme colors.
--- config-file = ?~/.config/ghostty/wallust.conf
+# config-file = ?~/.config/ghostty/wallust.conf
 
 # Noctalia (optional): if you have the noctalia theme installed, you can set it here to use its colors.
 theme = noctalia
