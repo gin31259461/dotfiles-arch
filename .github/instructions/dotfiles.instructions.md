@@ -15,6 +15,7 @@ stow. The working tree is `$HOME`.
 | `~/.dotfiles/` | Bare git repository |
 | `~` | Working tree (all tracked files live here directly) |
 | `~/.local/bin/` | User scripts — all are in `$PATH` |
+| `~/.local/lib/` | Shared shell libraries (sourced by scripts, not executed) |
 | `~/.config/hypr/` | Hyprland compositor configuration |
 | `~/.github/` | Copilot instructions, agents, skills |
 
@@ -38,9 +39,13 @@ Never run plain `git` in `$HOME` — it will target the wrong repository.
 Stages all tracked paths, commits, and pushes to `origin main`.
 
 ```bash
-dotfiles.sh                   # commit message: "sync dotfiles"
-dotfiles.sh -m "update hypr"  # custom message
+dotfiles.sh                   # opens gum write for interactive commit message
+dotfiles.sh -m "update hypr"  # skip prompt, use provided message
 ```
+
+When `-m` is omitted and `gum` is available, a multi-line editor opens
+(`Ctrl+D` to confirm). Falls back to `"sync dotfiles"` if left empty or
+`gum` is not installed.
 
 To add a new file to tracking: add it to the relevant `dot add` block in
 `~/.local/bin/dotfiles.sh`, then run `dotfiles.sh`.
@@ -54,8 +59,8 @@ bash <(curl -fsSL https://raw.githubusercontent.com/gin31259461/arch-dotfiles/ma
 ```
 
 What it does: installs prereqs → clones bare repo → rsync deploys to `$HOME` →
-configures `dot` alias → init submodules → optional Oh My Zsh → optional
-`install-packages`.
+configures `dot` alias → init submodules → optional Oh My Zsh (via `gum confirm`) →
+optional `install-packages`. Long operations show `gum spin` spinners.
 
 ### `install-packages.sh` — interactive package installer
 
@@ -65,11 +70,12 @@ fonts, input, utils, wallpaper, session, gtk, sync, apps, neovim, noctalia,
 asus, amd, dev.
 
 ```bash
-install-packages.sh      # interactive (TAB=toggle, ENTER=confirm)
+install-packages.sh      # interactive (fzf: TAB=toggle, ENTER=confirm)
 install-packages.sh -y   # skip confirmation
 ```
 
-AUR packages use `yay` (auto-installed if missing).
+AUR packages use `yay` (auto-installed if missing via `gum spin`).
+Final install is confirmed with `gum confirm`.
 
 ### `cleanup.sh` — interactive system cleanup
 
@@ -77,7 +83,7 @@ Frees disk space: pacman cache, AUR cache, orphaned packages, systemd journal,
 npm cache, thumbnail cache. Shows reclaimable size before confirming.
 
 ```bash
-cleanup.sh      # interactive
+cleanup.sh      # interactive (fzf task selection, gum confirm)
 cleanup.sh -y   # skip confirmations
 ```
 
@@ -85,8 +91,15 @@ cleanup.sh -y   # skip confirmations
 
 ## TUI Style Convention
 
-All scripts (`install-packages.sh`, `cleanup.sh`, `bootstrap.sh`) share the
-same visual language. Keep this consistent when editing or adding scripts.
+All scripts share the same visual language via **`~/.local/lib/tui.sh`** —
+source it at the top of any new script:
+
+```bash
+# shellcheck source=../.local/lib/tui.sh
+source "$HOME/.local/lib/tui.sh"
+```
+
+### Print helpers
 
 ```bash
 # Colors: RED GRN YLW BLU DIM BOLD RST  (disabled when stdout is not a TTY)
@@ -99,9 +112,49 @@ step()    # "  ›  message"  — in-progress step (blue)
 section() # "  ◆  Heading"  — bold section header (blue diamond)
 ```
 
-Confirmation prompts use `  ?  Question  [Y/n] ` with a blue `?` marker.
+### `gum_confirm` — confirmation prompt
 
-fzf color scheme: `hl:blue,hl+:bright-blue,prompt:blue,pointer:green,marker:green,header:dim`
+```bash
+gum_confirm "Question?"   # gum confirm UI when available, else [y/N] readline
+```
+
+Returns 0 (yes) or 1 (no). Scripts with a `--yes` flag check it before calling:
+
+```bash
+confirm() {
+  $OPT_YES && return 0
+  gum_confirm "$1"
+}
+```
+
+### `spin` — loading spinner
+
+```bash
+spin "Cloning repo…" git clone "$url" "$dest"
+spin "Installing packages…" sudo pacman -S --needed --noconfirm "${pkgs[@]}"
+```
+
+Uses `gum spin --spinner dot` for external binaries. Falls back to `step` +
+direct call for shell functions/builtins, or when `gum` is not installed.
+
+### `gum write` — multi-line text input
+
+Used in `dotfiles.sh` to collect a commit message interactively:
+
+```bash
+MSG=$(gum write --placeholder "Describe your changes…" \
+  --header "Commit message  (Ctrl+D to confirm)" --width 72 --height 6)
+```
+
+### fzf — multi-select list
+
+`cleanup.sh` and `install-packages.sh` use fzf for task/group selection:
+
+```
+TAB = toggle  ·  ENTER = confirm  ·  CTRL-A = select all  ·  ESC = exit
+```
+
+fzf color scheme: `header:dim,prompt:blue,pointer:green,marker:green`
 
 ---
 
