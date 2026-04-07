@@ -36,6 +36,7 @@ dot add \
   README.md \
   doc \
   .local/bin/dotfiles.sh \
+  .local/bin/bootstrap.sh \
   .local/bin/install-packages.sh \
   .local/bin/cleanup.sh \
   .gitconfig \

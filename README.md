@@ -13,6 +13,7 @@ required.
 - [First Time Setup](#first-time-setup)
 - [Syncing Dotfiles](#syncing-dotfiles)
 - [Installing Packages](#installing-packages)
+- [System Cleanup](#system-cleanup)
 - [Setting Up a New Machine](#setting-up-a-new-machine)
 - [Submodules](#submodules)
 - [Documentation](#documentation)
@@ -36,7 +37,7 @@ required.
 | **Utilities** | `.config/btop/`, `.config/cava/`, `.config/fastfetch/`, `.config/swappy/` |
 | **Apps** | `.config/discord/settings.json`, `.config/noctalia/`, `.config/electron-flags.conf` |
 | **OneDrive** | `.config/onedrive/config`, `.config/onedrive/sync_list` |
-| **Meta** | `.local/bin/dotfiles.sh`, `.local/bin/install-packages.sh`, `.gitconfig`, `.gitmodules`, `.gitignore`, `doc/`, `README.md` |
+| **Meta** | `.local/bin/bootstrap.sh`, `.local/bin/dotfiles.sh`, `.local/bin/install-packages.sh`, `.local/bin/cleanup.sh`, `.gitconfig`, `.gitmodules`, `.gitignore`, `doc/`, `README.md` |
 
 ## First Time Setup
 
@@ -108,7 +109,7 @@ Package groups:
 | **Shell & Prompt** | `zsh`, `zsh-completions`, `fzf`, `lsd`, `fastfetch` |
 | **Terminals** | `kitty`, `ghostty` |
 | **File Manager** | `thunar` + plugins, `tumbler`, `gvfs` |
-| **Bar & Notifications** | `waybar`, `quickshell`, `swaync`, `aylurs-gtk-shell` |
+| **Bar & Notifications** | `waybar` |
 | **Audio** | `pipewire` stack, `pamixer`, `pavucontrol`, `playerctl`, `mpv` |
 | **Network & Bluetooth** | `networkmanager`, `network-manager-applet`, `bluez`, `blueman` |
 | **Screenshot & Clipboard** | `grim`, `slurp`, `swappy`, `cliphist`, `wl-clipboard` |
@@ -118,7 +119,7 @@ Package groups:
 | **Utilities** | `btop`, `cava`, `brightnessctl`, `rofi`, `jq`, `imagemagick`, and more |
 | **Wallpaper & Colors** | `swww`, `wallust` (AUR) |
 | **Session & Logout** | `wlogout` (AUR) |
-| **GTK Theme & Cursor** | `adw-gtk3`, `bibata-cursor-theme` (AUR) |
+| **GTK Theme & Cursor** | `adw-gtk-theme` (AUR) |
 | **Cloud Sync** | `tailscale`, `onedrive-abraunegg` (AUR) |
 | **Applications** | `obsidian`, `remmina`, `vlc`, `vesktop-bin`, `zen-browser-bin` (AUR) |
 | **Neovim Editor** | `lazygit`, `neovim-nightly-bin` (AUR) |
@@ -130,25 +131,71 @@ Package groups:
 AUR packages are installed via `yay` (the script installs `yay` automatically
 if it is not found).
 
-## Setting Up a New Machine
+## System Cleanup
+
+`~/.local/bin/cleanup.sh` frees disk space by cleaning caches and removing
+orphaned packages. Each task shows the reclaimable size before you confirm.
 
 ```bash
-# Clone into a temporary directory, then scatter files into $HOME
+cleanup.sh          # interactive — pick tasks with TAB, confirm with ENTER
+cleanup.sh --yes    # skip confirmation prompts
+```
+
+| Task | What it does |
+|---|---|
+| **Pacman package cache** | `paccache -r` — keeps last 3 versions per package |
+| **AUR build cache** | removes `~/.cache/yay/` — build dirs and tarballs |
+| **Orphaned packages** | `pacman -Rns` — packages no longer required by any dep |
+| **Systemd journal** | `--vacuum-time=2weeks` — discards logs older than 2 weeks |
+| **npm cache** | `npm cache clean --force` — shown only when npm is installed |
+| **Thumbnail cache** | removes `~/.cache/thumbnails/` — rebuilds on demand |
+
+## Setting Up a New Machine
+
+Run the bootstrap script on a fresh Arch Linux install — it handles everything
+automatically:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/gin31259461/arch-dotfiles/main/.local/bin/bootstrap.sh)
+```
+
+**What `bootstrap.sh` does:**
+
+1. Installs prerequisites (`git`, `rsync`, `base-devel`) via pacman
+2. Clones the bare repo into `~/.dotfiles` (SSH if keys are set up, HTTPS otherwise)
+3. Deploys all dotfiles to `$HOME` via rsync
+4. Configures git to hide untracked files in `$HOME`
+5. Adds the `dot` alias to `.zshrc` if missing
+6. Initialises all git submodules
+7. Offers to install **Oh My Zsh** + plugins (`zsh-autosuggestions`,
+   `zsh-syntax-highlighting`, `powerlevel10k`)
+8. Offers to run `install-packages.sh` to install dotfile dependencies
+
+Pass `--yes` / `-y` to skip optional prompts and accept all defaults:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/.../bootstrap.sh) --yes
+```
+
+<details>
+<summary>Manual steps (if you prefer not to curl-pipe)</summary>
+
+```bash
+# 1. Clone into a temporary directory, then scatter files into $HOME
 git clone --separate-git-dir=$HOME/.dotfiles \
   git@github.com:gin31259461/arch-dotfiles.git tmpdotfiles
 
 rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/
 rm -rf tmpdotfiles
 
-# Suppress untracked files in the working tree
+# 2. Suppress untracked file noise in the working tree
 dot config --local status.showUntrackedFiles no
-```
 
-Then initialise submodules:
-
-```bash
+# 3. Initialise submodules
 dot submodule update --init --recursive
 ```
+
+</details>
 
 ## Submodules
 
