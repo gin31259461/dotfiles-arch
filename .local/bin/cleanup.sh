@@ -245,13 +245,13 @@ show_plan() {
 run_pacman_cache() {
   command -v paccache &>/dev/null \
     || die "paccache not found — install pacman-contrib"
-  sudo paccache -r
+  spin "Cleaning pacman cache…" sudo paccache -r
   ok "Pacman cache cleaned"
 }
 
 run_yay_cache() {
   command -v yay &>/dev/null || { warn "yay not found — skipping"; return; }
-  rm -rf ~/.cache/yay/
+  spin "Clearing AUR build cache…" rm -rf "$HOME/.cache/yay/"
   ok "AUR build cache cleared"
 }
 
@@ -264,27 +264,26 @@ run_orphans() {
   fi
   note "Packages to remove (${#pkgs[@]}): ${pkgs[*]}"
   if [[ "$OPT_YES" != true ]]; then
-    printf "\n  ${BOLD}Remove %d orphan(s)?${RST} [y/N] " "${#pkgs[@]}"
-    read -r yn
-    [[ "${yn,,}" == y ]] || { warn "Skipped orphans"; return; }
+    gum_confirm "Remove ${#pkgs[@]} orphan(s)? (${pkgs[*]})" \
+      || { warn "Skipped orphans"; return; }
   fi
-  sudo pacman -Rns "${pkgs[@]}"
+  spin "Removing ${#pkgs[@]} orphan(s)…" sudo pacman -Rns "${pkgs[@]}"
   ok "Orphaned packages removed"
 }
 
 run_journal() {
-  sudo journalctl --vacuum-time=2weeks
+  spin "Vacuuming systemd journal…" sudo journalctl --vacuum-time=2weeks
   ok "Journal vacuumed (kept last 2 weeks)"
 }
 
 run_npm_cache() {
-  npm cache clean --force
+  spin "Clearing npm cache…" npm cache clean --force
   ok "npm cache cleared"
 }
 
 run_thumbnails() {
-  if [[ -d ~/.cache/thumbnails/ ]]; then
-    rm -rf ~/.cache/thumbnails/
+  if [[ -d "$HOME/.cache/thumbnails/" ]]; then
+    spin "Clearing thumbnail cache…" rm -rf "$HOME/.cache/thumbnails/"
     ok "Thumbnail cache cleared"
   else
     ok "Thumbnail cache already empty"
@@ -307,9 +306,7 @@ main() {
   show_plan || exit 0
 
   if [[ "$OPT_YES" != true ]]; then
-    printf "\n  ${BOLD}Proceed with cleanup?${RST} [y/N] "
-    read -r yn
-    [[ "${yn,,}" == y ]] || { warn "Aborted."; exit 0; }
+    gum_confirm "Proceed with cleanup?" || { warn "Aborted."; exit 0; }
   fi
 
   for key in "${SELECTED_KEYS[@]}"; do

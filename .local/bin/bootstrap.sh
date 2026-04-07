@@ -39,9 +39,7 @@ dot() { git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" "$@"; }
 # Returns 0 (yes) or 1 (no). --yes flag always answers yes.
 confirm() {
   $OPT_YES && return 0
-  printf "  ${BLU}?${RST}  %s  ${DIM}[y/N]${RST} " "$1"
-  read -r yn
-  [[ "${yn,,}" =~ ^y(es)?$ ]]
+  gum_confirm "$1"
 }
 
 # ── Main ──────────────────────────────────────────────────────────────────────
@@ -62,8 +60,7 @@ main() {
     fi
   done
   if [[ ${#missing[@]} -gt 0 ]]; then
-    step "Installing: ${missing[*]}"
-    sudo pacman -S --needed --noconfirm "${missing[@]}"
+    spin "Installing: ${missing[*]}" sudo pacman -S --needed --noconfirm "${missing[@]}"
     ok "Prerequisites ready"
   fi
 
@@ -79,14 +76,13 @@ main() {
       clone_url="$REPO_HTTPS"
     fi
 
-    step "Cloning $clone_url"
     local tmp; tmp=$(mktemp -d)
-    git clone --separate-git-dir="$DOTFILES_DIR" "$clone_url" "$tmp/dotfiles" \
+    spin "Cloning $clone_url" \
+      git clone --separate-git-dir="$DOTFILES_DIR" "$clone_url" "$tmp/dotfiles" \
       || { rm -rf "$tmp"; die "Clone failed — check URL and network"; }
 
     section "Deploying to \$HOME"
-    step "Copying files…"
-    rsync --recursive --exclude '.git' "$tmp/dotfiles/" "$HOME/"
+    spin "Copying files…" rsync --recursive --exclude '.git' "$tmp/dotfiles/" "$HOME/"
     rm -rf "$tmp"
     ok "Files deployed to $HOME"
   fi
@@ -112,8 +108,7 @@ main() {
 
   # ── Submodules ──────────────────────────────────────────────────────────────
   section "Submodules"
-  step "Initialising submodules…"
-  dot submodule update --init --recursive
+  spin "Initialising submodules…" dot submodule update --init --recursive
   ok "Submodules ready"
 
   # ── Oh My Zsh ───────────────────────────────────────────────────────────────
@@ -128,16 +123,16 @@ main() {
 
     local custom="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 
-    step "Installing zsh-autosuggestions…"
-    git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions \
+    spin "Installing zsh-autosuggestions…" \
+      git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions \
       "$custom/plugins/zsh-autosuggestions"
 
-    step "Installing zsh-syntax-highlighting…"
-    git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting \
+    spin "Installing zsh-syntax-highlighting…" \
+      git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting \
       "$custom/plugins/zsh-syntax-highlighting"
 
-    step "Installing Powerlevel10k theme…"
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
+    spin "Installing Powerlevel10k theme…" \
+      git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
       "$custom/themes/powerlevel10k"
 
     ok "Zsh plugins and theme ready"

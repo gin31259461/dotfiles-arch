@@ -21,3 +21,27 @@ warn()    { printf "  ${YLW}!${RST}  %s\n" "$*"; }
 note()    { printf "     ${DIM}%s${RST}\n" "$*"; }
 step()    { printf "  ${BLU}›${RST}  %s\n" "$*"; }
 section() { printf "\n  ${BOLD}${BLU}◆${RST}  ${BOLD}%s${RST}\n\n" "$*"; }
+
+# gum_confirm QUESTION — gum confirm if available, else readline y/N prompt
+# Returns 0 (yes) or 1 (no).
+gum_confirm() {
+  if command -v gum &>/dev/null; then
+    gum confirm "$1"
+  else
+    printf "  ${BLU}?${RST}  %s  ${DIM}[y/N]${RST} " "$1"
+    read -r _yn
+    [[ "${_yn,,}" =~ ^y(es)?$ ]]
+  fi
+}
+
+# spin TITLE CMD [ARGS…] — run CMD with a gum spinner.
+# Falls back to step+run when gum is absent or CMD is a shell function/builtin.
+spin() {
+  local title="$1"; shift
+  if command -v gum &>/dev/null && [[ "$(type -t "$1" 2>/dev/null)" == "file" ]]; then
+    gum spin --spinner dot --title "  $title" -- "$@"
+  else
+    step "$title"
+    "$@"
+  fi
+}

@@ -1,31 +1,39 @@
 #!/usr/bin/env bash
-# Sync dotfiles to the bare git repo.
-# Reference: https://github.com/JaKooLit/Hyprland-Dots
+# ─────────────────────────────────────────────────────────────────────────────
+#  dotfiles  ·  Sync dotfiles to the bare git repo
 #
-# Usage: dotfiles.sh [-m "commit message"]
-
+#  Usage: dotfiles.sh [-m "commit message"]
+# ─────────────────────────────────────────────────────────────────────────────
 set -euo pipefail
 
-# ── helpers ──────────────────────────────────────────────────────
+# shellcheck source=../.local/lib/tui.sh
+source "$HOME/.local/lib/tui.sh"
 
 dot() { git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" "$@"; }
 
-# ── options ──────────────────────────────────────────────────────
+# ── Options ───────────────────────────────────────────────────────────────────
 
-COMMIT_MSG="sync dotfiles"
-while getopts ":m:" opt; do
+COMMIT_MSG=""
+while getopts ":m:h" opt; do
   case $opt in
-  m) COMMIT_MSG="$OPTARG" ;;
-  \?)
-    echo "Usage: $0 [-m <commit message>]" >&2
-    exit 1
-    ;;
-  :)
-    echo "Option -m requires an argument." >&2
-    exit 1
-    ;;
+    m) COMMIT_MSG="$OPTARG" ;;
+    h) printf 'Usage: %s [-m "commit message"]\n' "$(basename "$0")"; exit 0 ;;
+    \?) die "Unknown option: -$OPTARG" ;;
+    :)  die "Option -$OPTARG requires an argument" ;;
   esac
 done
+
+# ── Interactive commit message (gum write when -m is not provided) ────────────
+
+if [[ -z "$COMMIT_MSG" ]]; then
+  if command -v gum &>/dev/null; then
+    COMMIT_MSG=$(gum write \
+      --placeholder "Describe your changes…" \
+      --header "Commit message  (Ctrl+D to confirm)" \
+      --width 72 --height 6) || true
+  fi
+  [[ -z "$COMMIT_MSG" ]] && COMMIT_MSG="sync dotfiles"
+fi
 
 cd "$HOME"
 
@@ -39,6 +47,7 @@ dot add \
   .local/bin/bootstrap.sh \
   .local/bin/install-packages.sh \
   .local/bin/cleanup.sh \
+  .local/lib/tui.sh \
   .gitconfig \
   .gitmodules \
   .gitignore \
@@ -83,7 +92,9 @@ dot add \
   .config/onedrive/config \
   .config/onedrive/sync_list
 
-# ── commit and push ──────────────────────────────────────────────
+# ── Commit and push ───────────────────────────────────────────────────────────
 
-dot commit -m "$COMMIT_MSG"
-dot push origin main
+spin "Committing…"  git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" commit -m "$COMMIT_MSG"
+ok "Committed: $COMMIT_MSG"
+spin "Pushing to origin…" git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" push origin main
+ok "Pushed to origin main"

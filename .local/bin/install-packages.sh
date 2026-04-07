@@ -169,8 +169,10 @@ ensure_yay() {
   command -v git &>/dev/null || die "git is required to build yay: sudo pacman -S git base-devel"
   local tmp
   tmp=$(mktemp -d)
-  git clone --depth=1 https://aur.archlinux.org/yay.git "$tmp/yay" \
+  spin "Cloning yay from AUR…" \
+    git clone --depth=1 https://aur.archlinux.org/yay.git "$tmp/yay" \
     || { rm -rf "$tmp"; die "Failed to clone yay repository"; }
+  step "Building yay (may prompt for sudo password)…"
   (cd "$tmp/yay" && makepkg -si --noconfirm) \
     || { rm -rf "$tmp"; die "Failed to build yay — check the output above"; }
   rm -rf "$tmp"
@@ -338,20 +340,21 @@ AUTO_YES=false
 
 do_install() {
   if ! $AUTO_YES; then
-    printf "  Proceed? [Y/n] "
-    read -r reply
-    [[ "${reply,,}" =~ ^(n|no)$ ]] && { warn "Aborted."; exit 0; }
+    local total=$(( ${#PLAN_OFFICIAL[@]} + ${#PLAN_AUR[@]} ))
+    gum_confirm "Install $total package(s)?" || { warn "Aborted."; exit 0; }
   fi
 
   if [[ ${#PLAN_OFFICIAL[@]} -gt 0 ]]; then
     section "Installing official packages"
-    sudo pacman -S --needed --noconfirm "${PLAN_OFFICIAL[@]}"
+    spin "Installing ${#PLAN_OFFICIAL[@]} official package(s)…" \
+      sudo pacman -S --needed --noconfirm "${PLAN_OFFICIAL[@]}"
     ok "${#PLAN_OFFICIAL[@]} official package(s) installed"
   fi
 
   if [[ ${#PLAN_AUR[@]} -gt 0 ]]; then
     section "Installing AUR packages"
-    yay -S --needed --noconfirm "${PLAN_AUR[@]}"
+    spin "Installing ${#PLAN_AUR[@]} AUR package(s)…" \
+      yay -S --needed --noconfirm "${PLAN_AUR[@]}"
     ok "${#PLAN_AUR[@]} AUR package(s) installed"
   fi
 }
