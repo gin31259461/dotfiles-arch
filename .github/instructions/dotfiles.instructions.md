@@ -99,17 +99,37 @@ source it at the top of any new script:
 source "$HOME/.local/lib/tui.sh"
 ```
 
+### Noctalia theme
+
+`tui.sh` exports the Noctalia colour palette for both gum and fzf automatically
+upon sourcing. No extra setup is needed in scripts.
+
+**Palette** (Tokyo Night):
+
+| Role | Hex |
+|---|---|
+| primary (blue) | `#7aa2f7` |
+| secondary (purple) | `#bb9af7` |
+| tertiary (green) | `#9ece6a` |
+| error (red) | `#f7768e` |
+| fg | `#c0caf5` |
+| surface | `#1a1b26` |
+
 ### Print helpers
+
+No left padding — all output starts at column 0. `section()` adds a blank line
+before and after the heading. `gum_confirm` and `gum write` print `\n` before
+opening for top margin.
 
 ```bash
 # Colors: RED GRN YLW BLU DIM BOLD RST  (disabled when stdout is not a TTY)
 
-die()     # "  ✗  message"  — fatal error, exits
-ok()      # "  ✔  message"  — success (green)
-warn()    # "  !  message"  — warning (yellow)
-note()    # "     message"  — dim note
-step()    # "  ›  message"  — in-progress step (blue)
-section() # "  ◆  Heading"  — bold section header (blue diamond)
+die()     # "✗  message"  — fatal error, exits
+ok()      # "✔  message"  — success (green)
+warn()    # "!  message"  — warning (yellow)
+note()    # "message"     — dim note
+step()    # "›  message"  — in-progress step (blue)
+section() # "\n◆  Heading\n\n"  — bold section header (blue diamond)
 ```
 
 ### `gum_confirm` — confirmation prompt
@@ -118,7 +138,9 @@ section() # "  ◆  Heading"  — bold section header (blue diamond)
 gum_confirm "Question?"   # gum confirm UI when available, else [y/N] readline
 ```
 
-Returns 0 (yes) or 1 (no). Scripts with a `--yes` flag check it before calling:
+Returns 0 (yes) or 1 (no). Prints `\n` before the prompt for top margin. Theme
+set via `GUM_CONFIRM_*` env vars in `tui.sh`. Scripts with a `--yes` flag check
+it before calling:
 
 ```bash
 confirm() {
@@ -134,27 +156,37 @@ spin "Cloning repo…" git clone "$url" "$dest"
 spin "Installing packages…" sudo pacman -S --needed --noconfirm "${pkgs[@]}"
 ```
 
-Uses `gum spin --spinner dot` for external binaries. Falls back to `step` +
-direct call for shell functions/builtins, or when `gum` is not installed.
+Uses `gum spin --spinner dot` for external binaries. Theme set via
+`GUM_SPIN_*` env vars. Falls back to `step` + direct call for shell
+functions/builtins, or when `gum` is not installed.
 
 ### `gum write` — multi-line text input
 
 Used in `dotfiles.sh` to collect a commit message interactively:
 
 ```bash
+printf "\n"
 MSG=$(gum write --placeholder "Describe your changes…" \
   --header "Commit message  (Ctrl+D to confirm)" --width 72 --height 6)
 ```
 
+Always print `\n` before `gum write` for top margin. Theme set via
+`GUM_WRITE_*` env vars in `tui.sh`.
+
 ### fzf — multi-select list
 
-`cleanup.sh` and `install-packages.sh` use fzf for task/group selection:
+`cleanup.sh` and `install-packages.sh` use fzf for task/group selection.
+Use `$FZF_COLORS` from `tui.sh` and `--margin='1,0,0,0'` for top margin:
+
+```bash
+fzf --color="$FZF_COLORS" --margin='1,0,0,0' ...
+```
 
 ```
 TAB = toggle  ·  ENTER = confirm  ·  CTRL-A = select all  ·  ESC = exit
 ```
 
-fzf color scheme: `header:dim,prompt:blue,pointer:green,marker:green`
+fzf colour scheme (Noctalia): `bg+:#1a1b26,bg:#1c1d2a,spinner:#bb9af7,hl:#7aa2f7,fg:#a9b1d6,header:#565f89,info:#9ece6a,pointer:#7aa2f7,marker:#9ece6a,fg+:#c0caf5,prompt:#7aa2f7,hl+:#bb9af7,border:#414868`
 
 ---
 
@@ -278,5 +310,33 @@ dot submodule sync --recursive            # sync after .gitmodules changes
 ## Commit Style
 
 - Use lowercase imperative subject lines: `fix:`, `add`, `update`, `scripts:`
-- No co-author trailers unless explicitly requested
-- After changes: always run `dotfiles.sh` (or `dot add … && dot commit && dot push`)
+- **Never include co-authored-by trailers** — not for any commit in this repo
+- After every task: automatically run `dotfiles.sh` (or `dot add … && dot commit && dot push`) — do not wait to be asked
+
+---
+
+## Review Before Completing
+
+Before marking any task done, always:
+
+1. **Re-read every file you changed** — check for leftover debug lines, wrong indentation, missed substitutions, or stale references
+2. **Run syntax checks** — `bash -n <script>` for shell scripts
+3. **Look for related bugs** — if you changed a function used in multiple scripts, check all call sites
+4. **Verify consistency** — confirm that docs, instructions, and README still accurately describe the code
+
+Only call a task complete after this review passes.
+
+---
+
+## After Modifying Dotfiles
+
+Whenever you change scripts, configs, or add new functionality, keep these in sync:
+
+| What changed | What to update |
+|---|---|
+| New script / feature | `README.md` — add to the relevant section |
+| TUI conventions changed | `~/.github/instructions/dotfiles.instructions.md` — update TUI Style Convention |
+| Script behaviour / flags | `doc/` — update or add a doc file if one exists for that script |
+| Instructions file itself | Re-read after editing to confirm accuracy |
+
+Always run `dotfiles.sh` after updating any of the above so the changes are committed and pushed.

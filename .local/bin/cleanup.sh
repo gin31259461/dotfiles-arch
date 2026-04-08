@@ -164,7 +164,7 @@ build_fzf_lines() {
 }
 
 _select_fzf() {
-  printf "  ${DIM}TAB = toggle  ·  ENTER = confirm  ·  CTRL-A = select all  ·  ESC = exit${RST}\n\n"
+  printf "${DIM}TAB = toggle  ·  ENTER = confirm  ·  CTRL-A = select all  ·  ESC = exit${RST}\n\n"
   local lines raw_selected
   lines=$(build_fzf_lines)
 
@@ -175,10 +175,11 @@ _select_fzf() {
         --no-sort \
         --height='~80%' \
         --border=rounded \
-        --prompt='  Cleanup ❯ ' \
-        --header=$'  TAB = toggle  ·  ENTER = confirm  ·  CTRL-A = select all\n' \
+        --margin='1,0,0,0' \
+        --prompt='Cleanup ❯ ' \
+        --header=$'TAB = toggle  ·  ENTER = confirm  ·  CTRL-A = select all\n' \
         --bind='ctrl-a:toggle-all' \
-        --color='header:dim,prompt:blue,pointer:green,marker:green' \
+        --color="$FZF_COLORS" \
   ) || true
 
   while IFS= read -r line; do
@@ -189,19 +190,19 @@ _select_fzf() {
 }
 
 _select_numbered() {
-  printf "  ${DIM}Enter numbers (e.g. 1 3 5), or ${RST}${BOLD}all${RST}\n\n"
+  printf "${DIM}Enter numbers (e.g. 1 3 5), or ${RST}${BOLD}all${RST}\n\n"
   local i=1
   local -a menu_keys=()
 
   for t in "${CLEANUP_TASKS[@]}"; do
     IFS='|' read -r key label _ <<< "$t"
     local badge; badge=$(task_badge "$key")
-    printf "  ${DIM}%2d)${RST}  %-14s  [%s]  %s\n" "$i" "$key" "$badge" "$label"
+    printf "${DIM}%2d)${RST}  %-14s  [%s]  %s\n" "$i" "$key" "$badge" "$label"
     menu_keys+=("$key")
     i=$((i + 1))
   done
 
-  printf "\n  ${BOLD}Select:${RST} "
+  printf "\n${BOLD}Select:${RST} "
   read -r input
 
   [[ "${input,,}" == "all" ]] && { SELECTED_KEYS=("${menu_keys[@]}"); return; }
@@ -237,7 +238,7 @@ show_plan() {
       IFS='|' read -r k l d <<< "$t"
       [[ "$k" == "$key" ]] && { label="$l"; detail="$d"; break; }
     done
-    printf "  ${BLU}·${RST}  ${BOLD}%-28s${RST}  ${DIM}%s${RST}\n" "$label" "$detail"
+    printf "${BLU}·${RST}  ${BOLD}%-28s${RST}  ${DIM}%s${RST}\n" "$label" "$detail"
   done
 }
 
@@ -267,7 +268,7 @@ run_orphans() {
     gum_confirm "Remove ${#pkgs[@]} orphan(s)? (${pkgs[*]})" \
       || { warn "Skipped orphans"; return; }
   fi
-  spin "Removing ${#pkgs[@]} orphan(s)…" sudo pacman -Rns "${pkgs[@]}"
+  spin "Removing ${#pkgs[@]} orphan(s)…" sudo pacman -Rns --noconfirm "${pkgs[@]}"
   ok "Orphaned packages removed"
 }
 
@@ -301,12 +302,18 @@ run_task() {
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 main() {
-  printf "\n${BOLD}${BLU}  Arch Linux System Cleanup${RST}\n"
+  printf "\n${BOLD}${BLU}Arch Linux System Cleanup${RST}\n"
   select_tasks
   show_plan || exit 0
 
   if [[ "$OPT_YES" != true ]]; then
     gum_confirm "Proceed with cleanup?" || { warn "Aborted."; exit 0; }
+  fi
+
+  # Pre-warm sudo credentials for tasks that need root
+  if printf '%s\n' "${SELECTED_KEYS[@]}" \
+      | grep -qE '^(pacman-cache|orphans|journal)$'; then
+    sudo -v || die "sudo authentication failed"
   fi
 
   for key in "${SELECTED_KEYS[@]}"; do

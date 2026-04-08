@@ -151,10 +151,10 @@ _group_field() {
 # ── Banner ────────────────────────────────────────────────────────────────────
 print_banner() {
   printf '\n'
-  printf "  ${BOLD}${BLU}┌─────────────────────────────────────────────────────┐${RST}\n"
-  printf "  ${BOLD}${BLU}│${RST}  ${BOLD}Dotfile Package Installer${RST}                          ${BOLD}${BLU}│${RST}\n"
-  printf "  ${BOLD}${BLU}│${RST}  ${DIM}Arch Linux + Hyprland${RST}                              ${BOLD}${BLU}│${RST}\n"
-  printf "  ${BOLD}${BLU}└─────────────────────────────────────────────────────┘${RST}\n"
+  printf "${BOLD}${BLU}┌─────────────────────────────────────────────────────┐${RST}\n"
+  printf "${BOLD}${BLU}│${RST}  ${BOLD}Dotfile Package Installer${RST}                          ${BOLD}${BLU}│${RST}\n"
+  printf "${BOLD}${BLU}│${RST}  ${DIM}Arch Linux + Hyprland${RST}                              ${BOLD}${BLU}│${RST}\n"
+  printf "${BOLD}${BLU}└─────────────────────────────────────────────────────┘${RST}\n"
   printf '\n'
 }
 
@@ -209,7 +209,7 @@ select_groups() {
 }
 
 _select_fzf() {
-  printf "  ${DIM}TAB = toggle  ·  ENTER = confirm  ·  CTRL-A = select all  ·  ESC = exit${RST}\n\n"
+  printf "${DIM}TAB = toggle  ·  ENTER = confirm  ·  CTRL-A = select all  ·  ESC = exit${RST}\n\n"
   local lines raw_selected
   lines=$(build_fzf_lines)
 
@@ -220,10 +220,11 @@ _select_fzf() {
         --no-sort \
         --height='~80%' \
         --border=rounded \
-        --prompt='  Groups ❯ ' \
-        --header=$'  TAB = toggle  ·  ENTER = confirm  ·  CTRL-A = select all\n' \
+        --margin='1,0,0,0' \
+        --prompt='Groups ❯ ' \
+        --header=$'TAB = toggle  ·  ENTER = confirm  ·  CTRL-A = select all\n' \
         --bind='ctrl-a:toggle-all' \
-        --color='header:dim,prompt:blue,pointer:green,marker:green' \
+        --color="$FZF_COLORS" \
     ) || true   # fzf exits 130 on ESC; || true prevents set -e from firing
 
   while IFS= read -r line; do
@@ -235,7 +236,7 @@ _select_fzf() {
 }
 
 _select_numbered() {
-  printf "  ${DIM}Enter numbers (e.g. 1 3 5-7), or ${RST}${BOLD}all${RST}\n\n"
+  printf "${DIM}Enter numbers (e.g. 1 3 5-7), or ${RST}${BOLD}all${RST}\n\n"
   local i=1
   local -a menu_keys=()
 
@@ -244,12 +245,12 @@ _select_numbered() {
     local ratio cbadge
     ratio=$(count_installed "${official} ${aur}")
     cbadge=$(color_ratio "$ratio")
-    printf "  ${DIM}%2d)${RST}  %-12s  [%s]  %s\n" "$i" "$key" "$cbadge" "$label"
+    printf "${DIM}%2d)${RST}  %-12s  [%s]  %s\n" "$i" "$key" "$cbadge" "$label"
     menu_keys+=("$key")
     i=$((i + 1))
   done
 
-  printf "\n  ${BOLD}Select:${RST} "
+  printf "\n${BOLD}Select:${RST} "
   read -r input
 
   [[ "${input,,}" == "all" ]] && { SELECTED_KEYS=("${menu_keys[@]}"); return; }
@@ -276,7 +277,7 @@ declare -a PLAN_OFFICIAL=() PLAN_AUR=()
 
 build_plan() {
   section "Scanning installed packages"
-  printf "  ${DIM}Checking %d group(s)…${RST}\n" "${#SELECTED_KEYS[@]}"
+  printf "${DIM}Checking %d group(s)…${RST}\n" "${#SELECTED_KEYS[@]}"
 
   local raw_off=() raw_aur=()
 
@@ -318,16 +319,16 @@ show_plan() {
   fi
 
   if [[ ${#PLAN_OFFICIAL[@]} -gt 0 ]]; then
-    printf "\n  ${BOLD}Official (pacman) — %d package(s):${RST}\n" "${#PLAN_OFFICIAL[@]}"
+    printf "\n${BOLD}Official (pacman) — %d package(s):${RST}\n" "${#PLAN_OFFICIAL[@]}"
     for p in "${PLAN_OFFICIAL[@]}"; do
-      printf "    ${GRN}+${RST}  %s\n" "$p"
+      printf "${GRN}+${RST}  %s\n" "$p"
     done
   fi
 
   if [[ ${#PLAN_AUR[@]} -gt 0 ]]; then
-    printf "\n  ${BOLD}AUR (yay) — %d package(s):${RST}\n" "${#PLAN_AUR[@]}"
+    printf "\n${BOLD}AUR (yay) — %d package(s):${RST}\n" "${#PLAN_AUR[@]}"
     for p in "${PLAN_AUR[@]}"; do
-      printf "    ${YLW}+${RST}  %s\n" "$p"
+      printf "${YLW}+${RST}  %s\n" "$p"
     done
   fi
 

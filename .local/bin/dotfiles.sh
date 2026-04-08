@@ -27,6 +27,7 @@ done
 
 if [[ -z "$COMMIT_MSG" ]]; then
   if command -v gum &>/dev/null; then
+    printf "\n"
     COMMIT_MSG=$(gum write \
       --placeholder "Describe your changes…" \
       --header "Commit message  (Ctrl+D to confirm)" \
