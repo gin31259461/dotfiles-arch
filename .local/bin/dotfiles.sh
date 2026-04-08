@@ -30,7 +30,7 @@ if [[ -z "$COMMIT_MSG" ]]; then
     printf "\n"
     COMMIT_MSG=$(gum write \
       --placeholder "Describe your changes…" \
-      --header "Commit message  (Enter = new line · Ctrl+D to submit)" \
+      --header "Commit message" \
       --width 72 --height 6) || true
   fi
   [[ -z "$COMMIT_MSG" ]] && COMMIT_MSG="sync dotfiles"
