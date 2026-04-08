@@ -63,7 +63,7 @@ declare -a PKG_GROUPS=(
 xdg-desktop-portal-hyprland xdg-desktop-portal-gtk\
 |"
   "shell|Shell & Prompt\
-|zsh zsh-completions fzf lsd fastfetch\
+|zsh zsh-completions fzf gum lsd fastfetch\
 |"
   "terminal|Terminals\
 |kitty ghostty\

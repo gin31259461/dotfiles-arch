@@ -52,7 +52,7 @@ main() {
   # ── Prerequisites ───────────────────────────────────────────────────────────
   section "Prerequisites"
   local -a missing=()
-  for pkg in git rsync base-devel; do
+  for pkg in git rsync base-devel fzf gum; do
     if pacman -Qi "$pkg" &>/dev/null; then
       ok "$pkg"
     else
