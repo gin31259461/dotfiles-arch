@@ -23,17 +23,16 @@ while getopts ":m:h" opt; do
   esac
 done
 
-# ── Interactive commit message (cat when -m is not provided) ─────────────────
+# ── Interactive commit message (gum write when -m is not provided) ────────────
 
 if [[ -z "$COMMIT_MSG" ]]; then
-  printf "\n"
   if command -v gum &>/dev/null; then
-    gum style --foreground "240" "Commit message  (Enter = new line · Ctrl+D to submit)"
-  else
-    printf "Commit message  (Enter = new line · Ctrl+D to submit)\n"
+    printf "\n"
+    COMMIT_MSG=$(gum write \
+      --placeholder "Describe your changes…" \
+      --header "Commit message  (Enter = new line · Ctrl+D to submit)" \
+      --width 72 --height 6) || true
   fi
-  printf "\n"
-  COMMIT_MSG=$(cat) || true
   [[ -z "$COMMIT_MSG" ]] && COMMIT_MSG="sync dotfiles"
 fi
 
