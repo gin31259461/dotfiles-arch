@@ -10,7 +10,7 @@ keybinds_conf="$HOME/.config/hypr/conf.d/keybinds.conf"
 laptop_conf="$HOME/.config/hypr/conf.d/laptops.conf"
 rofi_theme="$HOME/.config/rofi/config-keybinds.rasi"
 parser="$HOME/.config/hypr/scripts/input/keybinds-parser.py"
-msg='☣️ NOTE ☣️: Clicking with Mouse or Pressing ENTER will have NO function'
+msg='❗NOTE:❗ Clicking with Mouse or Pressing ENTER will have NO function'
 
 files=("$keybinds_conf")
 [[ -f "$laptop_conf" ]] && files+=("$laptop_conf")
