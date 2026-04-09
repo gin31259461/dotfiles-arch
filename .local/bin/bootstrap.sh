@@ -138,6 +138,14 @@ main() {
   section "Dotfiles repository"
   if [[ -d "$DOTFILES_DIR" ]]; then
     ok "Bare repo already present at $DOTFILES_DIR — skipping clone"
+    # Ensure the memory file exists even when the repo was cloned manually
+    if [[ ! -f "$DOTFILES_REPO_FILE" ]]; then
+      local current_remote; current_remote=$(dot remote get-url origin 2>/dev/null || true)
+      if [[ -n "$current_remote" ]]; then
+        save_ssh_url "$current_remote"
+        note "Saved existing remote to $DOTFILES_REPO_FILE ($current_remote)"
+      fi
+    fi
   else
     local stored_ssh; stored_ssh=$(read_stored_ssh)
 

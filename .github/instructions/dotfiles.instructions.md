@@ -360,6 +360,7 @@ Whenever you change scripts, configs, or add new functionality, keep these in sy
 | Script or feature removed | `README.md` and/or `doc/<script>.md` — remove stale entries |
 | New flag or option added | `README.md` (usage table/examples) and script `--help` text |
 | New file added to dotfiles tracking | `dotfiles.sh` — add the path to the relevant `dot add` block |
+| Dotfiles file removed from tracking | `dotfiles.sh` — remove the path from the relevant `dot add` block |
 | TUI conventions changed | `~/.github/instructions/dotfiles.instructions.md` — update TUI Style Convention |
 | Instructions file itself | Re-read after editing to confirm accuracy |
 
