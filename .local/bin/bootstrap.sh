@@ -228,6 +228,16 @@ main() {
     if $new_ssh_remote; then
       dot remote set-url origin "$REPO_SSH"
       ok "Remote origin → $REPO_SSH"
+      # Bake the fork's URLs into the deployed bootstrap.sh so any subsequent
+      # machine bootstrapped from this fork works without --repo.
+      local bs="$HOME/.local/bin/bootstrap.sh"
+      if [[ -f "$bs" ]]; then
+        sed -i "s|^DEFAULT_REPO_SSH=.*|DEFAULT_REPO_SSH=\"$REPO_SSH\"|" "$bs"
+        if [[ -n "$REPO_HTTPS" ]]; then
+          sed -i "s|^DEFAULT_REPO_HTTPS=.*|DEFAULT_REPO_HTTPS=\"$REPO_HTTPS\"|" "$bs"
+        fi
+        ok "Updated DEFAULT_REPO_SSH in bootstrap.sh → $REPO_SSH"
+      fi
     fi
     if [[ -n "$REPO_SSH" ]]; then
       save_ssh_url "$REPO_SSH"

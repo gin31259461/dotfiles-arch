@@ -69,16 +69,22 @@ optional `install-packages`. Long operations show `gum spin` spinners.
 **Repo selection (memory file `~/.dotfiles-repo`):**
 
 `bootstrap.sh` writes `~/.dotfiles-repo` after every successful clone to
-remember which SSH remote URL this machine uses. On the next run:
+remember which SSH remote URL this machine uses. The file is **tracked in the
+repo** so it is deployed to every new machine via rsync.
+
+`DEFAULT_REPO_SSH`/`HTTPS` are initialised from `~/.dotfiles-repo` at startup
+(if it exists), so the correct fork is targeted without any flags.
 
 | Condition | Action |
 |---|---|
-| No `--repo`, or `--repo` matches memory | SSH clone from stored/default URL (HTTPS fallback if no key) |
-| `--repo` differs from memory | HTTPS clone of the default dotfiles as base; set `--repo` URL as `origin` for future pushes |
+| No `--repo`, memory file present or DEFAULT updated | SSH clone from that URL (HTTPS fallback if no key) |
+| `--repo` differs from current DEFAULT | HTTPS clone of the DEFAULT repo as base; set `--repo` URL as `origin`; **update `DEFAULT_REPO_SSH`/`HTTPS` in the deployed `bootstrap.sh`** so future machines need no flag |
 
-This lets non-owners (fork users) bootstrap from the default dotfiles and push
-customizations to their own repo without needing an SSH key during the initial
-clone.
+**Fork owner workflow:**
+1. First machine: `bootstrap.sh --repo git@github.com:you/arch-dotfiles.git`
+   → clones default, sets remote, bakes your URL into `bootstrap.sh`, writes `~/.dotfiles-repo`
+2. Run `dotfiles.sh` to commit and push (both `bootstrap.sh` and `.dotfiles-repo` are tracked)
+3. All subsequent machines: `bash <(curl ... your-fork/bootstrap.sh)` — no `--repo` needed
 
 ### `install-packages.sh` — interactive package installer
 

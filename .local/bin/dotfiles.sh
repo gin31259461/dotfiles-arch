@@ -43,6 +43,7 @@ cd "$HOME"
 # git & shell
 dot add \
   README.md \
+  .dotfiles-repo \
   doc \
   assets \
   .local/bin/dotfiles.sh \

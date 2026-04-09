@@ -182,30 +182,40 @@ bash <(curl -fsSL https://raw.githubusercontent.com/gin31259461/arch-dotfiles/ma
 **Using your own fork (`--repo`):**
 
 Pass your SSH remote URL if you are not the default repo owner or want to
-manage a personal fork. The script reads `~/.dotfiles-repo` (a small memory
-file it writes on first run) to decide how to proceed:
+manage a personal fork. On the **first setup**, the script:
+
+1. Clones the default dotfiles via HTTPS (no SSH key needed)
+2. Sets your SSH URL as `origin`
+3. **Patches `DEFAULT_REPO_SSH` / `DEFAULT_REPO_HTTPS` inside `bootstrap.sh`** so the script points to your fork
+4. Writes `~/.dotfiles-repo` (memory file) with your SSH URL
+
+Both `bootstrap.sh` (with patched defaults) and `.dotfiles-repo` are tracked
+files. After you run `dotfiles.sh` to push, all subsequent machines work
+**without `--repo`**:
 
 | Scenario | Behaviour |
 |---|---|
-| No `--repo`, or URL matches `~/.dotfiles-repo` | SSH clone from your repo (HTTPS fallback if no key) |
-| New URL (not in memory) | HTTPS clone of the default dotfiles as a base, then set your SSH URL as `origin` for future pushes |
+| No `--repo`, memory/defaults point to your fork | SSH clone directly from your fork (HTTPS fallback if no key) |
+| `--repo <url>` differs from current DEFAULT | HTTPS clone of DEFAULT as base; set new SSH URL; patch `bootstrap.sh`; update memory |
 
 ```bash
-# Fork owner or new user setting up for the first time:
+# First machine — specify your fork once:
 bash <(curl -fsSL https://raw.githubusercontent.com/gin31259461/arch-dotfiles/main/.local/bin/bootstrap.sh) \
   --repo git@github.com:youruser/arch-dotfiles.git
 
-# Short form also accepted:
-bootstrap.sh --repo youruser/arch-dotfiles
+# After pushing (bootstrap.sh is now patched with your fork's URL):
+# Every subsequent machine just uses your fork's bootstrap URL directly:
+bash <(curl -fsSL https://raw.githubusercontent.com/youruser/arch-dotfiles/main/.local/bin/bootstrap.sh)
+# → no --repo needed
 
-# Re-bootstrap on a second machine (memory already saved on first machine):
-bootstrap.sh --repo git@github.com:youruser/arch-dotfiles.git
-# → memory matches → SSH clone directly from your repo
+# Short user/repo form also accepted:
+bootstrap.sh --repo youruser/arch-dotfiles
 ```
 
 > **`~/.dotfiles-repo`** — written by `bootstrap.sh` after each successful
-> clone.  Contains the SSH URL this machine's dotfiles remote is configured to.
-> Not tracked by git (machine-specific).
+> clone. Contains the SSH URL this machine's dotfiles remote is configured to.
+> Tracked by git (deployed to new machines via rsync) so the memory is
+> available before any clone on fresh machines.
 
 <details>
 <summary>Manual steps (if you prefer not to curl-pipe)</summary>
