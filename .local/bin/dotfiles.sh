@@ -31,7 +31,7 @@ if [[ -z "$COMMIT_MSG" ]]; then
     COMMIT_MSG=$(gum write \
       --placeholder "Describe your changes…" \
       --header "Commit message" \
-      --width 72 --height 6) || true
+      --width 72 --height 6) || { warn "Aborted."; exit 0; }
   fi
   [[ -z "$COMMIT_MSG" ]] && COMMIT_MSG="sync dotfiles"
 fi
