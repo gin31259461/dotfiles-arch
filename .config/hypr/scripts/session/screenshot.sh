@@ -8,7 +8,7 @@ file="Screenshot_${time}_${RANDOM}.png"
 
 iDIR="$HOME/.config/swaync/icons"
 iDoR="$HOME/.config/swaync/images"
-sDIR="$HOME/.config/hypr/scripts"
+sDIR="$HOME/.config/hypr/scripts/media"
 
 active_window_class=$(hyprctl -j activewindow | jq -r '(.class)')
 active_window_file="Screenshot_${time}_${active_window_class}.png"
@@ -37,8 +37,8 @@ notify_view() {
     "${sDIR}/sounds.sh" --screenshot
     resp=$(${notify_cmd_shot} " Screenshot:" " Captured by Swappy")
     case "$resp" in
-      action1) swappy -f - <"$tmpfile" ;;
-      action2) rm "$tmpfile" ;;
+      action1) swappy -f "$2" ;;
+      action2) rm "$2" ;;
     esac
 
   else
@@ -94,7 +94,7 @@ shotwin() {
 shotarea() {
   local tmpfile
   tmpfile=$(mktemp)
-  grim -g "$(slurp)" - >"$tmpfile"
+  grim -g "$(slurp)" - >"$tmpfile" || { rm "$tmpfile"; return; }
 
   if [[ -s "$tmpfile" ]]; then
     wl-copy <"$tmpfile"
@@ -116,11 +116,11 @@ shotactive() {
 shotswappy() {
   local tmpfile
   tmpfile=$(mktemp)
-  grim -g "$(slurp)" - >"$tmpfile"
+  grim -g "$(slurp)" - >"$tmpfile" || { rm "$tmpfile"; return; }
 
   if [[ -s "$tmpfile" ]]; then
     wl-copy <"$tmpfile"
-    notify_view "swappy"
+    notify_view "swappy" "$tmpfile"
   fi
 }
 
