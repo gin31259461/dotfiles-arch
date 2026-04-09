@@ -163,21 +163,49 @@ bash <(curl -fsSL https://raw.githubusercontent.com/gin31259461/arch-dotfiles/ma
 
 **What `bootstrap.sh` does:**
 
-1. Installs prerequisites (`git`, `rsync`, `base-devel`) via pacman
-2. Clones the bare repo into `~/.dotfiles` (SSH if keys are set up, HTTPS otherwise)
-3. Deploys all dotfiles to `$HOME` via rsync
-4. Configures git to hide untracked files in `$HOME`
-5. Adds the `dot` alias to `.zshrc` if missing
-6. Initialises all git submodules
-7. Offers to install **Oh My Zsh** + plugins (`zsh-autosuggestions`,
+1. Installs prerequisites (`git`, `rsync`, `base-devel`, `fzf`, `gum`) via pacman
+2. Clones the dotfiles bare repo into `~/.dotfiles` and deploys files to `$HOME`
+3. Configures git to hide untracked files in `$HOME`
+4. Adds the `dot` alias to `.zshrc` if missing
+5. Initialises all git submodules
+6. Offers to install **Oh My Zsh** + plugins (`zsh-autosuggestions`,
    `zsh-syntax-highlighting`, `powerlevel10k`)
-8. Offers to run `install-packages.sh` to install dotfile dependencies
+7. Offers to run `install-packages.sh` to install dotfile dependencies
 
-Pass `--yes` / `-y` to skip optional prompts and accept all defaults:
+**Flags:**
+
+| Flag | Description |
+|---|---|
+| `--yes` / `-y` | Non-interactive — skip optional prompts and accept all defaults |
+| `--repo <ssh-url>` / `-r` | Your dotfiles SSH remote (see below) |
+
+**Using your own fork (`--repo`):**
+
+Pass your SSH remote URL if you are not the default repo owner or want to
+manage a personal fork. The script reads `~/.dotfiles-repo` (a small memory
+file it writes on first run) to decide how to proceed:
+
+| Scenario | Behaviour |
+|---|---|
+| No `--repo`, or URL matches `~/.dotfiles-repo` | SSH clone from your repo (HTTPS fallback if no key) |
+| New URL (not in memory) | HTTPS clone of the default dotfiles as a base, then set your SSH URL as `origin` for future pushes |
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/.../bootstrap.sh) --yes
+# Fork owner or new user setting up for the first time:
+bash <(curl -fsSL https://raw.githubusercontent.com/gin31259461/arch-dotfiles/main/.local/bin/bootstrap.sh) \
+  --repo git@github.com:youruser/arch-dotfiles.git
+
+# Short form also accepted:
+bootstrap.sh --repo youruser/arch-dotfiles
+
+# Re-bootstrap on a second machine (memory already saved on first machine):
+bootstrap.sh --repo git@github.com:youruser/arch-dotfiles.git
+# → memory matches → SSH clone directly from your repo
 ```
+
+> **`~/.dotfiles-repo`** — written by `bootstrap.sh` after each successful
+> clone.  Contains the SSH URL this machine's dotfiles remote is configured to.
+> Not tracked by git (machine-specific).
 
 <details>
 <summary>Manual steps (if you prefer not to curl-pipe)</summary>

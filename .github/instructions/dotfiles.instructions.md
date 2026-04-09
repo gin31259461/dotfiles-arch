@@ -58,9 +58,27 @@ Full one-command setup on a fresh Arch install:
 bash <(curl -fsSL https://raw.githubusercontent.com/gin31259461/arch-dotfiles/main/.local/bin/bootstrap.sh)
 ```
 
-What it does: installs prereqs → clones bare repo → rsync deploys to `$HOME` →
+Flags:
+- `--yes` / `-y` — non-interactive, accept all defaults
+- `--repo <ssh-url>` / `-r` — SSH URL of the user's own dotfiles remote
+
+What it does: installs prereqs → clones repo → rsync deploys to `$HOME` →
 configures `dot` alias → init submodules → optional Oh My Zsh (via `gum confirm`) →
 optional `install-packages`. Long operations show `gum spin` spinners.
+
+**Repo selection (memory file `~/.dotfiles-repo`):**
+
+`bootstrap.sh` writes `~/.dotfiles-repo` after every successful clone to
+remember which SSH remote URL this machine uses. On the next run:
+
+| Condition | Action |
+|---|---|
+| No `--repo`, or `--repo` matches memory | SSH clone from stored/default URL (HTTPS fallback if no key) |
+| `--repo` differs from memory | HTTPS clone of the default dotfiles as base; set `--repo` URL as `origin` for future pushes |
+
+This lets non-owners (fork users) bootstrap from the default dotfiles and push
+customizations to their own repo without needing an SSH key during the initial
+clone.
 
 ### `install-packages.sh` — interactive package installer
 
@@ -330,14 +348,19 @@ Only call a task complete after this review passes.
 
 ## After Modifying Dotfiles
 
+**You must update `README.md` and/or `doc/` whenever you add, update, or remove
+any script, feature, or flag.** Never mark a task complete without syncing docs.
+
 Whenever you change scripts, configs, or add new functionality, keep these in sync:
 
 | What changed | What to update |
 |---|---|
-| New script / feature | `README.md` — add to the relevant section |
-| New file added to dotfiles | `dotfiles.sh` — add the path to the relevant `dot add` block |
+| New script or feature added | `README.md` — add description to the relevant section |
+| Existing script or feature updated | `README.md` and/or `doc/<script>.md` — reflect the change |
+| Script or feature removed | `README.md` and/or `doc/<script>.md` — remove stale entries |
+| New flag or option added | `README.md` (usage table/examples) and script `--help` text |
+| New file added to dotfiles tracking | `dotfiles.sh` — add the path to the relevant `dot add` block |
 | TUI conventions changed | `~/.github/instructions/dotfiles.instructions.md` — update TUI Style Convention |
-| Script behaviour / flags | `doc/` — update or add a doc file if one exists for that script |
 | Instructions file itself | Re-read after editing to confirm accuracy |
 
 Always run `dotfiles.sh` after updating any of the above so the changes are committed and pushed.
