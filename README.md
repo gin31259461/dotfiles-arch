@@ -1,7 +1,6 @@
 # Arch Linux + Hyprland Dotfiles
 
-Personal dotfiles for **Arch Linux + Hyprland**, based on
-[JaKooLit's Arch-Hyprland](https://github.com/JaKooLit/Arch-Hyprland).
+Personal dotfiles for **Arch Linux + Hyprland**.
 Managed with a **bare git repository** tracked via the `dot` alias — no symlinks
 required.
 
@@ -230,5 +229,4 @@ dot config --get-regexp submodule
 ## References
 
 - [A simpler way to manage your dotfiles](https://www.anand-iyer.com/blog/2018/a-simpler-way-to-manage-your-dotfiles/)
-- [JaKooLit/Arch-Hyprland](https://github.com/JaKooLit/Arch-Hyprland)
-- [JaKooLit/Hyprland-Dots](https://github.com/JaKooLit/Hyprland-Dots)
+- [JaKooLit/Hyprland-Dots](https://github.com/JaKooLit/Hyprland-Dots) — config and script inspiration

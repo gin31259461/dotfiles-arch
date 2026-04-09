@@ -312,13 +312,9 @@ pacman -S noto-fonts-cjk ttf-sarasa-gothic
 
 ## 15. Install Hyprland
 
-Use [JaKooLit/Arch-Hyprland](https://github.com/JaKooLit/Arch-Hyprland) for an
-automated Hyprland installer (includes dotfiles, Wayland components, and optional
-extras):
+Run the bootstrap script to deploy dotfiles, install Oh My Zsh, and optionally
+install all dependencies in one step:
 
 ```bash
-git clone https://github.com/JaKooLit/Arch-Hyprland.git ~/Arch-Hyprland
-cd ~/Arch-Hyprland
-chmod +x install.sh
-./install.sh
+bash <(curl -fsSL https://raw.githubusercontent.com/gin31259461/arch-dotfiles/main/.local/bin/bootstrap.sh)
 ```

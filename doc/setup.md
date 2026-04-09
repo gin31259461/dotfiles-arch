@@ -18,8 +18,7 @@ Configuration steps after a fresh Hyprland installation.
 
 ## Zsh
 
-Uses **Oh My Zsh** + **Powerlevel10k** (Oh My Zsh is pre-configured by the
-JaKooLit installer).
+Uses **Oh My Zsh** + **Powerlevel10k** (Oh My Zsh is set up by `bootstrap.sh`).
 
 1. Install Powerlevel10k theme and plugins:
 
