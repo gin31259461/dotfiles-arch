@@ -12,10 +12,13 @@
 #                       accepts: user/repo | git@host:user/repo.git
 #
 #  Repo selection logic:
-#    · No --repo, or --repo matches ~/.dotfiles-repo (memory file):
+#    · ~/.dotfiles-repo (memory file) overrides the hardcoded defaults at startup.
+#      This lets a fork owner curl-pipe their own bootstrap.sh and have it clone
+#      the right repo automatically on any new machine that already has the file.
+#    · No --repo, or --repo matches the effective default:
 #        → SSH clone from your repo (HTTPS fallback if no key)
-#    · --repo differs from memory (new machine / switching repos):
-#        → HTTPS clone of the default dotfiles as base, then set your
+#    · --repo differs from the effective default:
+#        → HTTPS clone of the effective default repo as base, then set your
 #          SSH URL as the remote so you can push to your own repo
 # ─────────────────────────────────────────────────────────────────────────────
 set -euo pipefail
@@ -51,7 +54,25 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
-# ── Bare repo helper ──────────────────────────────────────────────────────────
+# ── Load defaults from memory file ───────────────────────────────────────────
+# ~/.dotfiles-repo (if present) overrides the hardcoded DEFAULT_REPO_* values
+# so that a fork owner's bootstrap.sh clones the right repo on any new machine.
+# --repo can still override further inside main().
+if [[ -f "$DOTFILES_REPO_FILE" ]]; then
+  _mem=$(< "$DOTFILES_REPO_FILE")
+  if [[ -n "$_mem" ]]; then
+    DEFAULT_REPO_SSH="$_mem"
+    if [[ "$_mem" == git@github.com:* ]]; then
+      _slug="${_mem#git@github.com:}"; _slug="${_slug%.git}"
+      DEFAULT_REPO_HTTPS="https://github.com/${_slug}.git"
+    else
+      DEFAULT_REPO_HTTPS=""
+    fi
+    REPO_SSH="$DEFAULT_REPO_SSH"
+    REPO_HTTPS="$DEFAULT_REPO_HTTPS"
+  fi
+  unset _mem _slug
+fi
 dot() { git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" "$@"; }
 
 # ── Confirm prompt ────────────────────────────────────────────────────────────
