@@ -44,6 +44,7 @@ cd "$HOME"
 dot add \
   README.md \
   doc \
+  assets \
   .local/bin/dotfiles.sh \
   .local/bin/bootstrap.sh \
   .local/bin/install-packages.sh \

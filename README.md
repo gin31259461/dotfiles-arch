@@ -22,6 +22,9 @@ required.
 
 <!-- markdownlint-enable -->
 
+## Preview
+![Hyprland Dotfiles Preview](./assets/swappy-20260409-185633.png)
+
 ## What's Included
 
 | Group | Files / Directories |
