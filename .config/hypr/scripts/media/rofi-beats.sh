@@ -45,7 +45,7 @@ populate_local_music() {
 play_local_music() {
   populate_local_music
   choice=$(printf "%s\n" "${filenames[@]}" | rofi -i -dmenu -config "$rofi_theme" \
-    -theme-str 'entry { placeholder: "🎵 Choose Local Music"; }')
+    -theme-str 'entry { placeholder: "Choose Local Music"; }')
   [[ -z "$choice" ]] && exit 1
   for ((i = 0; i < "${#filenames[@]}"; ++i)); do
     if [[ "${filenames[$i]}" == "$choice" ]]; then
@@ -71,7 +71,7 @@ play_online_music() {
     exit 0
   fi
   choice=$(awk -F'|' '{print $1}' "$music_list" | sort | rofi -i -dmenu -config "$rofi_theme" \
-    -theme-str 'entry { placeholder: "🌐 Choose Online Station"; }')
+    -theme-str 'entry { placeholder: "Choose Online Station"; }')
   [[ -z "$choice" ]] && exit 1
   link=$(awk -F'|' -v name="$choice" '$1 == name {print $2; exit}' "$music_list")
   [[ -z "$link" ]] && {

@@ -7,7 +7,7 @@ waybar_styles="$HOME/.config/waybar/style"
 waybar_style="$HOME/.config/waybar/style.css"
 scriptsDir="$HOME/.config/hypr/scripts"
 rofi_config="$HOME/.config/rofi/config-waybar-style.rasi"
-msg=' 🎨 Choose a Waybar style'
+msg='Choose a Waybar style'
 
 apply_style() {
     ln -sf "$waybar_styles/$1.css" "$waybar_style"
@@ -22,7 +22,7 @@ main() {
             -exec basename {} .css \; | sort
     )
 
-    MARKER="👉"
+    MARKER="›"
     default_row=0
     for i in "${!options[@]}"; do
         if [[ "${options[i]}" == "$current_name" ]]; then

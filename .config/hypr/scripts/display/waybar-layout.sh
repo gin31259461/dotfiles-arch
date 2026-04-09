@@ -7,7 +7,7 @@ waybar_layouts="$HOME/.config/waybar/configs"
 waybar_config="$HOME/.config/waybar/config"
 scriptsDir="$HOME/.config/hypr/scripts"
 rofi_config="$HOME/.config/rofi/config-waybar-layout.rasi"
-msg=' 🗂️  Choose a Waybar layout'
+msg='Choose a Waybar layout'
 
 apply_layout() {
     ln -sf "$waybar_layouts/$1" "$waybar_config"
@@ -21,7 +21,7 @@ main() {
         find -L "$waybar_layouts" -maxdepth 1 -type f -printf '%f\n' | sort
     )
 
-    MARKER="👉"
+    MARKER="›"
     default_row=0
     for i in "${!options[@]}"; do
         if [[ "${options[i]}" == "$current_name" ]]; then

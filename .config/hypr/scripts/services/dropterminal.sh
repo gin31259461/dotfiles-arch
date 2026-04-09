@@ -2,8 +2,6 @@
 # Provides dropdown terminal functionality
 #
 # Made and brought to by Kiran George
-# /* -- ✨ https://github.com/SherLock707 ✨ -- */  ##
-# Dropdown Terminal
 # Usage: ./Dropdown.sh [-d] <terminal_command>
 # Example: ./Dropdown.sh foot
 #          ./Dropdown.sh -d foot (with debug output)
