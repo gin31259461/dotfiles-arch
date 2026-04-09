@@ -292,7 +292,7 @@ dot submodule sync --recursive            # sync after .gitmodules changes
 ## Package Management
 
 - `pacman` for official packages, `yay` for AUR
-- Add packages to the correct group in `~/.local/bin/install-packages.sh`
+- Add packages to the correct group in `~/.local/lib/packages.sh`
 - Run `install-packages.sh` to install; it skips already-installed packages
 - Official packages go in the 3rd `|`-field; AUR packages in the 4th field
 
@@ -335,6 +335,7 @@ Whenever you change scripts, configs, or add new functionality, keep these in sy
 | What changed | What to update |
 |---|---|
 | New script / feature | `README.md` — add to the relevant section |
+| New file added to dotfiles | `dotfiles.sh` — add the path to the relevant `dot add` block |
 | TUI conventions changed | `~/.github/instructions/dotfiles.instructions.md` — update TUI Style Convention |
 | Script behaviour / flags | `doc/` — update or add a doc file if one exists for that script |
 | Instructions file itself | Re-read after editing to confirm accuracy |
