@@ -5,31 +5,41 @@
 #
 #  Usage:
 #    bash <(curl -fsSL https://raw.githubusercontent.com/gin31259461/arch-dotfiles/main/.local/bin/bootstrap.sh)
-#    bootstrap.sh [--yes|-y]
+#    bootstrap.sh [--yes|-y] [--repo <url>]
 #
-#    --yes   non-interactive — accept all defaults (skip optional steps)
+#    --yes          non-interactive — accept all defaults (skip optional steps)
+#    --repo <url>   use a custom dotfiles repo instead of the default
+#                   accepts:  user/repo
+#                             git@host:user/repo.git
+#                             https://host/user/repo.git
 # ─────────────────────────────────────────────────────────────────────────────
 set -euo pipefail
 
-# ── Constants ─────────────────────────────────────────────────────────────────
+# ── Defaults ──────────────────────────────────────────────────────────────────
 REPO_SSH="git@github.com:gin31259461/arch-dotfiles.git"
 REPO_HTTPS="https://github.com/gin31259461/arch-dotfiles.git"
 DOTFILES_DIR="$HOME/.dotfiles"
 OPT_YES=false
+OPT_REPO=""
 
 # shellcheck source=../.local/lib/tui.sh
 source "$HOME/.local/lib/tui.sh"
 
 # ── Argument parsing ──────────────────────────────────────────────────────────
-for arg in "$@"; do
-  case "$arg" in
+while [[ $# -gt 0 ]]; do
+  case "$1" in
     --yes|-y) OPT_YES=true ;;
+    --repo|-r)
+      [[ -n "${2:-}" ]] || die "--repo requires a value"
+      OPT_REPO="$2"
+      shift ;;
     --help|-h)
-      printf 'Usage: %s [--yes]\n  -y, --yes  non-interactive (accept all defaults)\n' \
+      printf 'Usage: %s [--yes] [--repo <url>]\n  -y, --yes       non-interactive (accept all defaults)\n  -r, --repo URL  use a custom dotfiles repo\n                  accepts: user/repo | git@host:user/repo.git | https://...\n' \
         "$(basename "$0")"
       exit 0 ;;
-    *) die "Unknown option: $arg" ;;
+    *) die "Unknown option: $1" ;;
   esac
+  shift
 done
 
 # ── Bare repo helper ──────────────────────────────────────────────────────────
@@ -40,6 +50,52 @@ dot() { git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" "$@"; }
 confirm() {
   $OPT_YES && return 0
   gum_confirm "$1"
+}
+
+# ── Resolve repo URLs from user input ────────────────────────────────────────
+# Sets REPO_SSH and REPO_HTTPS from a user/repo shorthand, SSH URL, or HTTPS URL.
+# Non-GitHub SSH hosts get REPO_HTTPS="" (no fallback). HTTPS-only inputs
+# get REPO_SSH="" (no SSH attempt).
+resolve_repo_urls() {
+  local input="$1"
+  if [[ "$input" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]]; then
+    # Shorthand: user/repo — assumed GitHub
+    REPO_SSH="git@github.com:${input%.git}.git"
+    REPO_HTTPS="https://github.com/${input%.git}.git"
+  elif [[ "$input" == git@github.com:* ]]; then
+    local slug="${input#git@github.com:}"; slug="${slug%.git}"
+    REPO_SSH="git@github.com:${slug}.git"
+    REPO_HTTPS="https://github.com/${slug}.git"
+  elif [[ "$input" == git@* ]]; then
+    # Non-GitHub SSH host — use SSH only; no HTTPS fallback available
+    REPO_SSH="$input"
+    REPO_HTTPS=""
+  elif [[ "$input" == https://* ]] || [[ "$input" == http://* ]]; then
+    REPO_SSH=""
+    REPO_HTTPS="$input"
+  else
+    die "Unrecognised repo format: '$input'
+Use one of:
+  user/repo                          (GitHub shorthand)
+  git@github.com:user/repo.git       (SSH)
+  https://github.com/user/repo.git   (HTTPS)"
+  fi
+}
+
+# ── Prompt for custom repo (interactive, no --repo flag) ─────────────────────
+prompt_repo() {
+  if command -v gum &>/dev/null; then
+    printf '\n'
+    gum input \
+      --placeholder "user/repo  or  full Git URL" \
+      --header "Custom dotfiles repository" \
+      --width 60
+  else
+    printf '\nCustom dotfiles repository\n'
+    local _url
+    read -rp "Enter user/repo or full Git URL: " _url
+    printf '%s' "$_url"
+  fi
 }
 
 # ── Main ──────────────────────────────────────────────────────────────────────
@@ -69,12 +125,31 @@ main() {
   if [[ -d "$DOTFILES_DIR" ]]; then
     ok "Bare repo already present at $DOTFILES_DIR — skipping clone"
   else
-    # Prefer SSH; fall back to HTTPS when no GitHub SSH access
-    local clone_url="$REPO_SSH"
-    if ! ssh -T git@github.com -o BatchMode=yes -o ConnectTimeout=5 &>/dev/null 2>&1; then
-      warn "No SSH access to GitHub — using HTTPS"
-      clone_url="$REPO_HTTPS"
+    # Determine which repo to clone
+    if [[ -n "$OPT_REPO" ]]; then
+      resolve_repo_urls "$OPT_REPO"
+    elif ! $OPT_YES; then
+      if ! gum_confirm "Use default repo (gin31259461/arch-dotfiles)?"; then
+        local custom_repo
+        custom_repo=$(prompt_repo)
+        [[ -n "$custom_repo" ]] || die "No repository provided"
+        resolve_repo_urls "$custom_repo"
+      fi
     fi
+    note "Repo: ${REPO_SSH:-$REPO_HTTPS}"
+
+    # Choose clone URL — prefer SSH, fall back to HTTPS for GitHub repos
+    local clone_url
+    if [[ -z "$REPO_SSH" ]]; then
+      clone_url="$REPO_HTTPS"
+    elif [[ "$REPO_SSH" == git@github.com:* ]] && \
+         ! ssh -T git@github.com -o BatchMode=yes -o ConnectTimeout=5 &>/dev/null 2>&1; then
+      warn "No SSH access to GitHub — using HTTPS"
+      clone_url="${REPO_HTTPS:-$REPO_SSH}"
+    else
+      clone_url="$REPO_SSH"
+    fi
+    [[ -n "$clone_url" ]] || die "No valid repository URL resolved"
 
     local tmp; tmp=$(mktemp -d)
     spin "Cloning $clone_url" \
@@ -142,8 +217,10 @@ main() {
 
   # ── Packages ────────────────────────────────────────────────────────────────
   section "Install packages"
-  if confirm "Run install-packages now?"; then
+  if [[ -f "$HOME/.local/bin/install-packages.sh" ]] && confirm "Run install-packages now?"; then
     "$HOME/.local/bin/install-packages.sh"
+  elif [[ ! -f "$HOME/.local/bin/install-packages.sh" ]]; then
+    note "install-packages.sh not found — skipping"
   else
     note "Run install-packages.sh later to install dotfile dependencies"
   fi

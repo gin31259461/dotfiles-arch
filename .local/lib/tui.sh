@@ -30,6 +30,11 @@ export GUM_WRITE_HEADER_FOREGROUND="#9ece6a"
 export GUM_WRITE_BASE_FOREGROUND="#c0caf5"
 export GUM_WRITE_END_OF_BUFFER_FOREGROUND="#1a1b26"
 
+export GUM_INPUT_CURSOR_FOREGROUND="#7aa2f7"
+export GUM_INPUT_PROMPT_FOREGROUND="#bb9af7"
+export GUM_INPUT_HEADER_FOREGROUND="#9ece6a"
+export GUM_INPUT_PLACEHOLDER_FOREGROUND="#565f89"
+
 # ── Noctalia theme — fzf ─────────────────────────────────────────────────────
 # Use as: fzf --color="$FZF_COLORS" ...
 FZF_COLORS='bg+:#1a1b26,bg:#1c1d2a,spinner:#bb9af7,hl:#7aa2f7,fg:#a9b1d6,header:#565f89,info:#9ece6a,pointer:#7aa2f7,marker:#9ece6a,fg+:#c0caf5,prompt:#7aa2f7,hl+:#bb9af7,border:#414868'
