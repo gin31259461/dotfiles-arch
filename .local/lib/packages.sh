@@ -64,8 +64,11 @@ qalculate-gtk nvtop yt-dlp baobab inxi power-profiles-daemon\
 |\
 |adw-gtk-theme"
   "sync|Cloud Sync\
-|tailscale\
+|\
 |onedrive-abraunegg"
+  "host|Self-hosted & Remote Desktop\
+|tailscale\
+|sunshine"
   "apps|Applications\
 |obsidian remmina vlc loupe\
 |vesktop-bin zen-browser-bin onlyoffice-bin"

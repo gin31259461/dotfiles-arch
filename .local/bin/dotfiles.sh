@@ -89,7 +89,8 @@ dot add \
   .config/cava \
   .config/ghostty \
   .config/waybar \
-  .config/noctalia
+  .config/noctalia \
+  .config/sunshine/sunshine.conf
 
 # OneDrive
 dot add \
