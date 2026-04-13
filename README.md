@@ -40,7 +40,7 @@ required.
 | **Apps** | `.config/discord/settings.json`, `.config/noctalia/`, `.config/electron-flags.conf` |
 | **OneDrive** | `.config/onedrive/config`, `.config/onedrive/sync_list` |
 | **Meta** | `.local/bin/bootstrap.sh`, `.local/bin/dotfiles.sh`, `.local/bin/install-packages.sh`, `.local/bin/cleanup.sh`, `.gitconfig`, `.gitmodules`, `.gitignore`, `doc/`, `README.md` |
-| **Host** | `.config/sunshine/sunshine.conf` |
+| **Self-hosted** | `.config/sunshine/sunshine.conf` |
 
 ## First Time Setup
 
@@ -124,7 +124,7 @@ Package groups:
 | **Session & Logout** | `wlogout` (AUR) |
 | **GTK Theme & Cursor** | `adw-gtk-theme` (AUR) |
 | **Cloud Sync** | `onedrive-abraunegg` (AUR) |
-| **Host & VPN & Service** | `tailscale`, `sunshine` (AUR) |
+| **Self-hosted & VPN** | `tailscale`, `sunshine` (AUR) |
 | **Applications** | `obsidian`, `remmina`, `vlc`, `vesktop-bin`, `zen-browser-bin` (AUR) |
 | **Neovim Editor** | `lazygit`, `neovim-nightly-bin` (AUR) |
 | **Noctalia Shell** | `noctalia-shell` (AUR) |

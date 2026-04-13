@@ -66,7 +66,7 @@ qalculate-gtk nvtop yt-dlp baobab inxi power-profiles-daemon\
   "sync|Cloud Sync\
 |\
 |onedrive-abraunegg"
-  "host|Host & VPN & Service\
+  "self-hosted|Self-hosted & VPN\
 |tailscale\
 |sunshine"
   "apps|Applications\
