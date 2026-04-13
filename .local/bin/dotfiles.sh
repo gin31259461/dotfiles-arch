@@ -55,7 +55,8 @@ dot add \
   .gitconfig \
   .gitmodules \
   .gitignore \
-  .github
+  .github \
+  .editorconfig
 
 # zsh
 dot add \
