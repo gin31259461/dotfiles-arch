@@ -19,7 +19,8 @@ is_installed() { pacman -Qi "$1" &>/dev/null; }
 # count_installed "pkg1 pkg2 ..." → "installed/total"
 count_installed() {
   local ins=0 tot=0
-  local -a pkgs; read -ra pkgs <<< "$1"
+  local -a pkgs
+  read -ra pkgs <<<"$1"
   for p in "${pkgs[@]}"; do
     [[ -z "$p" ]] && continue
     tot=$((tot + 1))
@@ -30,7 +31,8 @@ count_installed() {
 
 # missing_pkgs "pkg1 pkg2 ..." → prints one missing package per line
 missing_pkgs() {
-  local -a pkgs; read -ra pkgs <<< "$1"
+  local -a pkgs
+  read -ra pkgs <<<"$1"
   for p in "${pkgs[@]}"; do
     [[ -z "$p" ]] && continue
     if ! is_installed "$p"; then printf '%s\n' "$p"; fi
@@ -43,30 +45,33 @@ color_ratio() {
   local ratio="$1"
   local ins="${ratio%/*}" tot="${ratio#*/}"
   local text color
-  if   [[ "$ins" -eq "$tot" && "$tot" -gt 0 ]]; then
-    text="${ratio} ✔"; color="$GRN"
+  if [[ "$ins" -eq "$tot" && "$tot" -gt 0 ]]; then
+    text="${ratio} ✔"
+    color="$GRN"
   elif [[ "$ins" -gt 0 ]]; then
-    text="$ratio";     color="$YLW"
+    text="$ratio"
+    color="$YLW"
   else
-    text="$ratio";     color="$RED"
+    text="$ratio"
+    color="$RED"
   fi
-  local pad=$(( 8 > ${#text} ? 8 - ${#text} : 0 ))
+  local pad=$((8 > ${#text} ? 8 - ${#text} : 0))
   printf '%s%s%s%*s' "$color" "$text" "$RST" "$pad" ''
 }
 
 # strip_ansi — remove ANSI escape codes from a string
-strip_ansi() { sed 's/\x1b\[[0-9;]*m//g' <<< "$1"; }
+strip_ansi() { sed 's/\x1b\[[0-9;]*m//g' <<<"$1"; }
 
 # ── Group lookups ─────────────────────────────────────────────────────────────
 _group_field() {
-  local key="$1" field="$2"   # field: 1=key 2=label 3=official 4=aur
+  local key="$1" field="$2" # field: 1=key 2=label 3=official 4=aur
   for g in "${PKG_GROUPS[@]}"; do
-    IFS='|' read -r k l off aur <<< "$g"
+    IFS='|' read -r k l off aur <<<"$g"
     if [[ "$k" == "$key" ]]; then
       case "$field" in
-        label)    printf '%s' "$l" ;;
-        official) printf '%s' "$off" ;;
-        aur)      printf '%s' "$aur" ;;
+      label) printf '%s' "$l" ;;
+      official) printf '%s' "$off" ;;
+      aur) printf '%s' "$aur" ;;
       esac
       return
     fi
@@ -95,11 +100,17 @@ ensure_yay() {
   local tmp
   tmp=$(mktemp -d)
   spin "Cloning yay from AUR…" \
-    git clone --depth=1 https://aur.archlinux.org/yay.git "$tmp/yay" \
-    || { rm -rf "$tmp"; die "Failed to clone yay repository"; }
+    git clone --depth=1 https://aur.archlinux.org/yay.git "$tmp/yay" ||
+    {
+      rm -rf "$tmp"
+      die "Failed to clone yay repository"
+    }
   step "Building yay (may prompt for sudo password)…"
-  (cd "$tmp/yay" && makepkg -si --noconfirm) \
-    || { rm -rf "$tmp"; die "Failed to build yay — check the output above"; }
+  (cd "$tmp/yay" && makepkg -si --noconfirm) ||
+    {
+      rm -rf "$tmp"
+      die "Failed to build yay — check the output above"
+    }
   rm -rf "$tmp"
   ok "yay installed"
 }
@@ -107,14 +118,14 @@ ensure_yay() {
 # ── Build fzf lines ───────────────────────────────────────────────────────────
 build_fzf_lines() {
   for g in "${PKG_GROUPS[@]}"; do
-    IFS='|' read -r key label official aur <<< "$g"
+    IFS='|' read -r key label official aur <<<"$g"
     local all="${official} ${aur}"
     local ratio cbadge
     ratio=$(count_installed "$all")
     cbadge=$(color_ratio "$ratio")
     local preview
-    preview=$(printf '%s' "${official} ${aur}" \
-      | tr ' ' ',' | sed 's/^,//; s/,$//' | cut -c1-55)
+    preview=$(printf '%s' "${official} ${aur}" |
+      tr ' ' ',' | sed 's/^,//; s/,$//' | cut -c1-55)
     printf "%-12s  [%s]  ${BOLD}%-28s${RST}  ${DIM}%s${RST}\n" \
       "$key" "$cbadge" "$label" "$preview"
   done
@@ -138,8 +149,9 @@ _select_fzf() {
   local lines raw_selected
   lines=$(build_fzf_lines)
 
-  raw_selected=$(printf '%s\n' "$lines" \
-    | fzf \
+  raw_selected=$(
+    printf '%s\n' "$lines" |
+      fzf \
         --multi \
         --ansi \
         --no-sort \
@@ -149,15 +161,15 @@ _select_fzf() {
         --prompt='Groups ❯ ' \
         --header=$'TAB = toggle  ·  ENTER = confirm  ·  CTRL-A = select all\n' \
         --bind='ctrl-a:toggle-all' \
-        --color="$FZF_COLORS" \
-    ) || true   # fzf exits 130 on ESC; || true prevents set -e from firing
+        --color="$FZF_COLORS"
+  ) || true # fzf exits 130 on ESC; || true prevents set -e from firing
 
   while IFS= read -r line; do
     [[ -z "$line" ]] && continue
     local key
     key=$(strip_ansi "$line" | awk '{print $1}')
     [[ -n "$key" ]] && SELECTED_KEYS+=("$key")
-  done <<< "$raw_selected"
+  done <<<"$raw_selected"
 }
 
 _select_numbered() {
@@ -166,7 +178,7 @@ _select_numbered() {
   local -a menu_keys=()
 
   for g in "${PKG_GROUPS[@]}"; do
-    IFS='|' read -r key label official aur <<< "$g"
+    IFS='|' read -r key label official aur <<<"$g"
     local ratio cbadge
     ratio=$(count_installed "${official} ${aur}")
     cbadge=$(color_ratio "$ratio")
@@ -178,18 +190,21 @@ _select_numbered() {
   printf "\n${BOLD}Select:${RST} "
   read -r input
 
-  [[ "${input,,}" == "all" ]] && { SELECTED_KEYS=("${menu_keys[@]}"); return; }
+  [[ "${input,,}" == "all" ]] && {
+    SELECTED_KEYS=("${menu_keys[@]}")
+    return
+  }
 
   local input_clean="${input//,/ }"
   for token in $input_clean; do
     if [[ "$token" =~ ^([0-9]+)-([0-9]+)$ ]]; then
       local lo="${BASH_REMATCH[1]}" hi="${BASH_REMATCH[2]}"
-      for (( n=lo; n<=hi; n++ )); do
-        SELECTED_KEYS+=("${menu_keys[$((n-1))]}")
+      for ((n = lo; n <= hi; n++)); do
+        SELECTED_KEYS+=("${menu_keys[$((n - 1))]}")
       done
     elif [[ "$token" =~ ^[0-9]+$ ]]; then
-      if (( token >= 1 && token <= ${#menu_keys[@]} )); then
-        SELECTED_KEYS+=("${menu_keys[$((token-1))]}")
+      if ((token >= 1 && token <= ${#menu_keys[@]})); then
+        SELECTED_KEYS+=("${menu_keys[$((token - 1))]}")
       else
         warn "Skipping $token: out of range (1-${#menu_keys[@]})"
       fi
@@ -266,8 +281,11 @@ AUTO_YES=false
 
 do_install() {
   if ! $AUTO_YES; then
-    local total=$(( ${#PLAN_OFFICIAL[@]} + ${#PLAN_AUR[@]} ))
-    gum_confirm "Install $total package(s)?" || { warn "Aborted."; exit 0; }
+    local total=$((${#PLAN_OFFICIAL[@]} + ${#PLAN_AUR[@]}))
+    gum_confirm "Install $total package(s)?" || {
+      warn "Aborted."
+      exit 0
+    }
   fi
 
   if [[ ${#PLAN_OFFICIAL[@]} -gt 0 ]]; then
@@ -285,10 +303,39 @@ do_install() {
   fi
 }
 
+# ── Permissions Setup ─────────────────────────────────────────────────────────
+
+SUNSHINE_PATH=$(readlink -f $(which sunshine))
+
+sunshine_cap_sys_admin() {
+  if [[ -z "$SUNSHINE_PATH" ]]; then
+    warn "Sunshine executable not found; skipping permission grant."
+    return
+  else
+    if getcap "$SUNSHINE_PATH" | grep -q "cap_sys_admin"; then
+      ok "Sunshine already has cap_sys_admin permission"
+      return
+    else
+      info "Granting cap_sys_admin to Sunshine at $SUNSHINE_PATH"
+      sudo setcap cap_sys_admin+p "$SUNSHINE_PATH" || {
+        warn "Failed to set cap_sys_admin on $SUNSHINE_PATH. You may need to run 'sudo setcap cap_sys_admin+p $SUNSHINE_PATH' manually."
+        return
+      }
+      ok "cap_sys_admin granted to Sunshine"
+    fi
+  fi
+}
+
+grant_permissions() {
+  section "Granting permissions"
+  spin "Setting up Sunshine permissions…" sunshine_cap_sys_admin
+  ok "Permissions setup complete"
+}
+
 # ── Summary ───────────────────────────────────────────────────────────────────
 show_summary() {
   local total
-  total=$(( ${#PLAN_OFFICIAL[@]} + ${#PLAN_AUR[@]} ))
+  total=$((${#PLAN_OFFICIAL[@]} + ${#PLAN_AUR[@]}))
   section "Done"
   ok "$total package(s) installed successfully"
   note "Log out and back in for compositor/env changes to take effect."
@@ -299,13 +346,13 @@ show_summary() {
 # ── Argument parsing ──────────────────────────────────────────────────────────
 for arg in "$@"; do
   case "$arg" in
-    --yes|-y) AUTO_YES=true ;;
-    --help|-h)
-      printf 'Usage: %s [--yes]\n' "$(basename "$0")"
-      printf '  --yes  skip confirmation prompt\n'
-      exit 0
-      ;;
-    *) die "Unknown option: $arg" ;;
+  --yes | -y) AUTO_YES=true ;;
+  --help | -h)
+    printf 'Usage: %s [--yes]\n' "$(basename "$0")"
+    printf '  --yes  skip confirmation prompt\n'
+    exit 0
+    ;;
+  *) die "Unknown option: $arg" ;;
   esac
 done
 
@@ -321,8 +368,9 @@ main() {
   fi
 
   build_plan
-  show_plan || exit 0
-  do_install
+
+  show_plan && do_install
+  grant_permissions
   show_summary
 }
 
