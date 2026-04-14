@@ -58,6 +58,7 @@ dot add \
   .local/bin/cleanup.sh \
   .local/lib/permission \
   .local/lib/core \
+  .local/lib/extra \
   .local/lib/tui.sh \
   .local/lib/packages.sh \
   .gitconfig \

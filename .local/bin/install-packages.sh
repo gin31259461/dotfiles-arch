@@ -8,12 +8,11 @@
 # ─────────────────────────────────────────────────────────────────────────────
 set -euo pipefail
 
-# shellcheck source=../.local/lib/tui.sh
 source "$HOME/.local/lib/tui.sh"
-# shellcheck source=../.local/lib/packages.sh
 source "$HOME/.local/lib/packages.sh"
 source "$HOME/.local/lib/permission/sunshine.sh"
 source "$HOME/.local/lib/core/sddm.sh"
+source "$HOME/.local/lib/extra/msi.sh"
 
 # ── Package helpers ───────────────────────────────────────────────────────────
 is_installed() { pacman -Qi "$1" &>/dev/null; }
@@ -320,8 +319,28 @@ show_summary() {
 
 grant_permissions() {
   section "Granting permissions"
-  spin "Setting up Sunshine permissions…" grant_sunshine_cap_sys_admin
+
+  if is_installed sunshine; then
+    spin "Setting up Sunshine permissions…" grant_sunshine_cap_sys_admin
+  fi
+
   ok "Permissions setup complete"
+}
+
+# ── Extra Config ─────────────────────────────────────────────────────────
+
+extra_config() {
+  section "Extra configuration"
+
+  if is_installed sddm; then
+    spin "Configuring sddm" setup_sddm
+  fi
+
+  if is_installed mcontrolcenter; then
+    spin "Configuring MControlCenter" setup_msi
+  fi
+
+  ok "Extra configuration complete"
 }
 
 # ── Argument parsing ──────────────────────────────────────────────────────────
@@ -350,13 +369,8 @@ main() {
     show_plan && do_install && show_summary
   fi
 
-  gum_confirm "Grant permissions?" && {
-    grant_permissions
-  } || {
-    warn "Skipping permissions setup."
-  }
-
-  spin "Setting up sddm" setup_sddm
+  grant_permissions
+  extra_config
 }
 
 main "$@"
