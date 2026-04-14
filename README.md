@@ -128,9 +128,10 @@ Package groups:
 | **Applications** | `obsidian`, `remmina`, `vlc`, `vesktop-bin`, `zen-browser-bin` (AUR) |
 | **Neovim Editor** | `lazygit`, `neovim-nightly-bin` (AUR) |
 | **Noctalia Shell** | `noctalia-shell` (AUR) |
-| **ASUS ROG** | `asusctl`, `rog-control-center`, `supergfxctl` (AUR) |
 | **AMD GPU Drivers** | `vulkan-radeon`, `lib32-vulkan-radeon`, `libva-utils`, `amd-ucode` |
 | **Dev Tools** | `git`, `npm` |
+| **ASUS ROG** | `asusctl`, `rog-control-center`, `supergfxctl` (AUR) |
+| **MSI** | `msi-ec`, `mcontrolcenter` (AUR) |
 
 AUR packages are installed via `yay` (the script installs `yay` automatically
 if it is not found).

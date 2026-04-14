@@ -88,7 +88,7 @@ qalculate-gtk nvtop yt-dlp baobab inxi power-profiles-daemon\
   "asus|ASUS ROG\
 |\
 |asusctl rog-control-center supergfxctl"
-  "msi|MSI Center\
+  "msi|MSI\
 |\
 |msi-ec mcontrolcenter-bin"
 )
