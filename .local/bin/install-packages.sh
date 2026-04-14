@@ -336,9 +336,9 @@ extra_config() {
     spin "Configuring sddm" setup_sddm
   fi
 
-  if is_installed mcontrolcenter; then
-    spin "Configuring MControlCenter" setup_msi
-  fi
+  # if is_installed mcontrolcenter; then
+  #   spin "Configuring MControlCenter" setup_msi
+  # fi
 
   ok "Extra configuration complete"
 }
