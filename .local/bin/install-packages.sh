@@ -321,7 +321,6 @@ show_summary() {
 grant_permissions() {
   section "Granting permissions"
   spin "Setting up Sunshine permissions…" grant_sunshine_cap_sys_admin
-  spin "Setting up sddm" setup_sddm
   ok "Permissions setup complete"
 }
 
@@ -346,19 +345,18 @@ main() {
 
   if [[ ${#SELECTED_KEYS[@]} -eq 0 ]]; then
     warn "No groups selected — nothing to do."
-    exit 0
+  else
+    build_plan
+    show_plan && do_install && show_summary
   fi
 
-  build_plan
-
-  show_plan && do_install && show_summary
-
-  gum_confirm "Grant permissions?" || {
+  gum_confirm "Grant permissions?" && {
+    grant_permissions
+  } || {
     warn "Skipping permissions setup."
-    exit 0
   }
 
-  grant_permissions
+  spin "Setting up sddm" setup_sddm
 }
 
 main "$@"
