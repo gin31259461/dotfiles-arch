@@ -16,10 +16,13 @@ dot() { git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" "$@"; }
 COMMIT_MSG=""
 while getopts ":m:h" opt; do
   case $opt in
-    m) COMMIT_MSG="$OPTARG" ;;
-    h) printf 'Usage: %s [-m "commit message"]\n' "$(basename "$0")"; exit 0 ;;
-    \?) die "Unknown option: -$OPTARG" ;;
-    :)  die "Option -$OPTARG requires an argument" ;;
+  m) COMMIT_MSG="$OPTARG" ;;
+  h)
+    printf 'Usage: %s [-m "commit message"]\n' "$(basename "$0")"
+    exit 0
+    ;;
+  \?) die "Unknown option: -$OPTARG" ;;
+  :) die "Option -$OPTARG requires an argument" ;;
   esac
 done
 
@@ -31,7 +34,10 @@ if [[ -z "$COMMIT_MSG" ]]; then
     COMMIT_MSG=$(gum write \
       --placeholder "Describe your changes…" \
       --header "Commit message" \
-      --width 72 --height 6) || { warn "Aborted."; exit 0; }
+      --width 72 --height 6) || {
+      warn "Aborted."
+      exit 0
+    }
   fi
   [[ -z "$COMMIT_MSG" ]] && COMMIT_MSG="sync dotfiles"
 fi
@@ -50,6 +56,8 @@ dot add \
   .local/bin/bootstrap.sh \
   .local/bin/install-packages.sh \
   .local/bin/cleanup.sh \
+  .local/lib/permission \
+  .local/lib/core \
   .local/lib/tui.sh \
   .local/lib/packages.sh \
   .gitconfig \
@@ -100,7 +108,7 @@ dot add \
 
 # ── Commit and push ───────────────────────────────────────────────────────────
 
-spin "Committing…"  git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" commit -m "$COMMIT_MSG"
+spin "Committing…" git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" commit -m "$COMMIT_MSG"
 ok "Committed: $COMMIT_MSG"
 spin "Pushing to origin…" git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" push origin main
 ok "Pushed to origin main"

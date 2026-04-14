@@ -12,6 +12,8 @@ set -euo pipefail
 source "$HOME/.local/lib/tui.sh"
 # shellcheck source=../.local/lib/packages.sh
 source "$HOME/.local/lib/packages.sh"
+source "$HOME/.local/lib/permission/sunshine.sh"
+source "$HOME/.local/lib/core/sddm.sh"
 
 # ── Package helpers ───────────────────────────────────────────────────────────
 is_installed() { pacman -Qi "$1" &>/dev/null; }
@@ -303,35 +305,6 @@ do_install() {
   fi
 }
 
-# ── Permissions Setup ─────────────────────────────────────────────────────────
-
-SUNSHINE_PATH=$(readlink -f $(which sunshine))
-
-sunshine_cap_sys_admin() {
-  if [[ -z "$SUNSHINE_PATH" ]]; then
-    warn "Sunshine executable not found; skipping permission grant."
-    return
-  else
-    if getcap "$SUNSHINE_PATH" | grep -q "cap_sys_admin"; then
-      ok "Sunshine already has cap_sys_admin permission"
-      return
-    else
-      info "Granting cap_sys_admin to Sunshine at $SUNSHINE_PATH"
-      sudo setcap cap_sys_admin+p "$SUNSHINE_PATH" || {
-        warn "Failed to set cap_sys_admin on $SUNSHINE_PATH. You may need to run 'sudo setcap cap_sys_admin+p $SUNSHINE_PATH' manually."
-        return
-      }
-      ok "cap_sys_admin granted to Sunshine"
-    fi
-  fi
-}
-
-grant_permissions() {
-  section "Granting permissions"
-  spin "Setting up Sunshine permissions…" sunshine_cap_sys_admin
-  ok "Permissions setup complete"
-}
-
 # ── Summary ───────────────────────────────────────────────────────────────────
 show_summary() {
   local total
@@ -341,6 +314,15 @@ show_summary() {
   note "Log out and back in for compositor/env changes to take effect."
   note "Run 'dotfiles.sh' to sync any updated configs."
   printf '\n'
+}
+
+# ── Permissions Setup ─────────────────────────────────────────────────────────
+
+grant_permissions() {
+  section "Granting permissions"
+  spin "Setting up Sunshine permissions…" grant_sunshine_cap_sys_admin
+  spin "Setting up sddm" setup_sddm
+  ok "Permissions setup complete"
 }
 
 # ── Argument parsing ──────────────────────────────────────────────────────────
@@ -369,9 +351,14 @@ main() {
 
   build_plan
 
-  show_plan && do_install
+  show_plan && do_install && show_summary
+
+  gum_confirm "Grant permissions?" || {
+    warn "Skipping permissions setup."
+    exit 0
+  }
+
   grant_permissions
-  show_summary
 }
 
 main "$@"
