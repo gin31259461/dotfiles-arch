@@ -13,6 +13,7 @@ source "$HOME/.local/lib/packages.sh"
 source "$HOME/.local/lib/permission/sunshine.sh"
 source "$HOME/.local/lib/core/sddm.sh"
 source "$HOME/.local/lib/extra/msi.sh"
+source "$HOME/.local/lib/extra/razer.sh"
 
 # ── Package helpers ───────────────────────────────────────────────────────────
 is_installed() { pacman -Qi "$1" &>/dev/null; }
@@ -291,15 +292,15 @@ do_install() {
 
   if [[ ${#PLAN_OFFICIAL[@]} -gt 0 ]]; then
     section "Installing official packages"
-    spin "Installing ${#PLAN_OFFICIAL[@]} official package(s)…" \
-      sudo pacman -S --needed --noconfirm "${PLAN_OFFICIAL[@]}"
+    note "Installing ${#PLAN_OFFICIAL[@]} official package(s)…"
+    sudo pacman -S --needed --noconfirm "${PLAN_OFFICIAL[@]}"
     ok "${#PLAN_OFFICIAL[@]} official package(s) installed"
   fi
 
   if [[ ${#PLAN_AUR[@]} -gt 0 ]]; then
     section "Installing AUR packages"
-    spin "Installing ${#PLAN_AUR[@]} AUR package(s)…" \
-      yay -S --needed --noconfirm "${PLAN_AUR[@]}"
+    note "Installing ${#PLAN_AUR[@]} AUR package(s)…"
+    yay -S --needed --noconfirm "${PLAN_AUR[@]}"
     ok "${#PLAN_AUR[@]} AUR package(s) installed"
   fi
 }
@@ -339,6 +340,10 @@ extra_config() {
   # if is_installed mcontrolcenter; then
   #   spin "Configuring MControlCenter" setup_msi
   # fi
+
+  if is_installed openrazer-daemon; then
+    spin "Configuring Razer" setup_razer
+  fi
 
   ok "Extra configuration complete"
 }

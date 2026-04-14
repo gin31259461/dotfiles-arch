@@ -79,6 +79,9 @@ qalculate-gtk nvtop yt-dlp baobab inxi power-profiles-daemon\
   "noctalia|Noctalia Shell\
 |\
 |noctalia-shell noctalia-qs"
+  "razer|Razer Devices\
+|openrazer-daemon openrazer-driver-dkms\
+|polychromatic"
   "amd|AMD GPU Drivers\
 |vulkan-radeon lib32-vulkan-radeon libva-utils amd-ucode amdgpu_top vulkan-tools\
 |"
