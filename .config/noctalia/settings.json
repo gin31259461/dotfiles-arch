@@ -216,12 +216,12 @@
                 },
                 {
                     "deviceNativePath": "__default__",
-                    "displayMode": "icon-only",
+                    "displayMode": "icon-hover",
                     "hideIfIdle": false,
                     "hideIfNotDetected": true,
                     "id": "Battery",
                     "showNoctaliaPerformance": false,
-                    "showPowerProfiles": true
+                    "showPowerProfiles": false
                 },
                 {
                     "displayMode": "onhover",
