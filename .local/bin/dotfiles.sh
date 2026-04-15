@@ -96,6 +96,9 @@ dot add \
   .config/swaync \
   .config/wallust \
   .config/discord/settings.json \
+  .config/vesktop/settings \
+  .config/vesktop/themes \
+  .config/vesktop/settings.json \
   .config/cava \
   .config/ghostty \
   .config/waybar \

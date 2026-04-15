@@ -215,13 +215,13 @@
                     "unreadBadgeColor": "primary"
                 },
                 {
-                    "deviceNativePath": "",
-                    "displayMode": "onhover",
+                    "deviceNativePath": "__default__",
+                    "displayMode": "icon-only",
                     "hideIfIdle": false,
                     "hideIfNotDetected": true,
                     "id": "Battery",
                     "showNoctaliaPerformance": false,
-                    "showPowerProfiles": false
+                    "showPowerProfiles": true
                 },
                 {
                     "displayMode": "onhover",

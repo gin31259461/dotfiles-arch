@@ -37,7 +37,7 @@ required.
 | **Theming** | `.config/Kvantum/`, `.config/qt5ct/`, `.config/qt6ct/`, `.config/wallust/` |
 | **Shell UI** | `.config/quickshell/`, `.config/rofi/`, `.config/swaync/`, `.config/waybar/` |
 | **Utilities** | `.config/btop/`, `.config/cava/`, `.config/fastfetch/`, `.config/swappy/` |
-| **Apps** | `.config/discord/settings.json`, `.config/noctalia/`, `.config/electron-flags.conf` |
+| **Apps** | `.config/discord/settings.json`, `.config/vesktop/settings`, `.config/vesktop/themes`, `.config/vesktop/settings.json`, `.config/noctalia/`, `.config/electron-flags.conf` |
 | **OneDrive** | `.config/onedrive/config`, `.config/onedrive/sync_list` |
 | **Meta** | `.local/bin/bootstrap.sh`, `.local/bin/dotfiles.sh`, `.local/bin/install-packages.sh`, `.local/bin/cleanup.sh`, `.gitconfig`, `.gitmodules`, `.gitignore`, `doc/`, `README.md` |
 | **Self-hosted** | `.config/sunshine/sunshine.conf` |
