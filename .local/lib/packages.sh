@@ -13,7 +13,7 @@ declare -a PKG_GROUPS=(
   "core|Core Hyprland\
 |hyprland hyprpolkitagent hyprlock hypridle hyprsunset \
 xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
-sddm \
+uwsm libnewt\
 |"
   "shell|Shell & Prompt\
 |zsh zsh-completions fzf gum lsd fastfetch\

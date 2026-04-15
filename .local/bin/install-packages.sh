@@ -333,9 +333,9 @@ grant_permissions() {
 extra_config() {
   section "Extra configuration"
 
-  if is_installed sddm; then
-    spin "Configuring sddm" setup_sddm
-  fi
+  # if is_installed sddm; then
+  #   spin "Configuring sddm" setup_sddm
+  # fi
 
   # if is_installed mcontrolcenter; then
   #   spin "Configuring MControlCenter" setup_msi
