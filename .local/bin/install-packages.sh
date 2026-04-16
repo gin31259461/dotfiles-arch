@@ -326,7 +326,7 @@ show_summary() {
 # For each *.sh file, extract the package name and call setup_pkgname() if installed
 # Special package name mappings for cases where filename ≠ package name
 declare -A PKG_NAME_MAP=(
-  [razer]="openrazer-daemon"  # razer.sh checks for openrazer-daemon package
+  [razer]="openrazer-daemon" # razer.sh checks for openrazer-daemon package
 )
 
 run_auto_setup() {
@@ -345,7 +345,7 @@ run_auto_setup() {
     # Extract base name: /path/to/sunshine.sh → sunshine
     local basename
     basename=$(basename "$file" .sh)
-    
+
     # Setup function name based on base name
     local setup_func="setup_${basename}"
 
@@ -359,7 +359,10 @@ run_auto_setup() {
 
     # For autologin, prompt the user (optional setup)
     if [[ "$basename" == "autologin" ]]; then
-      gum_confirm "Run $setup_func?" && { spin "Running $setup_func" "$setup_func"; ran_any=true; } || true
+      gum_confirm "Run $setup_func?" && {
+        spin "Running $setup_func" "$setup_func"
+        ran_any=true
+      } || remove_autologin
     # For other setups, auto-run only if package is installed
     elif is_installed "$pkg_to_check"; then
       spin "Running $setup_func" "$setup_func"

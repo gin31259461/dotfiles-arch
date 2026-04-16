@@ -595,7 +595,7 @@
             },
             {
                 "action": "logout",
-                "command": "loginctl terminate-user $USER",
+                "command": "uwsm stop",
                 "countdownEnabled": true,
                 "enabled": true,
                 "keybind": "5"

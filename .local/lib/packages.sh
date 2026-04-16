@@ -58,8 +58,8 @@ qalculate-gtk nvtop yt-dlp baobab inxi power-profiles-daemon\
   "wallpaper|Wallpaper & Colors\
 |\
 |swww wallust"
-  "display-manager|Display Manager\
-|sddm sddm-kcm\
+  "dm|Display Manager\
+|sddm\
 |"
   "session|Session & Logout\
 |\

@@ -5,7 +5,7 @@ GETTY_TTY1_DIR="/etc/systemd/system/getty@tty1.service.d"
 remove_autologin() {
   note "Removing autologin configuration for user '$USER' on tty1"
 
-  $OVERRIDE_PATH="$GETTY_TTY1_DIR/override.conf"
+  OVERRIDE_PATH="$GETTY_TTY1_DIR/override.conf"
   if [ -f "$OVERRIDE_PATH" ]; then
     sudo rm "$OVERRIDE_PATH"
   fi
