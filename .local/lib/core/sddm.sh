@@ -7,6 +7,25 @@ setup_sddm() {
   sudo systemctl enable sddm.service
   ok "SDDM service enabled"
 
+  cat <<EOF | sudo tee /etc/sddm.conf.d/autologin.conf >/dev/null
+[Autologin]
+User=$USER
+Session=hyprland-uwsm
+EOF
+
+  cat <<EOF | sudo tee /usr/share/wayland-sessions/hyprland-uwsm.desktop >/dev/null
+[Desktop Entry]
+Name=Hyprland (with UWSM)
+Comment=Wayland compositor, UWSM session
+Exec=uwsm start -- hyprland.desktop
+
+# invalidates entry if uwsm is missing
+TryExec=uwsm
+
+DesktopNames=Hyprland
+Type=Application
+EOF
+
   # Provide guidance for configuration
   step "SDDM configuration tips:"
   step "  • System settings: Run 'systemsettings' and navigate to Startup and Shutdown → SDDM Login Screen"
@@ -15,4 +34,6 @@ setup_sddm() {
   note "To activate SDDM now, restart the display manager:"
   note "  sudo systemctl restart display-manager"
   note "Or reboot to test the login screen"
+
+  ok "SDDM setup complete"
 }
