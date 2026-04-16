@@ -20,3 +20,7 @@ grant_sunshine_cap_sys_admin() {
     fi
   fi
 }
+
+setup_sunshine() {
+  grant_sunshine_cap_sys_admin
+}

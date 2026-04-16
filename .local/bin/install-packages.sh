@@ -10,10 +10,14 @@ set -euo pipefail
 
 source "$HOME/.local/lib/tui.sh"
 source "$HOME/.local/lib/packages.sh"
-source "$HOME/.local/lib/permission/sunshine.sh"
-source "$HOME/.local/lib/core/sddm.sh"
-source "$HOME/.local/lib/extra/msi.sh"
-source "$HOME/.local/lib/extra/razer.sh"
+
+for core in $HOME/.local/lib/core/*.sh; do
+  source "$core"
+done
+
+for extra in $HOME/.local/lib/extra/*.sh; do
+  source "$extra"
+done
 
 # ── Package helpers ───────────────────────────────────────────────────────────
 is_installed() { pacman -Qi "$1" &>/dev/null; }
@@ -316,34 +320,20 @@ show_summary() {
   printf '\n'
 }
 
-# ── Permissions Setup ─────────────────────────────────────────────────────────
-
-grant_permissions() {
-  section "Granting permissions"
-
-  if is_installed sunshine; then
-    spin "Setting up Sunshine permissions…" grant_sunshine_cap_sys_admin
-  fi
-
-  ok "Permissions setup complete"
-}
-
 # ── Extra Config ─────────────────────────────────────────────────────────
 
 extra_config() {
   section "Extra configuration"
 
-  # if is_installed sddm; then
-  #   spin "Configuring sddm" setup_sddm
-  # fi
-
-  # if is_installed mcontrolcenter; then
-  #   spin "Configuring MControlCenter" setup_msi
-  # fi
+  if is_installed sunshine; then
+    spin "Configuring Sunshine" grant_sunshine_cap_sys_admin
+  fi
 
   if is_installed openrazer-daemon; then
     spin "Configuring Razer" setup_razer
   fi
+
+  gum_confirm "Set up autologin?" && setup_autologin || warn "Skipping autologin setup"
 
   ok "Extra configuration complete"
 }
@@ -374,7 +364,6 @@ main() {
     show_plan && do_install && show_summary
   fi
 
-  grant_permissions
   extra_config
 }
 
