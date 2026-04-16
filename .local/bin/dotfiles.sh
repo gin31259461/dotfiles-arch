@@ -56,7 +56,6 @@ dot add \
   .local/bin/bootstrap.sh \
   .local/bin/install-packages.sh \
   .local/bin/cleanup.sh \
-  .local/lib/permission \
   .local/lib/core \
   .local/lib/extra \
   .local/lib/tui.sh \
