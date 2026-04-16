@@ -57,7 +57,7 @@ dot add \
   .local/bin/install-packages.sh \
   .local/bin/cleanup.sh \
   .local/lib/core \
-  .local/lib/extra \
+  .local/lib/optional \
   .local/lib/tui.sh \
   .local/lib/packages.sh \
   .gitconfig \

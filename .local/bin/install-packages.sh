@@ -15,8 +15,8 @@ for core in $HOME/.local/lib/core/*.sh; do
   source "$core"
 done
 
-for extra in $HOME/.local/lib/extra/*.sh; do
-  source "$extra"
+for optional in $HOME/.local/lib/optional/*.sh; do
+  source "$optional"
 done
 
 # ── Package helpers ───────────────────────────────────────────────────────────
@@ -322,37 +322,47 @@ show_summary() {
 
 # ── Extra Config ─────────────────────────────────────────────────────────
 
-# Package-to-setup-function mapping
-# Each entry: "package-name|setup_function_name|optional"
-# optional=1 means user gets prompted; optional=0 means auto-run if package installed
-declare -a SETUP_MAP=(
-  "sunshine|setup_sunshine|0"
-  "openrazer-daemon|setup_razer|0"
-  "sddm|setup_sddm|0"
-  "msi-ec|setup_msi|0"
-  "autologin|setup_autologin|1"
+# Auto-detect setup functions from core/ and optional/ based on filenames
+# For each *.sh file, extract the package name and call setup_pkgname() if installed
+# Special package name mappings for cases where filename ≠ package name
+declare -A PKG_NAME_MAP=(
+  [razer]="openrazer-daemon"  # razer.sh checks for openrazer-daemon package
 )
 
-# Auto-load setup functions and run them for installed packages
 run_auto_setup() {
   section "Extra configuration"
 
   local ran_any=false
+  declare -a setup_files=()
 
-  for entry in "${SETUP_MAP[@]}"; do
-    IFS='|' read -r pkg func optional <<<"$entry"
+  # Collect all setup files from core/ and optional/
+  for file in $HOME/.local/lib/core/*.sh $HOME/.local/lib/optional/*.sh; do
+    [[ -f "$file" ]] && setup_files+=("$file")
+  done
+
+  # For each setup file, extract package name from filename and call setup function
+  for file in "${setup_files[@]}"; do
+    # Extract base name: /path/to/sunshine.sh → sunshine
+    local basename
+    basename=$(basename "$file" .sh)
     
-    # Check if function is defined
-    if ! declare -f "$func" &>/dev/null; then
+    # Setup function name based on base name
+    local setup_func="setup_${basename}"
+
+    # Check if the function is defined
+    if ! declare -f "$setup_func" &>/dev/null; then
       continue
     fi
 
-    # Handle optional setup (prompt user)
-    if [[ "$optional" == "1" ]]; then
-      gum_confirm "Run $func?" && { spin "Running $func" "$func"; ran_any=true; } || true
-    # Handle automatic setup (run if package installed)
-    elif is_installed "$pkg"; then
-      spin "Running $func" "$func"
+    # Determine actual package name (use mapping if available)
+    local pkg_to_check="${PKG_NAME_MAP[$basename]:-$basename}"
+
+    # For autologin, prompt the user (optional setup)
+    if [[ "$basename" == "autologin" ]]; then
+      gum_confirm "Run $setup_func?" && { spin "Running $setup_func" "$setup_func"; ran_any=true; } || true
+    # For other setups, auto-run only if package is installed
+    elif is_installed "$pkg_to_check"; then
+      spin "Running $setup_func" "$setup_func"
       ran_any=true
     fi
   done

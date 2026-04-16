@@ -91,7 +91,7 @@ repo** so it is deployed to every new machine via rsync.
 fzf-powered multi-select installer for all dotfile dependencies.
 Groups: core, shell, terminal, files, bar, audio, network, capture, theming,
 fonts, input, utils, wallpaper, session, gtk, sync, apps, neovim, noctalia,
-asus, amd, dev, msi, razer, sddm.
+asus, amd, dev, msi, razer.
 
 ```bash
 install-packages.sh      # interactive (fzf: TAB=toggle, ENTER=confirm)
@@ -322,29 +322,34 @@ Packages are defined in `~/.local/lib/packages.sh` with per-group format:
 "key|Display Label|official packages (space-sep)|AUR packages (space-sep)"
 ```
 
-### Core vs Extra setup
+### Core vs Optional setup
 
 **Core setup** (`~/.local/lib/core/*.sh`): Essential services and configurations sourced automatically by `install-packages.sh`.
 - `autologin.sh` — Handles automatic login configuration for specific display managers
 
-**Extra setup** (`~/.local/lib/extra/*.sh`): Optional device-specific or service-specific configurations.
+**Optional setup** (`~/.local/lib/optional/*.sh`): Optional device-specific or service-specific configurations.
 - `msi.sh` — MSI laptop power management and control center setup
 - `razer.sh` — Razer laptop support (OpenRazer daemon, RazerGenie)
-- `sddm.sh` — SDDM login manager configuration
 - `sunshine.sh` — Sunshine self-hosted game streaming setup
 
-**Auto-loading setup functions:**
+**Auto-loading setup functions (filename-based discovery):**
 
-When `install-packages.sh` completes package installation, it automatically detects and runs `setup_<pkgname>()` functions for:
-- Any package that was installed and has a corresponding setup function
-- Optional setup functions (like autologin) that prompt the user
+When `install-packages.sh` completes package installation, it automatically:
+1. Scans `core/` and `optional/` directories for `*.sh` files
+2. Extracts package name from filename (e.g., `sunshine.sh` → `sunshine`)
+3. Checks if that package is installed via `pacman -Qi`
+4. Calls `setup_pkgname()` function if the package is installed and function exists
 
-To add new package setup logic: create a `.sh` file in `core/` or `extra/` with a `setup_<packagename>()` function. When the package is installed, the setup function will be auto-discovered and called during the "Extra configuration" phase.
+To add new package setup logic:
+- Create a `.sh` file in `core/` (essential) or `optional/` (device-specific)
+- File name must match the package name (e.g., `sunshine.sh` for sunshine package)
+- Define a function named `setup_<packagename>()` matching the filename
+- Function will be auto-discovered and run if the package is installed
 
 **Adding to packages.sh:**
 - Add package name to official or AUR field in `~/.local/lib/packages.sh`
-- Create corresponding setup file in `core/` (essential) or `extra/` (optional)
-- Define a `setup_<packagename>()` function matching the package name exactly
+- Create corresponding setup file in `core/` or `optional/` with matching filename
+- Define `setup_<packagename>()` function (auto-run if package installed)
 
 ---
 

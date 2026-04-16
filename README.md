@@ -133,7 +133,6 @@ Package groups:
 | **ASUS ROG** | `asusctl`, `rog-control-center`, `supergfxctl` (AUR) |
 | **MSI Laptops** | `msi-ec`, `mcontrolcenter-bin` (AUR) |
 | **Razer Laptops** | `openrazer-daemon`, `razergenie` (AUR) |
-| **SDDM Login** | `sddm`, `sddm-theme-tokyo-night` (AUR) |
 
 AUR packages are installed via `yay` (the script installs `yay` automatically
 if it is not found).
