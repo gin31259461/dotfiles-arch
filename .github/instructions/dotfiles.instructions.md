@@ -91,7 +91,7 @@ repo** so it is deployed to every new machine via rsync.
 fzf-powered multi-select installer for all dotfile dependencies.
 Groups: core, shell, terminal, files, bar, audio, network, capture, theming,
 fonts, input, utils, wallpaper, session, gtk, sync, apps, neovim, noctalia,
-asus, amd, dev.
+asus, amd, dev, msi, razer, sddm.
 
 ```bash
 install-packages.sh      # interactive (fzf: TAB=toggle, ENTER=confirm)
@@ -315,10 +315,26 @@ dot submodule sync --recursive            # sync after .gitmodules changes
 
 ## Package Management
 
-- `pacman` for official packages, `yay` for AUR
-- Add packages to the correct group in `~/.local/lib/packages.sh`
-- Run `install-packages.sh` to install; it skips already-installed packages
-- Official packages go in the 3rd `|`-field; AUR packages in the 4th field
+### Package groups structure
+
+Packages are defined in `~/.local/lib/packages.sh` with per-group format:
+```
+"key|Display Label|official packages (space-sep)|AUR packages (space-sep)"
+```
+
+### Core vs Extra setup
+
+**Core setup** (`~/.local/lib/core/*.sh`): Essential services and configurations sourced automatically by `install-packages.sh`.
+- `autologin.sh` — Handles automatic login configuration for specific display managers
+
+**Extra setup** (`~/.local/lib/extra/*.sh`): Optional device-specific or service-specific configurations.
+- `msi.sh` — MSI laptop power management and control center setup
+- `razer.sh` — Razer laptop support (OpenRazer daemon, RazerGenie)
+- `sddm.sh` — SDDM login manager configuration
+- `sunshine.sh` — Sunshine self-hosted game streaming setup
+
+To add a new package: append to the official or AUR field in `~/.local/lib/packages.sh`.
+To add new setup logic: create a `.sh` file in `core/` or `extra/` — it will be sourced automatically.
 
 ---
 
