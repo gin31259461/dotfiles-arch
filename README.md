@@ -121,6 +121,7 @@ Package groups:
 | **Input Method** | `fcitx5`, `fcitx5-chewing`, `fcitx5-gtk`, `fcitx5-qt`, `fcitx5-configtool` |
 | **Utilities** | `btop`, `cava`, `brightnessctl`, `bc`, `jq`, `imagemagick`, `chafa`, `xdg-user-dirs`, `yad`, `rofi`, `xdotool`, `rsync`, `wget`, `unzip`, `pacman-contrib`, `qalculate-gtk`, `nvtop`, `yt-dlp`, `baobab`, `inxi`, `power-profiles-daemon`, `octopi` (AUR) |
 | **Wallpaper & Colors** | `swww`, `wallust` (AUR) |
+| **Display Manager** | `sddm`, `sddm-kcm` |
 | **Session & Logout** | `wlogout` (AUR) |
 | **GTK Theme & Cursor** | `adw-gtk-theme` (AUR) |
 | **Cloud Sync** | `onedrive-abraunegg` (AUR) |
