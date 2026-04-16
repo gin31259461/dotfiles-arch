@@ -132,7 +132,7 @@ Package groups:
 | **Dev Tools** | `git`, `npm` |
 | **ASUS ROG** | `asusctl`, `rog-control-center`, `supergfxctl` (AUR) |
 | **MSI** | `msi-ec`, `mcontrolcenter-bin` (AUR) |
-| **Razer Laptops** | `openrazer-daemon`, `openrazer-driver-dkms`, `polychromatic` (AUR) |
+| **Razer Devices** | `openrazer-daemon`, `openrazer-driver-dkms`, `polychromatic` (AUR) |
 
 AUR packages are installed via `yay` (the script installs `yay` automatically
 if it is not found).

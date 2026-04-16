@@ -328,7 +328,7 @@ Packages are defined in `~/.local/lib/packages.sh` with per-group format:
 - `autologin.sh` — Handles automatic login configuration for specific display managers
 
 **Optional setup** (`~/.local/lib/optional/*.sh`): Optional device-specific or service-specific configurations.
-- `razer.sh` — Razer laptop support (OpenRazer daemon, dkms module build)
+- `razer.sh` — Razer devices support (OpenRazer daemon, dkms module build)
 - `sunshine.sh` — Sunshine self-hosted game streaming setup
 
 **Auto-loading setup functions (filename-based discovery):**
