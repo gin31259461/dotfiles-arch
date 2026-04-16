@@ -15,8 +15,8 @@ EOF
 
   cat <<EOF | sudo tee /usr/share/wayland-sessions/hyprland-uwsm.desktop >/dev/null
 [Desktop Entry]
-Name=Hyprland (with UWSM)
-Comment=Wayland compositor, UWSM session
+Name=Hyprland (uwsm)
+Comment=Wayland compositor, uwsm session
 Exec=uwsm start -- hyprland.desktop
 
 # invalidates entry if uwsm is missing
