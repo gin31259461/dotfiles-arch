@@ -108,31 +108,31 @@ Package groups:
 
 | Group | What's included |
 |---|---|
-| **Core Hyprland** | `hyprland`, `hyprpolkitagent`, `hyprlock`, `hypridle`, `hyprsunset`, portals, `uwsm` |
+| **Core Hyprland** | `hyprland`, `hyprpolkitagent`, `hyprlock`, `hypridle`, `hyprsunset`, `xdg-desktop-portal-hyprland`, `xdg-desktop-portal-gtk`, `uwsm`, `libnewt` |
 | **Shell & Prompt** | `zsh`, `zsh-completions`, `fzf`, `gum`, `lsd`, `fastfetch` |
 | **Terminals** | `kitty`, `ghostty` |
-| **File Manager** | `thunar` + plugins, `tumbler`, `gvfs` |
+| **File Manager** | `thunar`, `thunar-archive-plugin`, `thunar-volman`, `tumbler`, `gvfs`, `gvfs-mtp`, `ffmpegthumbnailer`, `xarchiver` |
 | **Bar & Notifications** | `waybar` |
-| **Audio** | `pipewire` stack, `pamixer`, `pavucontrol`, `playerctl`, `mpv` |
-| **Network & Bluetooth** | `networkmanager`, `network-manager-applet`, `bluez`, `blueman` |
-| **Screenshot & Clipboard** | `grim`, `slurp`, `swappy`, `cliphist`, `wl-clipboard` |
-| **Qt Theming** | `kvantum`, `qt5ct`, `qt6ct`, `nwg-look`, `nwg-displays`, `papirus-icon-theme` |
+| **Audio** | `pipewire`, `pipewire-alsa`, `pipewire-audio`, `pipewire-pulse`, `wireplumber`, `pamixer`, `pavucontrol`, `playerctl`, `mpv`, `mpv-mpris` |
+| **Network & Bluetooth** | `networkmanager`, `network-manager-applet`, `bluez`, `bluez-utils`, `blueman`, `networkmanager-openconnect`, `networkmanager-openvpn` |
+| **Screenshot & Clipboard** | `grim`, `slurp`, `swappy`, `cliphist`, `wl-clipboard`, `libnotify` |
+| **Qt Theming** | `kvantum`, `qt5ct`, `qt6ct`, `qt6-5compat`, `nwg-look`, `nwg-displays`, `papirus-icon-theme`, `gtk-engine-murrine` |
 | **Fonts** | Nerd Fonts, Noto, Source Code Pro + `ttf-victor-mono`, `noto-fonts-tc-vf` (AUR) |
-| **Input Method** | `fcitx5` + `fcitx5-chewing`, GTK/Qt modules |
-| **Utilities** | `btop`, `cava`, `brightnessctl`, `rofi`, `jq`, `imagemagick`, and more |
+| **Input Method** | `fcitx5`, `fcitx5-chewing`, `fcitx5-gtk`, `fcitx5-qt`, `fcitx5-configtool` |
+| **Utilities** | `btop`, `cava`, `brightnessctl`, `bc`, `jq`, `imagemagick`, `chafa`, `xdg-user-dirs`, `yad`, `rofi`, `xdotool`, `rsync`, `wget`, `unzip`, `pacman-contrib`, `qalculate-gtk`, `nvtop`, `yt-dlp`, `baobab`, `inxi`, `power-profiles-daemon`, `octopi` (AUR) |
 | **Wallpaper & Colors** | `swww`, `wallust` (AUR) |
 | **Session & Logout** | `wlogout` (AUR) |
 | **GTK Theme & Cursor** | `adw-gtk-theme` (AUR) |
 | **Cloud Sync** | `onedrive-abraunegg` (AUR) |
 | **Self-hosted & VPN** | `tailscale`, `sunshine` (AUR) |
-| **Applications** | `obsidian`, `remmina`, `vlc`, `vesktop-bin`, `zen-browser-bin` (AUR) |
+| **Applications** | `obsidian`, `remmina`, `vlc`, `loupe`, `vesktop-bin`, `zen-browser-bin`, `onlyoffice-bin` (AUR) |
 | **Neovim Editor** | `lazygit`, `neovim-nightly-bin` (AUR) |
-| **Noctalia Shell** | `noctalia-shell` (AUR) |
-| **AMD GPU Drivers** | `vulkan-radeon`, `lib32-vulkan-radeon`, `libva-utils`, `amd-ucode` |
+| **Noctalia Shell** | `noctalia-shell`, `noctalia-qs` (AUR) |
+| **AMD GPU Drivers** | `vulkan-radeon`, `lib32-vulkan-radeon`, `libva-utils`, `amd-ucode`, `amdgpu_top`, `vulkan-tools` |
 | **Dev Tools** | `git`, `npm` |
 | **ASUS ROG** | `asusctl`, `rog-control-center`, `supergfxctl` (AUR) |
 | **MSI** | `msi-ec`, `mcontrolcenter-bin` (AUR) |
-| **Razer Laptops** | `openrazer-daemon`, `razergenie` (AUR) |
+| **Razer Laptops** | `openrazer-daemon`, `openrazer-driver-dkms`, `polychromatic` (AUR) |
 
 AUR packages are installed via `yay` (the script installs `yay` automatically
 if it is not found).
