@@ -322,20 +322,50 @@ show_summary() {
 
 # ── Extra Config ─────────────────────────────────────────────────────────
 
-extra_config() {
+# Package-to-setup-function mapping
+# Each entry: "package-name|setup_function_name|optional"
+# optional=1 means user gets prompted; optional=0 means auto-run if package installed
+declare -a SETUP_MAP=(
+  "sunshine|setup_sunshine|0"
+  "openrazer-daemon|setup_razer|0"
+  "sddm|setup_sddm|0"
+  "msi-ec|setup_msi|0"
+  "autologin|setup_autologin|1"
+)
+
+# Auto-load setup functions and run them for installed packages
+run_auto_setup() {
   section "Extra configuration"
 
-  if is_installed sunshine; then
-    spin "Configuring Sunshine" grant_sunshine_cap_sys_admin
-  fi
+  local ran_any=false
 
-  if is_installed openrazer-daemon; then
-    spin "Configuring Razer" setup_razer
-  fi
+  for entry in "${SETUP_MAP[@]}"; do
+    IFS='|' read -r pkg func optional <<<"$entry"
+    
+    # Check if function is defined
+    if ! declare -f "$func" &>/dev/null; then
+      continue
+    fi
 
-  gum_confirm "Set up autologin?" && setup_autologin || warn "Skipping autologin setup"
+    # Handle optional setup (prompt user)
+    if [[ "$optional" == "1" ]]; then
+      gum_confirm "Run $func?" && { spin "Running $func" "$func"; ran_any=true; } || true
+    # Handle automatic setup (run if package installed)
+    elif is_installed "$pkg"; then
+      spin "Running $func" "$func"
+      ran_any=true
+    fi
+  done
+
+  if ! $ran_any; then
+    note "No extra setup to run"
+  fi
 
   ok "Extra configuration complete"
+}
+
+extra_config() {
+  run_auto_setup
 }
 
 # ── Argument parsing ──────────────────────────────────────────────────────────

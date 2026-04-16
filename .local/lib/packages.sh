@@ -94,4 +94,7 @@ qalculate-gtk nvtop yt-dlp baobab inxi power-profiles-daemon\
   "msi|MSI\
 |\
 |msi-ec mcontrolcenter-bin"
+  "sddm|SDDM Login\
+|\
+|sddm sddm-theme-tokyo-night"
 )

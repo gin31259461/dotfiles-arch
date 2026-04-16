@@ -333,8 +333,18 @@ Packages are defined in `~/.local/lib/packages.sh` with per-group format:
 - `sddm.sh` — SDDM login manager configuration
 - `sunshine.sh` — Sunshine self-hosted game streaming setup
 
-To add a new package: append to the official or AUR field in `~/.local/lib/packages.sh`.
-To add new setup logic: create a `.sh` file in `core/` or `extra/` — it will be sourced automatically.
+**Auto-loading setup functions:**
+
+When `install-packages.sh` completes package installation, it automatically detects and runs `setup_<pkgname>()` functions for:
+- Any package that was installed and has a corresponding setup function
+- Optional setup functions (like autologin) that prompt the user
+
+To add new package setup logic: create a `.sh` file in `core/` or `extra/` with a `setup_<packagename>()` function. When the package is installed, the setup function will be auto-discovered and called during the "Extra configuration" phase.
+
+**Adding to packages.sh:**
+- Add package name to official or AUR field in `~/.local/lib/packages.sh`
+- Create corresponding setup file in `core/` (essential) or `extra/` (optional)
+- Define a `setup_<packagename>()` function matching the package name exactly
 
 ---
 

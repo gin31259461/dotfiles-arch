@@ -39,7 +39,7 @@ required.
 | **Utilities** | `.config/btop/`, `.config/cava/`, `.config/fastfetch/`, `.config/swappy/` |
 | **Apps** | `.config/discord/settings.json`, `.config/vesktop/settings`, `.config/vesktop/themes`, `.config/vesktop/settings.json`, `.config/noctalia/`, `.config/electron-flags.conf` |
 | **OneDrive** | `.config/onedrive/config`, `.config/onedrive/sync_list` |
-| **Meta** | `.local/bin/bootstrap.sh`, `.local/bin/dotfiles.sh`, `.local/bin/install-packages.sh`, `.local/bin/cleanup.sh`, `.local/bin/iommu.sh`, `.local/lib/tui.sh`, `.local/lib/packages.sh`, `.local/lib/core/`, `.local/lib/extra/`, `.gitconfig`, `.gitmodules`, `.gitignore`, `doc/`, `README.md` |
+| **Meta** | `.local/bin/bootstrap.sh`, `.local/bin/dotfiles.sh`, `.local/bin/install-packages.sh`, `.local/bin/cleanup.sh`, `.local/lib/tui.sh`, `.local/lib/packages.sh`, `.local/lib/core/`, `.local/lib/extra/`, `.gitconfig`, `.gitmodules`, `.gitignore`, `doc/`, `README.md` |
 | **Self-hosted** | `.config/sunshine/sunshine.conf` |
 
 ## First Time Setup
@@ -131,7 +131,7 @@ Package groups:
 | **AMD GPU Drivers** | `vulkan-radeon`, `lib32-vulkan-radeon`, `libva-utils`, `amd-ucode` |
 | **Dev Tools** | `git`, `npm` |
 | **ASUS ROG** | `asusctl`, `rog-control-center`, `supergfxctl` (AUR) |
-| **MSI Laptops** | `msi-ec`, `mcontrolcenter` (AUR) |
+| **MSI Laptops** | `msi-ec`, `mcontrolcenter-bin` (AUR) |
 | **Razer Laptops** | `openrazer-daemon`, `razergenie` (AUR) |
 | **SDDM Login** | `sddm`, `sddm-theme-tokyo-night` (AUR) |
 
