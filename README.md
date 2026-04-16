@@ -131,7 +131,7 @@ Package groups:
 | **AMD GPU Drivers** | `vulkan-radeon`, `lib32-vulkan-radeon`, `libva-utils`, `amd-ucode` |
 | **Dev Tools** | `git`, `npm` |
 | **ASUS ROG** | `asusctl`, `rog-control-center`, `supergfxctl` (AUR) |
-| **MSI Laptops** | `msi-ec`, `mcontrolcenter-bin` (AUR) |
+| **MSI** | `msi-ec`, `mcontrolcenter-bin` (AUR) |
 | **Razer Laptops** | `openrazer-daemon`, `razergenie` (AUR) |
 
 AUR packages are installed via `yay` (the script installs `yay` automatically
