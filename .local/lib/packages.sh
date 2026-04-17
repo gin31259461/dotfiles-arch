@@ -91,6 +91,9 @@ qalculate-gtk nvtop yt-dlp baobab inxi power-profiles-daemon\
   "dev|Dev Tools\
 |git npm\
 |"
+  "docker|Docker\
+|docker docker-compose docker-buildx\
+|lazydocker-bin"
   "asus|ASUS ROG\
 |\
 |asusctl rog-control-center supergfxctl"
