@@ -297,15 +297,21 @@ do_install() {
   if [[ ${#PLAN_OFFICIAL[@]} -gt 0 ]]; then
     section "Installing official packages"
     note "Installing ${#PLAN_OFFICIAL[@]} official package(s)…"
-    sudo pacman -S --needed --noconfirm "${PLAN_OFFICIAL[@]}"
-    ok "${#PLAN_OFFICIAL[@]} official package(s) installed"
+    if sudo pacman -S --needed --noconfirm "${PLAN_OFFICIAL[@]}"; then
+      ok "${#PLAN_OFFICIAL[@]} official package(s) installed"
+    else
+      warn "pacman exited with errors — some packages may not have installed"
+    fi
   fi
 
   if [[ ${#PLAN_AUR[@]} -gt 0 ]]; then
     section "Installing AUR packages"
     note "Installing ${#PLAN_AUR[@]} AUR package(s)…"
-    yay -S --needed --noconfirm "${PLAN_AUR[@]}"
-    ok "${#PLAN_AUR[@]} AUR package(s) installed"
+    if yay -S --needed --noconfirm "${PLAN_AUR[@]}"; then
+      ok "${#PLAN_AUR[@]} AUR package(s) installed"
+    else
+      warn "yay exited with errors — some AUR packages may not have installed"
+    fi
   fi
 }
 
@@ -357,12 +363,15 @@ run_auto_setup() {
     # Determine actual package name (use mapping if available)
     local pkg_to_check="${PKG_NAME_MAP[$basename]:-$basename}"
 
-    # For autologin, prompt the user (optional setup)
+    # For autologin, skip if already configured; otherwise prompt
     if [[ "$basename" == "autologin" ]]; then
-      gum_confirm "Run $setup_func?" && {
+      if [[ -f "$GETTY_TTY1_DIR/override.conf" ]]; then
+        ok "Autologin already configured — skipping"
+        ran_any=true
+      elif gum_confirm "Configure autologin for $USER?"; then
         spin "Running $setup_func" "$setup_func"
         ran_any=true
-      } || remove_autologin
+      fi
     # For other setups, auto-run only if package is installed
     elif is_installed "$pkg_to_check"; then
       spin "Running $setup_func" "$setup_func"
@@ -404,7 +413,10 @@ main() {
     warn "No groups selected — nothing to do."
   else
     build_plan
-    show_plan && do_install && show_summary
+    if show_plan; then
+      do_install
+      show_summary
+    fi
   fi
 
   extra_config

@@ -14,6 +14,10 @@ remove_autologin() {
 }
 
 setup_autologin() {
+  if [[ -f "$GETTY_TTY1_DIR/override.conf" ]]; then
+    ok "Autologin already configured for '$USER' on tty1"
+    return
+  fi
 
   note "Setting up autologin for user '$USER' on tty1"
 
