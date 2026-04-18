@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# more info:
+# https://github.com/openrazer/openrazer/wiki/Configuring-OpenRazer
+
 set_razer_group() {
   if ! groups "$USER" | grep -q "\bopenrazer\b"; then
     sudo gpasswd -a "$USER" openrazer
