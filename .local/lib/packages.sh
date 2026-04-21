@@ -90,7 +90,7 @@ qalculate-gtk nvtop yt-dlp baobab inxi power-profiles-daemon\
 |"
   "dev|Dev Tools\
 |git npm\
-|git-credential-manager"
+|git-credential-manager-bin"
   "docker|Docker\
 |docker docker-compose docker-buildx\
 |lazydocker-bin"
