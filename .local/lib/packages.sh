@@ -89,7 +89,7 @@ qalculate-gtk nvtop yt-dlp baobab inxi power-profiles-daemon\
 |vulkan-radeon lib32-vulkan-radeon libva-utils amd-ucode amdgpu_top vulkan-tools\
 |"
   "dev|Dev Tools\
-|git npm\
+|git npm pass\
 |git-credential-manager-bin"
   "docker|Docker\
 |docker docker-compose docker-buildx\

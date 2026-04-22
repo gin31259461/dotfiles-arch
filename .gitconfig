@@ -1,9 +1,9 @@
 [user]
 	email = qw0207060413@gmail.com
-	name = Abner
+	name = abner
 [credential]
 	helper = /usr/bin/git-credential-manager
-	credentialStore = secretservice
+	credentialStore = gpg
 [credential "https://dev.azure.com"]
 	useHttpPath = true
 [core]
