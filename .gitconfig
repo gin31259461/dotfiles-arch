@@ -7,4 +7,13 @@
 [credential "https://dev.azure.com"]
 	useHttpPath = true
 [core]
+  # commit convert to LF, checkout keep LF
 	autocrlf = input
+  filemode = false
+  ignorecase = true
+  quotepath = false
+  longpaths = true
+  fsmonitor = true
+  symlinks = true
+[pull]
+  rebase = true

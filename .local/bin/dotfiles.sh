@@ -61,6 +61,7 @@ dot add \
   .local/lib/tui.sh \
   .local/lib/packages.sh \
   .gitconfig \
+  .gitattributes \
   .gitmodules \
   .gitignore \
   .github \
