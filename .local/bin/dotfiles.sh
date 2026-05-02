@@ -95,7 +95,6 @@ dot add \
   .config/swappy \
   .config/swaync \
   .config/wallust \
-  .config/discord/settings.json \
   .config/vesktop/settings \
   .config/vesktop/themes \
   .config/vesktop/settings.json \
