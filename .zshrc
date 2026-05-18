@@ -7,6 +7,7 @@ fi
 
 export PATH=$HOME/.local/bin:$PATH
 export PATH=$HOME/go/bin:$PATH
+export PATH=$HOME/.luarocks/bin:$PATH
 export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
